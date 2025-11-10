@@ -1,0 +1,138 @@
+.container-login {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(249, 242, 235, 0.646);
+  padding-bottom: 10px;
+}
+.login-box {
+  background-color: #fff;
+  padding: 40px;
+  border-radius: 10px;
+  width: 100%;
+  max-width: 450px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  color: #333;
+}
+
+.login-box h1 {
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.form-control {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 15px;
+  background-color: white;
+  box-sizing: border-box;
+}
+
+.forgot-password {
+  text-align: right;
+  margin-bottom: 20px;
+}
+
+.forgot-password a {
+  font-size: 14px;
+  color: #007bff;
+  text-decoration: none;
+}
+
+.forgot-password a:hover {
+  text-decoration: underline;
+}
+
+.btn {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  font-size: 16px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+button.btn.btn-class {
+  background-color: #171d3b;
+  color: white;
+  transition: background-color 0.3s;
+}
+
+.btn-class:hover {
+  background-color: #11082d;
+}
+
+.divider {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  color: #666;
+  margin: 20px 0;
+}
+.divider::before,
+.divider::after {
+  content: "";
+  flex: 1;
+  border-bottom: 1px solid #999;
+  margin: 0 10px;
+}
+.divider span {
+  padding: 0 10px;
+  white-space: nowrap;
+}
+
+.divider::before {
+  left: 0;
+}
+
+.divider::after {
+  right: 0;
+}
+
+.social-icons {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.social-icons i {
+  font-size: 22px;
+  margin: 0 10px;
+  cursor: pointer;
+  color: #444;
+}
+
+.signup-text {
+  text-align: center;
+  font-size: 14px;
+  color: #666;
+}
+
+.text-link {
+  color: #162a40;
+  text-decoration: none;
+}
+
+.text-link:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+  .login-box {
+    width: 90%;
+    padding: 20px;
+  }
+}

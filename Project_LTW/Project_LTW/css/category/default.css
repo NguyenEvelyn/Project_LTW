@@ -1,0 +1,185 @@
+/* --------------------set background color---------------------------- */
+body {
+    background-color: rgb(254, 244, 231);
+    display: flex;
+    flex-direction: column;
+    height:100%;
+    justify-content: center;
+    justify-content: space-between;
+}
+
+/* --------------------navBar---------------------------- */
+
+ul {
+    list-style-type: none;
+}
+
+nav {
+    box-shadow: 5px 5px 10px rgba(2, 2, 2, 0.114);
+    margin-bottom: 10px;
+}
+
+#logo {
+    height: 180px;
+}
+
+.navbar-brand {
+    margin-right: 40px;
+}
+
+.nav-item {
+    margin-left: 5px;
+    margin-right: 20px;
+}
+
+[class*="icon"] {
+    text-align: center;
+    margin-top: 15px;
+    margin-bottom: -5px;
+}
+
+.nav-item>a>p  {
+    text-align: center;
+    margin-top: 1px;
+}
+
+#user {
+    padding-top: 15px;
+}
+
+#usertext {
+    margin-top: -4px;
+}
+
+#user:hover #dropdown-menu {
+    display: block;
+}
+
+#github {
+    margin-top: -4px;
+
+}
+
+
+#github:active .icon {
+    color: #09fa2d;
+    transition: color 0.2s ease;
+}
+
+.icon {
+    color: #00000075;
+    transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.nav-item:hover .icon,
+.nav-link:hover .icon {
+    color: #0d6efd;
+    transform: scale(1.1, 1.1);
+}
+
+.search-container {
+    max-width: 320px;
+    margin: 2rem auto;
+    margin-right: 10px;
+    box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.22);
+    border-radius: 12px;
+    overflow: hidden;
+    background-color: #fff;
+}
+
+.search-container .form-control {
+    border: none;
+    box-shadow: none;
+    font-size: 1rem;
+    padding: 0.75rem 1rem;
+}
+
+.search-container .btn-search {
+    border: none;
+    padding: 0.75rem;
+    border-radius: 8px;
+    margin-right: 0rem;
+    border: 2px solid transparent;
+    transition: all 0.5s;
+}
+
+.search-container .btn-search:hover {
+    background-color: #ececec;
+}
+
+.form-control:focus {
+    border: 2px solid transparent;
+    width: 15em;
+    height: 2.5em;
+    padding-left: 0.8em;
+    outline: none;
+    overflow: hidden;
+    background-color: #F3F3F3;
+    border-radius: 10px;
+    transition: all 0.75s;
+}
+
+.source-git {
+    margin-left: -80px;
+    margin-right: 20px;
+}
+
+#bar>li:hover>a>.icon,
+#bar>li:hover>a>p {
+    transform: 0.1s scale(1.1, 1.1);
+    font-weight: 500;
+}
+
+/* --------------------nut cuon len dau trang---------------------------- */
+@keyframes highlight {
+    10%{ transform: scale(1.1,1.1); }
+    20%{ transform: scale(1.15,1.15); }
+    30% {transform: scale(1.2, 1.2);}
+    40%{ transform: scale(1.25,1.25); }
+    50%{ transform: scale(1.3,1.3); }
+    60%{ transform: scale(1.25,1.25); }
+    70%{ transform: scale(1.2,1.2); }
+    80%{ transform: scale(1.15,1.15); }
+    90%{ transform: scale(1.1,1.1); }
+    95%{ transform: scale(1.05,1.05); }
+    100%{ transform: scale(1,1); }
+}
+
+#backToTop {
+    position: fixed;
+    bottom: 40px;
+    right: 30px;
+    display: block;
+    z-index: 1000;
+    width: 45px;
+    height: 45px;
+    font-size: 2.5rem;
+    border: none;
+    align-items: center;
+    color: black;
+    padding: 0px;
+    background-color: rgb(254, 244, 231);
+    justify-content: center;
+    opacity: 0.4;
+    transition: opacity 2s ease;
+    animation: highlight 2s infinite;
+}
+
+
+
+/* --------------------footer---------------------------- */
+.info{
+    margin-top:30px;
+    margin-left: 30px;
+    margin-bottom: 30px;
+}
+
+.coppyright{
+    text-align: center;
+    opacity: 0.5;
+    border-top: solid 1px black;
+}
+#footer{
+    border-top: solid 1px black;
+    margin:0px;
+}

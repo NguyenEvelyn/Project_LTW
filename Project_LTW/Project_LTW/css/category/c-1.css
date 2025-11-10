@@ -1,0 +1,32 @@
+.btn.btn-outline-dark{
+    border: 1px solid #3b3b3b;
+    border-radius: 25px;
+    margin: 10px;
+    cursor: pointer;
+}
+
+.btn.btn-primary.text-center{
+    display: float;
+}
+
+.container-md.bg-white{
+    background-color: #fff;
+    border-radius: 10px;
+    margin-bottom: 2em;
+}
+
+.bi.bi-cart-x{
+    color: #a0a0a0;
+    font-size: 7em;
+}
+
+#category{
+    align-items: center;
+    padding: 1em;
+}
+
+#category-not-found{
+    text-align: center;
+    padding: 1em;
+    margin-top: 2em;
+}

@@ -1,0 +1,15 @@
+.more{
+    text-decoration: none;
+    color: black;
+    font-size: large;
+    margin-bottom: 10px;;
+}
+
+.more:hover{
+    color: blue;
+    font-weight: 500;
+}
+.more:hover #next-arrow{
+    transform: translate(3px,0px);
+    transition: transform 0.3s ease;
+}

@@ -1,0 +1,80 @@
+.user-profile {
+  margin-left: 5%;
+  margin-right: 5%;
+  margin-bottom: 1%;
+  padding: 5px;
+  padding-top: 1.5%;
+  padding-bottom: 1.5%;
+}
+.user-block {
+  padding: 3%;
+  border-right: solid #d2cdcd 1px;
+  width: 23.5%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+#avatar img {
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 50%;
+}
+#avatar p {
+  margin-top: 10px;
+  font-size: x-large;
+  font-weight: bold;
+  font-family: "Roboto,Montserrat,Nunito";
+  text-align: center;
+}
+
+/* ghi de mau cho tab */
+.nav-tabs .nav-link {
+  color: #555; 
+  background-color: transparent;
+  border: 1px solid transparent;
+}
+
+.nav-tabs .nav-link.active {
+  /*khi active*/
+  color: rgb(0, 0, 0);
+  background-color: #0000002c;
+  border-color: #007bff #007bff #fff;
+}
+
+.nav-tabs .nav-link:hover {
+  color: #007bff;
+  transform: scale(1.03,1.03);
+  transition: transform ease 0.2s ;
+  border: none;
+  background-color: #00000011;
+}
+
+.go-shopping {
+  margin-top: 6%;
+  text-decoration: none;
+}
+.go-shopping > i {
+  font-size: 100px;
+  text-decoration: none;
+}
+.go-shopping p {
+  font-size: xx-large;
+  text-decoration: none;
+  color: black;
+}
+
+.go-shopping:hover i {
+  display: inline-block;
+  color: rgb(160, 160, 227);
+  transform: rotate(5deg) scale(1.1, 1.1);
+  transition: transform 0.3s ease;
+}
+
+.go-shopping:hover p {
+  color: rgb(160, 160, 227);
+  transform: scale(1.1, 1.1);
+  transition: transform 0.3s ease;
+}

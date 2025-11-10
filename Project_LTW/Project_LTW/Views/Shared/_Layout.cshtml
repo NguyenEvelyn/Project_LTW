@@ -1,0 +1,198 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Home</title>
+    <link rel="stylesheet"
+          href="../../bootstrap-5.3.5-dist/css/bootstrap.css" />
+
+    <link rel="icon"
+          href="../../assets/favicon/favicon(base).ico"
+          type="image/x-icon" />
+    <link rel="stylesheet"
+          href="../../bootstrap-5.3.5-dist/css/bootstrap-utilities.css" />
+    <link rel="stylesheet" href="../css/homePage/moreContent.css" />
+    <link rel="stylesheet" href="../css/homePage/default.css" />
+    <link rel="stylesheet" href="../css/homePage/banner.css" />
+    <link rel="stylesheet" href="../css/homePage/tops.css" />
+    <link rel="stylesheet" href="../../assets/bootstrap-icons.css" />
+    <link rel="stylesheet" href="../css/homePage/contact.css" />
+    <link rel="stylesheet" href="../css/homePage/toast.css" />
+</head>
+<body>
+    <!-- -------------------------navBar------------------------------------ -->
+    <nav class="navbar navbar-expand bg-white" style="max-height: 75px">
+        <div class="container-xxl">
+            <a class="navbar-brand" href="main.html">
+                <img src="../../assets/homePage/logo.png"
+                     class="img-fluid"
+                     alt="logo not found"
+                     id="logo" />
+            </a>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0" id="bar">
+                    <li class="nav-item">
+                        <a class="nav-link active d-flex flex-column justify-content-center align-content-center"
+                           aria-current="page"
+                           href="main.html">
+                            <i class="bi bi-house-door fs-4 icon"></i>
+                            <p>HOME</p>
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link active d-flex flex-column justify-content-center align-content-center"
+                           aria-current="page"
+                           href="category/category.html">
+                            <i class="bi bi-basket fs-4 icon"></i>
+                            <p>ALL PRODUCTS</p>
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link active d-flex flex-column justify-content-center align-content-center"
+                           aria-current="page"
+                           href="user/cart.html">
+                            <i class="bi bi-cart3 fs-4 icon"></i>
+                            <p>CART</p>
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link active d-flex flex-column justify-content-center align-content-center"
+                           aria-current="page"
+                           href="https://www.paypal.com/signin?locale.x=vi_VN">
+                            <i class="bi bi-wallet2 fs-4 icon"></i>
+                            <p>WALLET</p>
+                        </a>
+                    </li>
+
+                    <!-- dropdow-menu -->
+                    <li class="nav-item dropdown text-center" id="user">
+                        <a class="nav-link"
+                           href="#"
+                           role="button"
+                           data-bs-toggle="dropdown"
+                           aria-expanded="false">
+                            <i class="bi bi-person-circle icon fs-4" id="userIcon"></i>
+                            <p id="usertext">USER</p>
+                        </a>
+                        <ul class="dropdown-menu"
+                            style="margin-top: -11px"
+                            id="dropdown-menu">
+                            <li>
+                                <a class="dropdown-item" href="User-profile/profile.html">Thông tin tài khoản</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="user/login.html">Đăng nhập</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="User-profile/profile.html">Danh sách yêu thích</a>
+                            </li>
+                            <li style="height: 40px; border-radius: 30px">
+                                <a class="dropdown-item d-flex"
+                                   href="user/cart.html"
+                                   style>
+                                    <i class="bi bi-cart3"></i>
+                                    <p>&nbsp Giỏ hàng</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li class="nav-item" title="Source Code" id="github">
+                        <a class="nav-link active d-flex flex-column justify-content-center align-content-center"
+                           aria-current="page"
+                           href="https://github.com/quangnhathung/final-web-project">
+                            <i class="bi bi-github fs-1 icon"></i>
+                        </a>
+                    </li>
+                </ul>
+
+                <div class="search-container d-flex align-items-center"
+                     id="search-container">
+                    <input type="text" class="form-control" placeholder="Search" />
+                    <button class="btn btn-search">
+                        <i class="bi bi-search"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- nut cuon len dau trang -->
+
+    <button id="backToTop" class="btn btn-dark rounded-circle">
+        <i class="bi bi-arrow-up-circle m-0"></i>
+    </button>
+
+    <!-- -----------------------------main----------------------------------- -->
+    <div class="container mt-4">
+        <div class="row">
+            @*<aside class="col-md-3 col-lg-2 mb-4 ">
+                @Html.Action("_ChuDe", "Home")
+                @Html.Action("_NCC", "Home")
+            </aside>*@
+
+            <!-- Nội dung sản phẩm -->
+            <main class="col-md-9 col-lg-10">
+                @*@if (ViewBag.Error != null)
+                {
+                    <div class="alert alert-danger" role="alert">
+                        @ViewBag.Error
+                    </div>
+                }*@
+                @RenderBody()
+            </main>
+        </div>
+    </div>
+
+    <!--------------------------footer----------------------------------->
+    <div class="container-fluid bg-white" id="footer">
+        <footer class="container-fluid bg-white">
+            <div class="row">
+                <div class="col-lg-6 ">
+                    <div class="info">
+                        <i class="bi bi-telephone"></i>
+                        <span>&nbsp083 855 7433</span>
+                        <br />
+                        <br />
+
+                        <i class="bi bi-backpack"></i>
+                        <span>&nbspTrường Đại học Công Thương TP. Hồ Chí Minh (HUIT)</span>
+                        <br />
+                        <br />
+
+                        <i class="bi bi-building-add"></i>
+                        <span>&nbsp140 Đ. Lê Trọng Tấn, Tây Thạnh, Tân Phú, Hồ Chí Minh</span>
+                        <br />
+                        <br />
+
+                        <i class="bi bi-envelope-at-fill"></i>
+                        <a href="https://www.facebook.com/DhCongThuongHCM/">&nbsphttps://www.facebook.com/DhCongThuongHCM/</a>
+                        <br />
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <img src="../../assets/homePage/logo-fix.png"
+                         alt="can not get logo :("
+                         style="width: 500px; margin-top: 30px" />
+                </div>
+            </div>
+        </footer>
+        <div class="coppyright">
+            <span>© 2025 Web bán quần áo - Thiết kế web Chiều T2(done)</span>
+        </div>
+    </div>
+    <script src="../script/homePage/handleToast.js"></script>
+    <script src="../script/homePage/LoadBottoms.js"></script>
+    <script src="../script/homePage/LoadTops.js"></script>
+    <script src="../script/homePage//loadACCESSORIES.js"></script>
+    <script src="../script/homePage/main.js"></script>
+    <script src="../../bootstrap-5.3.5-dist/js/bootstrap.esm.js"></script>
+    <script src="../../bootstrap-5.3.5-dist/js/bootstrap.js"></script>
+    <script src="../../bootstrap-5.3.5-dist/js/bootstrap.bundle.js"></script>
+</body>
+</html>
