@@ -9,6 +9,7 @@ namespace Project_LTW.Controllers
     public class UserController : Controller
     {
         // GET: User
+        FashionWebEntities db = new FashionWebEntities();
         public ActionResult Index()
         {
             return View();

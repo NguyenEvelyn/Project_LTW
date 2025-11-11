@@ -8,11 +8,13 @@ namespace Project_LTW.Controllers
 {
     public class HomeController : Controller
     {
+        FashionWebEntities db = new FashionWebEntities();
         public ActionResult Index()
         {
             return View();
+
         }
 
-       
+
     }
 }

@@ -9,6 +9,7 @@ namespace Project_LTW.Controllers
     public class CartController : Controller
     {
         // GET: Cart
+        FashionWebEntities db = new FashionWebEntities();
         public ActionResult Index()
         {
             return View();
