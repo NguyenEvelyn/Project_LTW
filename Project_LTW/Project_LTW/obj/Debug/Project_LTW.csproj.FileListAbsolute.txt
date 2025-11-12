@@ -160,3 +160,7 @@ D:\PRJ_LTW_DOAN\Project_LTW\Project_LTW\Project_LTW\bin\EntityFramework.dll
 D:\PRJ_LTW_DOAN\Project_LTW\Project_LTW\Project_LTW\bin\EntityFramework.SqlServer.dll
 D:\PRJ_LTW_DOAN\Project_LTW\Project_LTW\Project_LTW\bin\EntityFramework.xml
 D:\PRJ_LTW_DOAN\Project_LTW\Project_LTW\Project_LTW\bin\EntityFramework.SqlServer.xml
+D:\Dự án Lập Trình Web\Project_LTW\Project_LTW\Project_LTW\bin\EntityFramework.dll
+D:\Dự án Lập Trình Web\Project_LTW\Project_LTW\Project_LTW\bin\EntityFramework.SqlServer.dll
+D:\Dự án Lập Trình Web\Project_LTW\Project_LTW\Project_LTW\bin\EntityFramework.xml
+D:\Dự án Lập Trình Web\Project_LTW\Project_LTW\Project_LTW\bin\EntityFramework.SqlServer.xml
