@@ -7,12 +7,12 @@
 @using System.Globalization
 
 <style>
-   
+    /* Ẩn input radio gốc */
     .option-input {
         display: none;
     }
 
-   
+    /* CSS cho các nút label (hoạt động cho cả Size và Màu Sắc) */
     .option-label {
         display: inline-block; /* Để các button nằm cạnh nhau */
         border: 1px solid #ddd;
@@ -27,21 +27,21 @@
         transition: all 0.2s ease; /* Hiệu ứng chuyển động mượt */
     }
 
-      
+        /* Hiệu ứng Hover */
         .option-label:hover {
             border-color: #888;
-            background-color: #f8f9fa; 
+            background-color: #f8f9fa;
         }
 
-    
+    /* Hiệu ứng khi được CHỌN */
     input[type="radio"].option-input:checked + .option-label {
-        border-color: #0d6efd; 
+        border-color: #0d6efd;
         border-width: 2px;
-      
+        /* Điều chỉnh padding để giữ kích thước nút ổn định khi border dày lên */
         padding: 4px 11px;
     }
 
-   
+    /* CSS cho ảnh thumbnail được active */
     .active-thumb {
         border: 2px solid #007bff !important;
     }
@@ -88,7 +88,8 @@
                 <p>@Model.MOTA</p>
 
                 <div class="mb-3 mt-4">
-                    <h5 class_fw-bold">Màu sắc:</h5>
+                    <h5 class="fw-bold">Màu sắc:</h5>
+
                     @foreach (var color in Model.PRODUCT_COLOR)
                     {
                         <label>
@@ -120,7 +121,9 @@
                 </div>
             </div>
         </div>
-    } <div class="mt-5">
+    }
+
+    <div class="mt-5">
         <h5>Sản phẩm liên quan</h5>
         <div class="row">
             @foreach (var item in ViewBag.SanPhamLienQuan as List<Project_LTW.PRODUCT>)
@@ -135,7 +138,6 @@
                                 @item.GIA.ToString("N0", new CultureInfo("vi-VN")) VNĐ
                             </p>
                             <a href="@Url.Action("Details", "Home", new { id = item.SANPHAMID.Trim() })" class="btn btn-sm btn-outline-primary">Xem chi tiết</a>
-
                         </div>
                     </div>
                 </div>
@@ -148,6 +150,8 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     $(document).ready(function () {
+
+        // 1. Xử lý khi nhấp vào ảnh thu nhỏ
         $(".img-thumbnail").on("click", function () {
             var newImageSrc = $(this).data("full-src");
             $("#mainImage").attr("src", newImageSrc);
@@ -157,5 +161,24 @@
             // Thêm class active cho cái vừa click
             $(this).addClass("active-thumb");
         });
+
+        // 2. Xử lý khi chọn một MÀU SẮC
+        // Dùng 'change' thay vì 'click' sẽ tốt hơn cho radio button
+        $('input[name="selectedColor"]').on('change', function () {
+            // Lấy giá trị của màu vừa chọn (ví dụ: "Đen", "Trắng")
+            var selectedColor = $(this).val();
+
+            // Tìm ảnh thu nhỏ có thuộc tính 'alt' khớp với màu vừa chọn
+            // Quan trọng: Tên màu ở 'alt' của ảnh phải giống hệt 'value' của màu
+            var $matchingThumbnail = $('.img-thumbnail[alt="' + selectedColor + '"]');
+
+            // Nếu tìm thấy ảnh thu nhỏ khớp:
+            if ($matchingThumbnail.length > 0) {
+                // Tự động "nhấp" vào ảnh thu nhỏ đầu tiên tìm thấy.
+                // Tác vụ ".click()" này sẽ kích hoạt đoạn code (1) ở trên.
+                $matchingThumbnail.first().click();
+            }
+        });
+
     });
-</script>
+</script>s
