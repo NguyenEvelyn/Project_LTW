@@ -113,6 +113,7 @@ CREATE TABLE STAFF (
     DIACHI NVARCHAR(200) NULL,
     DIENTHOAI VARCHAR(15) NULL,
     EMAIL NVARCHAR(100) NULL,
+    PASSWORD NVARCHAR(60) NOT NULL,       -- 🔒 Mật khẩu đăng nhập
     CHUCVU NVARCHAR(50) NULL,
     LUONG DECIMAL(18,2) NULL,
     NGAYVAOLAM DATE DEFAULT GETDATE(),
@@ -663,10 +664,12 @@ INSERT INTO CUSTOMER (KHACHHANGID, HOTEN, NGAYSINH, EMAIL, PASSWORD, DIENTHOAI) 
 ('KH002', N'Trần Thị B', '1995-08-20', 'tranthib@gmail.com', 'pass123', '0901000002');
 
 -- STAFF (MANV NCHAR(10))
-INSERT INTO STAFF (MANV, HOTEN, GIOITINH, NGAYSINH, DIACHI, DIENTHOAI, EMAIL, CHUCVU, LUONG) VALUES
-('NV001', N'Nguyễn Hữu Khánh', N'Nam', '2005-09-10', N'Quận 1, TP.HCM', '0902000001', 'admin1@gmail.com', N'Quản lý', 8000000),
-('NV002', N'Nguyễn Vũ Phương Uyên', N'Nữ', '1992-11-05', N'Quận 3, TP.HCM', '0902000002', 'nhanvien1@gmail.com', N'Nhân viên bán hàng', 6000000),
-('NV003', N'Phan Thị Hồng Hòa', N'Nữ', '1998-09-14', N'456 Nguyễn Trãi, Quận 5, TP.HCM', '0915234987', 'nhanvien2@gmail.com', N'Nhân viên bán hàng', 9000000);
+INSERT INTO STAFF (MANV, HOTEN, GIOITINH, NGAYSINH, DIACHI, DIENTHOAI, EMAIL, PASSWORD, CHUCVU, LUONG)
+VALUES
+('NV001', N'Nguyễn Hữu Khánh', N'Nam', '2005-09-10', N'Quận 1, TP.HCM', '0902000001', 'admin1@gmail.com', 'admin@123', N'Quản lý', 8000000),
+('NV002', N'Nguyễn Vũ Phương Uyên', N'Nữ', '1992-11-05', N'Quận 3, TP.HCM', '0902000002', 'nhanvien1@gmail.com', 'uyen@123', N'Nhân viên bán hàng', 6000000),
+('NV003', N'Phan Thị Hồng Hòa', N'Nữ', '1998-09-14', N'456 Nguyễn Trãi, Quận 5, TP.HCM', '0915234987', 'nhanvien2@gmail.com', 'hoa@123', N'Nhân viên bán hàng', 9000000);
+GO
 
 
 -- ADDRESS (DIACHIID NCHAR(10))
@@ -1319,6 +1322,13 @@ GO
 
 
 
+
+EXEC sp_configure 'show advanced options', 1;
+RECONFIGURE;
+EXEC sp_configure 'xp_cmdshell', 1;
+RECONFIGURE;
+
+
 -- Đặt Recovery Model sang FULL để sao lưu log
 ALTER DATABASE FashionWeb SET RECOVERY FULL;
 GO
@@ -1396,3 +1406,159 @@ PRINT N'--- Hoàn tất sao lưu cơ sở dữ liệu FashionWeb ---';
 PRINT N'Thời gian kết thúc: ' + CONVERT(VARCHAR, GETDATE(), 120);
 
 GO
+
+
+
+-----------------------Bài sao lưu tự động của Khánh tham khảo (tham khảo thôi đừng chạy, này là không dùng agent mà dùng lệnh)-----------------------
+EXEC sp_configure 'show advanced options', 1;
+RECONFIGURE;
+EXEC sp_configure 'xp_cmdshell', 1;
+RECONFIGURE;
+GO
+
+--Job 1: FULL + DIFFERENTIAL + CLEANUP (chạy mỗi ngày 00:00)
+--Nếu chủ nhật thì Full
+--Các ngày còn lại Differential
+--Dọn file cũ hơn 7 ngày
+USE master;
+GO
+EXEC sp_add_job @job_name = N'FashionWeb_Backup_Daily';
+
+EXEC sp_add_jobstep 
+    @job_name = N'FashionWeb_Backup_Daily',
+    @step_name = N'Full or Differential Backup + Cleanup',
+    @subsystem = N'TSQL',
+    @command = N'
+------------------------------------------------------------
+-- Đặt Recovery Model sang FULL
+------------------------------------------------------------
+ALTER DATABASE FashionWeb SET RECOVERY FULL;
+
+PRINT N''------------------------------------------------------------'';
+PRINT N'' BẮT ĐẦU SAO LƯU CƠ SỞ DỮ LIỆU FashionWeb'';
+PRINT N''------------------------------------------------------------'';
+PRINT N''Ngày giờ thực thi: '' + CONVERT(VARCHAR, GETDATE(), 120);
+PRINT '''';
+
+------------------------------------------------------------
+-- 1️ Kiểm tra nếu là Chủ nhật thì sao lưu FULL
+------------------------------------------------------------
+IF DATENAME(WEEKDAY, GETDATE()) = ''Sunday''
+BEGIN
+    PRINT N''--- Thực hiện FULL BACKUP ---'';
+    DECLARE @BackupFile NVARCHAR(400);
+    SET @BackupFile = ''D:\SQL Server Management Studio\SQL\HQTCSDL_DOAN\NHOM10_CSDL\Backup\FashionWeb_FULL_'' 
+                      + CONVERT(VARCHAR(8), GETDATE(), 112) + ''_'' 
+                      + REPLACE(CONVERT(VARCHAR(8), GETDATE(), 108), '':'', '''') + ''.bak'';
+    BACKUP DATABASE FashionWeb
+    TO DISK = @BackupFile
+    WITH INIT, NAME = ''Full Backup FashionWeb'', SKIP, STATS = 10;
+END
+ELSE
+BEGIN
+------------------------------------------------------------
+-- 2️ Nếu không phải Chủ nhật thì sao lưu DIFFERENTIAL
+------------------------------------------------------------
+    PRINT N''--- Thực hiện DIFFERENTIAL BACKUP ---'';
+    DECLARE @BackupFile NVARCHAR(400);
+    SET @BackupFile = ''D:\SQL Server Management Studio\SQL\HQTCSDL_DOAN\NHOM10_CSDL\Backup\FashionWeb_DIFF_'' 
+                      + CONVERT(VARCHAR(8), GETDATE(), 112) + ''_'' 
+                      + REPLACE(CONVERT(VARCHAR(8), GETDATE(), 108), '':'', '''') + ''.bak'';
+    BACKUP DATABASE FashionWeb
+    TO DISK = @BackupFile
+    WITH DIFFERENTIAL, INIT, NAME = ''Differential Backup FashionWeb'', SKIP, STATS = 10;
+END
+
+------------------------------------------------------------
+-- 3️ Xóa file backup cũ hơn 7 ngày
+------------------------------------------------------------
+EXEC master.dbo.xp_cmdshell 
+''forfiles /p "D:\SQL Server Management Studio\SQL\HQTCSDL_DOAN\NHOM10_CSDL\Backup\" /m *.bak /d -7 /c "cmd /c del @path"'';
+
+EXEC master.dbo.xp_cmdshell 
+''forfiles /p "D:\SQL Server Management Studio\SQL\HQTCSDL_DOAN\NHOM10_CSDL\Backup\" /m *.trn /d -7 /c "cmd /c del @path"'';
+
+PRINT N''''--- Hoàn tất sao lưu cơ sở dữ liệu FashionWeb ---'''';
+PRINT N''Thời gian kết thúc: '' + CONVERT(VARCHAR, GETDATE(), 120);
+';
+
+EXEC sp_add_schedule 
+    @schedule_name = N'FashionWeb_Backup_Daily_Schedule',
+    @freq_type = 4,                -- Hàng ngày
+    @freq_interval = 1,            -- Mỗi ngày
+    @active_start_time = 000000;   -- 00:00:00 (nửa đêm)
+
+EXEC sp_attach_schedule 
+    @job_name = N'FashionWeb_Backup_Daily',
+    @schedule_name = N'FashionWeb_Backup_Daily_Schedule';
+
+EXEC sp_add_jobserver @job_name = N'FashionWeb_Backup_Daily';
+GO
+
+--Job 2: Log backup (chạy mỗi 2 tiếng)
+USE master;
+GO
+EXEC sp_add_job @job_name = N'FashionWeb_LogBackup_TwoHourly';
+
+EXEC sp_add_jobstep 
+    @job_name = N'FashionWeb_LogBackup_TwoHourly',
+    @step_name = N'Log Backup Step',
+    @subsystem = N'TSQL',
+    @command = N'
+PRINT N''--- Thực hiện Transaction Log Backup ---'';
+DECLARE @BackupFile NVARCHAR(400);
+SET @BackupFile = ''D:\SQL Server Management Studio\SQL\HQTCSDL_DOAN\NHOM10_CSDL\Backup\FashionWeb_LOG_'' 
+                  + CONVERT(VARCHAR(8), GETDATE(), 112) + ''_'' 
+                  + REPLACE(CONVERT(VARCHAR(8), GETDATE(), 108), '':'', '''') + ''.trn'';
+BACKUP LOG FashionWeb
+TO DISK = @BackupFile
+WITH INIT, NAME = ''Transaction Log Backup FashionWeb'', SKIP, STATS = 5;
+';
+
+EXEC sp_add_schedule 
+    @schedule_name = N'FashionWeb_LogBackup_Every2Hours',
+    @freq_type = 4,               -- Hàng ngày
+    @freq_interval = 1,           -- Mỗi ngày
+    @freq_subday_type = 8,        -- Theo giờ
+    @freq_subday_interval = 2,    -- Mỗi 2 giờ
+    @active_start_time = 000000;  -- Bắt đầu từ 00:00
+
+EXEC sp_attach_schedule 
+    @job_name = N'FashionWeb_LogBackup_TwoHourly',
+    @schedule_name = N'FashionWeb_LogBackup_Every2Hours';
+
+EXEC sp_add_jobserver @job_name = N'FashionWeb_LogBackup_TwoHourly';
+GO
+
+--Job 3: tự động xóa các file cũ hơn 7 ngày
+USE msdb;
+GO
+
+EXEC sp_add_job
+    @job_name = N'FashionWeb - Cleanup Backup Files',
+    @description = N'Tự động xóa các file backup cũ hơn 7 ngày.';
+
+EXEC sp_add_jobstep
+    @job_name = N'FashionWeb - Cleanup Backup Files',
+    @step_name = N'Delete old backup files',
+    @subsystem = N'TSQL',
+    @database_name = N'master',
+    @command = N'
+    EXEC master.dbo.xp_cmdshell ''forfiles /p "D:\SQL Server Management Studio\SQL\HQTCSDL_DOAN\NHOM10_CSDL\Backup\" /m *.bak /d -7 /c "cmd /c del @path"'';
+    EXEC master.dbo.xp_cmdshell ''forfiles /p "D:\SQL Server Management Studio\SQL\HQTCSDL_DOAN\NHOM10_CSDL\Backup\" /m *.trn /d -7 /c "cmd /c del @path"'';
+    ';
+
+EXEC sp_add_schedule
+    @schedule_name = N'Cleanup_Daily',
+    @freq_type = 4,          -- Daily
+    @freq_interval = 1,
+    @active_start_time = 010000;  -- 01:00 sáng
+
+EXEC sp_attach_schedule
+    @job_name = N'FashionWeb - Cleanup Backup Files',
+    @schedule_name = N'Cleanup_Daily';
+
+EXEC sp_add_jobserver
+    @job_name = N'FashionWeb - Cleanup Backup Files';
+GO
+------------------------------------------------------------------------------------------------------------------------------------------------------

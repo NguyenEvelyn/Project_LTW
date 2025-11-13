@@ -39,5 +39,40 @@ namespace Project_LTW.Controllers
             return View(product);
         }
 
+        public ActionResult _Category()
+        {
+            var model = db.CATEGORies.ToList();
+            return PartialView(model);
+        }
+
+        // GET: Tìm kiếm sản phẩm theo danh mục - ĐÃ SỬA
+        public ActionResult TimKiemCategory(string id)
+        {
+            if (string.IsNullOrEmpty(id))
+            {
+                return RedirectToAction("Index");
+            }
+
+            // THÊM DÒNG NÀY:
+            string trimmedId = id.Trim();
+
+            // Dùng 'trimmedId' cho tất cả các truy vấn bên dưới
+            List<PRODUCT> list = db.PRODUCTs
+                .Where(x => x.DANHMUCID == trimmedId && x.SOLUONGTONKHO > 0) // Sửa ở đây
+                .ToList();
+
+            var category = db.CATEGORies.FirstOrDefault(c => c.DANHMUCID == trimmedId); // Sửa ở đây
+            ViewBag.CategoryName = category?.TENDANHMUC ?? "Danh mục";
+
+            if (list == null || list.Count == 0)
+            {
+                ViewBag.ThongBao = "Không có sản phẩm nào thuộc chủ đề này.";
+            }
+
+            // Dùng lại View Index.cshtml
+            return View("Index", list);
+        }
+
+
     }
 }
