@@ -2,3 +2,30 @@
     ViewBag.Title = "Home Page";
 }
 
+@using Project_LTW
+@model List<Project_LTW.PRODUCT>
+
+<h4 class="mb-3"></h4>
+@if (Session["User"] != null)
+{
+    <p>@(((CUSTOMER)Session["User"]).HOTEN)</p>
+}
+
+<div class="row">
+    @foreach (var item in Model)
+    {
+        <div class="col-md-3 mb-4">
+            <div class="card h-100 shadow-sm">
+                <img src="@Url.Content("~/assets/" + item.HINHANHDAIDIEN)" class="card-img-top" alt="@item.TENSANPHAM" />
+                <div class="card-body text-center">
+                    <h6 class="card-title">@item.TENSANPHAM</h6>
+                    <p class="text-danger fw-bold">@Html.FormatValue(item.GIA, "{0:#,###}") VND</p>
+                    
+
+                    <a href="@Url.Action("Details", "Home", new { id = item.SANPHAMID.Trim() })" class="btn btn-sm btn-outline-primary">Xem chi tiết</a>
+                   
+                </div>
+            </div>
+        </div>
+    }
+</div>

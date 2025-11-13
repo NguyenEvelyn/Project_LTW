@@ -1,0 +1,184 @@
+﻿@model Project_LTW.PRODUCT
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using System.Globalization
+
+<style>
+    /* Ẩn input radio gốc */
+    .option-input {
+        display: none;
+    }
+
+    /* CSS cho các nút label (hoạt động cho cả Size và Màu Sắc) */
+    .option-label {
+        display: inline-block; /* Để các button nằm cạnh nhau */
+        border: 1px solid #ddd;
+        padding: 5px 12px;
+        border-radius: 4px;
+        cursor: pointer;
+        margin-right: 8px; /* Khoảng cách giữa các button */
+        margin-bottom: 8px; /* Xuống dòng nếu không đủ chỗ */
+        font-size: 14px;
+        background-color: #ffffff;
+        color: #333;
+        transition: all 0.2s ease; /* Hiệu ứng chuyển động mượt */
+    }
+
+        /* Hiệu ứng Hover */
+        .option-label:hover {
+            border-color: #888;
+            background-color: #f8f9fa;
+        }
+
+    /* Hiệu ứng khi được CHỌN */
+    input[type="radio"].option-input:checked + .option-label {
+        border-color: #0d6efd;
+        border-width: 2px;
+        /* Điều chỉnh padding để giữ kích thước nút ổn định khi border dày lên */
+        padding: 4px 11px;
+    }
+
+    /* CSS cho ảnh thumbnail được active */
+    .active-thumb {
+        border: 2px solid #007bff !important;
+    }
+</style>
+
+<div class="container mt-4">
+
+    @using (Html.BeginForm("AddtoCart", "Cart", FormMethod.Post))
+    {
+        @Html.HiddenFor(model => model.SANPHAMID)
+
+        <div class="row">
+            <div class="col-md-4">
+                <div class="product-gallery">
+                    <div class="main-image-container">
+                        <img id="mainImage"
+                             src="@Url.Content("~/assets/" + Model.HINHANHDAIDIEN)"
+                             alt="Ảnh Sản phẩm Chính"
+                             style="max-width: 400px; width: 100%; border: 1px solid #ccc;">
+                    </div>
+
+                    <div class="thumbnails mt-3">
+                        <img class="img-thumbnail active-thumb"
+                             src="@Url.Content("~/assets/" + Model.HINHANHDAIDIEN)"
+                             data-full-src="@Url.Content("~/assets/" + Model.HINHANHDAIDIEN)"
+                             alt="@Model.TENSANPHAM"
+                             style="width:70px; height:70px; object-fit:cover; cursor:pointer; border-radius:8px;">
+
+                        @foreach (var img in Model.PRODUCT_IMAGE)
+                        {
+                            <img class="img-thumbnail"
+                                 src="@Url.Content("~/assets/" + img.TENHINH)"
+                                 data-full-src="@Url.Content("~/assets/" + img.TENHINH)"
+                                 alt="@img.MAUSAC"
+                                 style="width:70px; height:70px; object-fit:cover; cursor:pointer; border-radius:8px;">
+                        }
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-8">
+                <h3 class="fw-bold">@Model.TENSANPHAM</h3>
+                <h4 class="text-danger fw-bold">@Model.GIA.ToString("N0", new CultureInfo("vi-VN")) VNĐ</h4>
+                <p>@Model.MOTA</p>
+
+                <div class="mb-3 mt-4">
+                    <h5 class="fw-bold">Màu sắc:</h5>
+
+                    @foreach (var color in Model.PRODUCT_COLOR)
+                    {
+                        <label>
+                            <input type="radio" name="selectedColor" value="@color.MAUSAC" class="option-input" required>
+                            <span class="option-label">@color.MAUSAC</span>
+                        </label>
+                    }
+                </div>
+
+                <div class="mb-3">
+                    <h5 class="fw-bold">Size:</h5>
+                    @foreach (var size in Model.PRODUCT_SIZE)
+                    {
+                        <label>
+                            <input type="radio" name="selectedSize" value="@size.SIZE" class="option-input" required>
+                            <span class="option-label">@size.SIZE</span>
+                        </label>
+                    }
+                </div>
+
+                <div class="mb-3 mt-4">
+                    <button type="submit" class="btn btn-success px-4 me-2">
+                        Thêm vào giỏ
+                    </button>
+                    <a href="@Url.Action("Index", "Home")"
+                       class="btn btn-outline-secondary px-4">
+                        Quay lại
+                    </a>
+                </div>
+            </div>
+        </div>
+    }
+
+    <div class="mt-5">
+        <h5>Sản phẩm liên quan</h5>
+        <div class="row">
+            @foreach (var item in ViewBag.SanPhamLienQuan as List<Project_LTW.PRODUCT>)
+            {
+                <div class="col-md-3 mb-4">
+                    <div class="card h-100 shadow-sm">
+                        <img src="@Url.Content("~/assets/" + item.HINHANHDAIDIEN)"
+                             class="card-img-top" alt="@item.TENSANPHAM">
+                        <div class="card-body text-center">
+                            <h6 class="card-title">@item.TENSANPHAM</h6>
+                            <p class="text-danger fw-bold">
+                                @item.GIA.ToString("N0", new CultureInfo("vi-VN")) VNĐ
+                            </p>
+                            <a href="@Url.Action("Details", "Home", new { id = item.SANPHAMID.Trim() })" class="btn btn-sm btn-outline-primary">Xem chi tiết</a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+
+        // 1. Xử lý khi nhấp vào ảnh thu nhỏ
+        $(".img-thumbnail").on("click", function () {
+            var newImageSrc = $(this).data("full-src");
+            $("#mainImage").attr("src", newImageSrc);
+
+            // Xóa class active ở tất cả thumbnail
+            $(".img-thumbnail").removeClass("active-thumb");
+            // Thêm class active cho cái vừa click
+            $(this).addClass("active-thumb");
+        });
+
+        // 2. Xử lý khi chọn một MÀU SẮC
+        // Dùng 'change' thay vì 'click' sẽ tốt hơn cho radio button
+        $('input[name="selectedColor"]').on('change', function () {
+            // Lấy giá trị của màu vừa chọn (ví dụ: "Đen", "Trắng")
+            var selectedColor = $(this).val();
+
+            // Tìm ảnh thu nhỏ có thuộc tính 'alt' khớp với màu vừa chọn
+            // Quan trọng: Tên màu ở 'alt' của ảnh phải giống hệt 'value' của màu
+            var $matchingThumbnail = $('.img-thumbnail[alt="' + selectedColor + '"]');
+
+            // Nếu tìm thấy ảnh thu nhỏ khớp:
+            if ($matchingThumbnail.length > 0) {
+                // Tự động "nhấp" vào ảnh thu nhỏ đầu tiên tìm thấy.
+                // Tác vụ ".click()" này sẽ kích hoạt đoạn code (1) ở trên.
+                $matchingThumbnail.first().click();
+            }
+        });
+
+    });
+</script>s

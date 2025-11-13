@@ -11,10 +11,33 @@ namespace Project_LTW.Controllers
         FashionWebEntities db = new FashionWebEntities();
         public ActionResult Index()
         {
-            return View();
 
+            var list = db.PRODUCTs.ToList();   // lấy dữ liệu từ DB
+            return View(list);
+            
         }
 
+        // Trong file: HomeController.cs
+
+        public ActionResult Details(string id) 
+        {
+           
+            var product = db.PRODUCTs.Find(id);
+
+      
+            if (product == null)
+            {
+                return HttpNotFound();
+            }
+
+            
+            ViewBag.SanPhamLienQuan = db.PRODUCTs
+                .Where(p => p.DANHMUCID == product.DANHMUCID && p.SANPHAMID != id)
+                .Take(4)
+                .ToList();
+
+            return View(product);
+        }
 
     }
 }
