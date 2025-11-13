@@ -20,10 +20,10 @@
                 <div class="card-body text-center">
                     <h6 class="card-title">@item.TENSANPHAM</h6>
                     <p class="text-danger fw-bold">@Html.FormatValue(item.GIA, "{0:#,###}") VND</p>
-                    
+
 
                     <a href="@Url.Action("Details", "Home", new { id = item.SANPHAMID.Trim() })" class="btn btn-sm btn-outline-primary">Xem chi tiết</a>
-                   
+
                 </div>
             </div>
         </div>
