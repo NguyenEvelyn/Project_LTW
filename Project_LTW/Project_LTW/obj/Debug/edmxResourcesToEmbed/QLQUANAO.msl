@@ -133,6 +133,7 @@
     <EntitySetMapping Name="STAFFs">
       <EntityTypeMapping TypeName="FashionWebModel.STAFF">
         <MappingFragment StoreEntitySet="STAFF">
+          <ScalarProperty Name="PASSWORD" ColumnName="PASSWORD" />
           <ScalarProperty Name="MANV" ColumnName="MANV" />
           <ScalarProperty Name="HOTEN" ColumnName="HOTEN" />
           <ScalarProperty Name="GIOITINH" ColumnName="GIOITINH" />

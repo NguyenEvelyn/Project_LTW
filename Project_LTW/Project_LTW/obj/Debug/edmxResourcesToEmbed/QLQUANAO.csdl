@@ -171,6 +171,7 @@
     <Property Name="NGAYVAOLAM" Type="DateTime" Precision="0" />
     <NavigationProperty Name="CARTs" Relationship="Self.FK_CART_STAFF" FromRole="STAFF" ToRole="CART" />
     <NavigationProperty Name="ORDERS" Relationship="Self.FK_ORDERS_STAFF" FromRole="STAFF" ToRole="ORDERS" />
+    <Property Name="PASSWORD" Type="String" Nullable="false" MaxLength="60" FixedLength="false" Unicode="true" />
   </EntityType>
   <Association Name="FK_ADDRESS_CUSTOMER">
     <End Role="CUSTOMER" Type="Self.CUSTOMER" Multiplicity="1" />

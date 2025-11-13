@@ -3,8 +3,24 @@
   "WorkspaceRootPath": "D:\\PRJ_LTW_DOAN\\Project_LTW\\Project_LTW\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{FB02C958-9BD5-4C29-BDC6-D230BAD49EC3}|Project_LTW\\Project_LTW.csproj|d:\\prj_ltw_doan\\project_ltw\\project_ltw\\project_ltw\\controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{FB02C958-9BD5-4C29-BDC6-D230BAD49EC3}|Project_LTW\\Project_LTW.csproj|D:\\PRJ_LTW_DOAN\\Project_LTW\\Project_LTW\\project_ltw\\controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{FB02C958-9BD5-4C29-BDC6-D230BAD49EC3}|Project_LTW\\Project_LTW.csproj|solutionrelative:project_ltw\\controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FB02C958-9BD5-4C29-BDC6-D230BAD49EC3}|Project_LTW\\Project_LTW.csproj|d:\\prj_ltw_doan\\project_ltw\\project_ltw\\project_ltw\\qlquanao.edmx||{C99AEA30-8E36-4515-B76F-496F5A48A6AA}|",
+      "RelativeMoniker": "D:0:0:{FB02C958-9BD5-4C29-BDC6-D230BAD49EC3}|Project_LTW\\Project_LTW.csproj|solutionrelative:project_ltw\\qlquanao.edmx||{C99AEA30-8E36-4515-B76F-496F5A48A6AA}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FB02C958-9BD5-4C29-BDC6-D230BAD49EC3}|Project_LTW\\Project_LTW.csproj|D:\\PRJ_LTW_DOAN\\Project_LTW\\Project_LTW\\project_ltw\\controllers\\cartcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{FB02C958-9BD5-4C29-BDC6-D230BAD49EC3}|Project_LTW\\Project_LTW.csproj|solutionrelative:project_ltw\\controllers\\cartcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FB02C958-9BD5-4C29-BDC6-D230BAD49EC3}|Project_LTW\\Project_LTW.csproj|D:\\PRJ_LTW_DOAN\\Project_LTW\\Project_LTW\\project_ltw\\controllers\\admincontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{FB02C958-9BD5-4C29-BDC6-D230BAD49EC3}|Project_LTW\\Project_LTW.csproj|solutionrelative:project_ltw\\controllers\\admincontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FB02C958-9BD5-4C29-BDC6-D230BAD49EC3}|Project_LTW\\Project_LTW.csproj|D:\\PRJ_LTW_DOAN\\Project_LTW\\Project_LTW\\project_ltw\\qlquanao.context.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{FB02C958-9BD5-4C29-BDC6-D230BAD49EC3}|Project_LTW\\Project_LTW.csproj|solutionrelative:project_ltw\\qlquanao.context.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{FB02C958-9BD5-4C29-BDC6-D230BAD49EC3}|Project_LTW\\Project_LTW.csproj|D:\\PRJ_LTW_DOAN\\Project_LTW\\Project_LTW\\project_ltw\\address.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -40,24 +56,8 @@
       "RelativeMoniker": "D:0:0:{FB02C958-9BD5-4C29-BDC6-D230BAD49EC3}|Project_LTW\\Project_LTW.csproj|solutionrelative:project_ltw\\web.config||{FA3CD31E-987B-443A-9B81-186104E8DAC1}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{FB02C958-9BD5-4C29-BDC6-D230BAD49EC3}|Project_LTW\\Project_LTW.csproj|D:\\PRJ_LTW_DOAN\\Project_LTW\\Project_LTW\\project_ltw\\controllers\\admincontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{FB02C958-9BD5-4C29-BDC6-D230BAD49EC3}|Project_LTW\\Project_LTW.csproj|solutionrelative:project_ltw\\controllers\\admincontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{FB02C958-9BD5-4C29-BDC6-D230BAD49EC3}|Project_LTW\\Project_LTW.csproj|D:\\PRJ_LTW_DOAN\\Project_LTW\\Project_LTW\\project_ltw\\controllers\\usercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{FB02C958-9BD5-4C29-BDC6-D230BAD49EC3}|Project_LTW\\Project_LTW.csproj|solutionrelative:project_ltw\\controllers\\usercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{FB02C958-9BD5-4C29-BDC6-D230BAD49EC3}|Project_LTW\\Project_LTW.csproj|D:\\PRJ_LTW_DOAN\\Project_LTW\\Project_LTW\\project_ltw\\qlquanao.context.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{FB02C958-9BD5-4C29-BDC6-D230BAD49EC3}|Project_LTW\\Project_LTW.csproj|solutionrelative:project_ltw\\qlquanao.context.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{FB02C958-9BD5-4C29-BDC6-D230BAD49EC3}|Project_LTW\\Project_LTW.csproj|D:\\PRJ_LTW_DOAN\\Project_LTW\\Project_LTW\\project_ltw\\controllers\\cartcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{FB02C958-9BD5-4C29-BDC6-D230BAD49EC3}|Project_LTW\\Project_LTW.csproj|solutionrelative:project_ltw\\controllers\\cartcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{FB02C958-9BD5-4C29-BDC6-D230BAD49EC3}|Project_LTW\\Project_LTW.csproj|D:\\PRJ_LTW_DOAN\\Project_LTW\\Project_LTW\\project_ltw\\qlquanao.edmx||{C99AEA30-8E36-4515-B76F-496F5A48A6AA}|",
-      "RelativeMoniker": "D:0:0:{FB02C958-9BD5-4C29-BDC6-D230BAD49EC3}|Project_LTW\\Project_LTW.csproj|solutionrelative:project_ltw\\qlquanao.edmx||{C99AEA30-8E36-4515-B76F-496F5A48A6AA}|"
     }
   ],
   "DocumentGroupContainers": [
@@ -71,7 +71,7 @@
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 5,
               "Title": "ADDRESS.cs",
               "DocumentMoniker": "D:\\PRJ_LTW_DOAN\\Project_LTW\\Project_LTW\\Project_LTW\\ADDRESS.cs",
               "RelativeDocumentMoniker": "Project_LTW\\ADDRESS.cs",
@@ -83,7 +83,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 8,
               "Title": "_ChuDe.cshtml",
               "DocumentMoniker": "D:\\source\\repos\\LapTrinhW\\ONTAPLTW\\ONTAPLTW\\Views\\Home\\_ChuDe.cshtml",
               "RelativeDocumentMoniker": "..\\..\\..\\source\\repos\\LapTrinhW\\ONTAPLTW\\ONTAPLTW\\Views\\Home\\_ChuDe.cshtml",
@@ -95,7 +95,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 6,
               "Title": "_Category.cshtml",
               "DocumentMoniker": "D:\\PRJ_LTW_DOAN\\Project_LTW\\Project_LTW\\Project_LTW\\Views\\Home\\_Category.cshtml",
               "RelativeDocumentMoniker": "Project_LTW\\Views\\Home\\_Category.cshtml",
@@ -107,7 +107,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 12,
               "Title": "Details.cshtml",
               "DocumentMoniker": "D:\\source\\repos\\LapTrinhW\\ONTAPLTW\\ONTAPLTW\\Views\\Home\\Details.cshtml",
               "RelativeDocumentMoniker": "..\\..\\..\\source\\repos\\LapTrinhW\\ONTAPLTW\\ONTAPLTW\\Views\\Home\\Details.cshtml",
@@ -119,7 +119,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 11,
               "Title": "Details.cshtml",
               "DocumentMoniker": "D:\\PRJ_LTW_DOAN\\Project_LTW\\Project_LTW\\Project_LTW\\Views\\Home\\Details.cshtml",
               "RelativeDocumentMoniker": "Project_LTW\\Views\\Home\\Details.cshtml",
@@ -131,7 +131,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 13,
               "Title": "Web.config",
               "DocumentMoniker": "D:\\PRJ_LTW_DOAN\\Project_LTW\\Project_LTW\\Project_LTW\\Web.config",
               "RelativeDocumentMoniker": "Project_LTW\\Web.config",
@@ -144,7 +144,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 7,
               "Title": "HomeController.cs",
               "DocumentMoniker": "D:\\source\\repos\\LapTrinhW\\ONTAPLTW\\ONTAPLTW\\Controllers\\HomeController.cs",
               "RelativeDocumentMoniker": "..\\..\\..\\source\\repos\\LapTrinhW\\ONTAPLTW\\ONTAPLTW\\Controllers\\HomeController.cs",
@@ -162,49 +162,50 @@
               "RelativeDocumentMoniker": "Project_LTW\\Controllers\\HomeController.cs",
               "ToolTip": "D:\\PRJ_LTW_DOAN\\Project_LTW\\Project_LTW\\Project_LTW\\Controllers\\HomeController.cs",
               "RelativeToolTip": "Project_LTW\\Controllers\\HomeController.cs",
-              "ViewState": "AgIAADAAAAAAAAAAAAAowEQAAABNAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAEkAAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-11-10T08:39:27.239Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 3,
               "Title": "AdminController.cs",
               "DocumentMoniker": "D:\\PRJ_LTW_DOAN\\Project_LTW\\Project_LTW\\Project_LTW\\Controllers\\AdminController.cs",
               "RelativeDocumentMoniker": "Project_LTW\\Controllers\\AdminController.cs",
               "ToolTip": "D:\\PRJ_LTW_DOAN\\Project_LTW\\Project_LTW\\Project_LTW\\Controllers\\AdminController.cs",
               "RelativeToolTip": "Project_LTW\\Controllers\\AdminController.cs",
-              "ViewState": "AgIAAAkAAAAAAAAAAAAAABEAAAABAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAuwBEAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-11-11T13:16:20.429Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 12,
+              "DocumentIndex": 4,
               "Title": "QLQUANAO.Context.cs",
               "DocumentMoniker": "D:\\PRJ_LTW_DOAN\\Project_LTW\\Project_LTW\\Project_LTW\\QLQUANAO.Context.cs",
               "RelativeDocumentMoniker": "Project_LTW\\QLQUANAO.Context.cs",
               "ToolTip": "D:\\PRJ_LTW_DOAN\\Project_LTW\\Project_LTW\\Project_LTW\\QLQUANAO.Context.cs",
               "RelativeToolTip": "Project_LTW\\QLQUANAO.Context.cs",
-              "ViewState": "AgIAAAkAAAAAAAAAAAAAAAkAAAAVAAAAAAAAAA==",
+              "ViewState": "AgIAAAkAAAAAAAAAAAAAABMAAAAhAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-11-11T13:15:27.714Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 14,
+              "DocumentIndex": 1,
               "Title": "QLQUANAO.edmx [Diagram1]",
               "DocumentMoniker": "D:\\PRJ_LTW_DOAN\\Project_LTW\\Project_LTW\\Project_LTW\\QLQUANAO.edmx",
               "RelativeDocumentMoniker": "Project_LTW\\QLQUANAO.edmx",
               "ToolTip": "D:\\PRJ_LTW_DOAN\\Project_LTW\\Project_LTW\\Project_LTW\\QLQUANAO.edmx [Diagram1]",
               "RelativeToolTip": "Project_LTW\\QLQUANAO.edmx [Diagram1]",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001116|",
-              "WhenOpened": "2025-11-11T13:14:52.334Z"
+              "WhenOpened": "2025-11-11T13:14:52.334Z",
+              "EditorCaption": " [Diagram1]"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 13,
+              "DocumentIndex": 2,
               "Title": "CartController.cs",
               "DocumentMoniker": "D:\\PRJ_LTW_DOAN\\Project_LTW\\Project_LTW\\Project_LTW\\Controllers\\CartController.cs",
               "RelativeDocumentMoniker": "Project_LTW\\Controllers\\CartController.cs",
@@ -216,7 +217,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 11,
+              "DocumentIndex": 14,
               "Title": "UserController.cs",
               "DocumentMoniker": "D:\\PRJ_LTW_DOAN\\Project_LTW\\Project_LTW\\Project_LTW\\Controllers\\UserController.cs",
               "RelativeDocumentMoniker": "Project_LTW\\Controllers\\UserController.cs",
@@ -228,7 +229,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 10,
               "Title": "Index.cshtml",
               "DocumentMoniker": "D:\\PRJ_LTW_DOAN\\Project_LTW\\Project_LTW\\Project_LTW\\Views\\Home\\Index.cshtml",
               "RelativeDocumentMoniker": "Project_LTW\\Views\\Home\\Index.cshtml",
@@ -240,7 +241,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 9,
               "Title": "_Layout.cshtml",
               "DocumentMoniker": "D:\\PRJ_LTW_DOAN\\Project_LTW\\Project_LTW\\Project_LTW\\Views\\Shared\\_Layout.cshtml",
               "RelativeDocumentMoniker": "Project_LTW\\Views\\Shared\\_Layout.cshtml",

@@ -31,6 +31,7 @@ namespace Project_LTW
         public string CHUCVU { get; set; }
         public Nullable<decimal> LUONG { get; set; }
         public Nullable<System.DateTime> NGAYVAOLAM { get; set; }
+        public string PASSWORD { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CART> CARTs { get; set; }
