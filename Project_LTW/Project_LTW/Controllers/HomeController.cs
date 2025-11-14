@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Data.Entity;
 
 namespace Project_LTW.Controllers
 {
     public class HomeController : Controller
     {
         FashionWebEntities db = new FashionWebEntities();
-        public ActionResult Index()
+        public ActionResult Product()
         {
 
             var list = db.PRODUCTs.ToList();   // lấy dữ liệu từ DB
@@ -71,6 +72,12 @@ namespace Project_LTW.Controllers
 
             // Dùng lại View Index.cshtml
             return View("Index", list);
+        }
+        // trang homepage 
+        public ActionResult Index()
+        {
+       
+            return View();
         }
 
 

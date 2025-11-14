@@ -207,6 +207,10 @@
     <Content Include="assets\homePage\ACCESSORIES\3.jpeg" />
     <Content Include="assets\homePage\ACCESSORIES\4.jpeg" />
     <Content Include="assets\homePage\ACCESSORIES\main.jpg" />
+    <Content Include="assets\homePage\banner\1136x532_2x-100_180425 - Copy.jpg" />
+    <Content Include="assets\homePage\banner\1366x532_280325 - Copy.jpg" />
+    <Content Include="assets\homePage\banner\artboard_4_2x-100 - Copy.jpg" />
+    <Content Include="assets\homePage\banner\crop-file.jpg" />
     <Content Include="assets\homePage\Bottoms\1.jpeg" />
     <Content Include="assets\homePage\Bottoms\2.jpeg" />
     <Content Include="assets\homePage\Bottoms\3.jpeg" />
@@ -437,10 +441,6 @@
     <Content Include="bootstrap-5.3.5-dist\js\bootstrap.min.js.map" />
     <Content Include="assets\fonts\bootstrap-icons.woff" />
     <Content Include="assets\fonts\bootstrap-icons.woff2" />
-    <Content Include="assets\homePage\banner\1136x532_2x-100_180425.webp" />
-    <Content Include="assets\homePage\banner\1366x532_280325.webp" />
-    <Content Include="assets\homePage\banner\artboard_4_2x-100.webp" />
-    <Content Include="assets\homePage\banner\crop-file.webp" />
     <EntityDeploy Include="QLQUANAO.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>QLQUANAO.Designer.cs</LastGenOutput>
@@ -473,6 +473,7 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Home\Details.cshtml" />
     <Content Include="Views\Home\_Category.cshtml" />
+    <Content Include="Views\Home\Product.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
