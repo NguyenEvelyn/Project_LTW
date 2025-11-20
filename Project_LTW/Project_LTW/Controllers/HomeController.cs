@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
+using System.Text;
 using System.Web;
 using System.Web.Mvc;
-using System.Data.Entity;
+
 
 namespace Project_LTW.Controllers
 {
@@ -98,6 +100,52 @@ namespace Project_LTW.Controllers
             return View();
 
         }
+        public ActionResult TimKiemTheoTuKhoa(string keyword)
+        {
+            if (string.IsNullOrWhiteSpace(keyword))
+            {
+                // Nếu không nhập gì thì quay lại trang chủ
+                return RedirectToAction("Index");
+            }
+
+            // Chuẩn hóa từ khóa: bỏ dấu và chuyển thường
+            string tukhoaBoDau = RemoveDiacritics(keyword.Trim().ToLower());
+
+            // Lấy toàn bộ danh sách sản phẩm
+            List<PRODUCT> list = db.PRODUCTs.ToList();
+
+            // Tìm kiếm không phân biệt hoa/thường và có/không dấu
+            list = list.FindAll(x =>
+                RemoveDiacritics(x.TENSANPHAM.ToLower()).Contains(tukhoaBoDau)
+            );
+
+            // Gửi lại từ khóa và kết quả ra view
+            ViewBag.Keyword = keyword;
+            return View("Product", list);
+        }
+
+
+        public static string RemoveDiacritics(string text)
+        {
+            if (string.IsNullOrEmpty(text))
+                return string.Empty;
+
+            var normalizedString = text.Normalize(NormalizationForm.FormD);
+            var stringBuilder = new System.Text.StringBuilder();
+
+            foreach (var c in normalizedString)
+            {
+                var unicodeCategory = System.Globalization.CharUnicodeInfo.GetUnicodeCategory(c);
+                if (unicodeCategory != System.Globalization.UnicodeCategory.NonSpacingMark)
+                {
+                    stringBuilder.Append(c);
+                }
+            }
+
+            return stringBuilder.ToString().Normalize(NormalizationForm.FormC);
+        }
+
+
 
 
     }

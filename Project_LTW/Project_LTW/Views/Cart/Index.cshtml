@@ -1,0 +1,146 @@
+﻿@using Project_LTW.Models
+@using System.Globalization
+@model Project_LTW.Models.Cart 
+    @{
+    ViewBag.Title = "Giỏ hàng của bạn";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container py-5">
+    <h2 class="mb-4 fw-bold text-center text-uppercase">Giỏ hàng của bạn</h2>
+
+    @* Kiểm tra giỏ hàng *@
+    @if (Model != null && Model.list != null && Model.list.Count > 0)
+    {
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="card shadow-sm border-0 mb-4">
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle mb-0">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th scope="col" class="ps-4 py-3">Sản phẩm</th>
+                                        <th scope="col" class="text-center">Đơn giá</th>
+                                        <th scope="col" class="text-center">Số lượng</th>
+                                        <th scope="col" class="text-end">Thành tiền</th>
+                                        <th scope="col" class="text-center pe-3">Xóa</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model.list)
+                                    {
+                                        <tr>
+                                            <td class="ps-4">
+                                                <div class="d-flex align-items-center">
+                                                    <img src="@Url.Content("~/assets/" + item.AnhDaiDien)"
+                                                         class="rounded border me-3"
+                                                         alt="@item.TENSP"
+                                                         style="width: 70px; height: 70px; object-fit: cover;"
+                                                         onerror="this.src='https://placehold.co/70x70?text=No+Img'" />
+
+                                                    <div>
+                                                        <h6 class="mb-1 fw-bold text-dark">@item.TENSP</h6>
+                                                        <small class="text-muted">Mã SP: @item.MASP</small>
+                                                    </div>
+                                                </div>
+                                            </td>
+
+                                            <td class="text-center">
+                                                @item.DonGia.ToString("N0", new CultureInfo("vi-VN")) 
+                                            </td>
+
+                                            <td class="text-center">
+                                                <div class="btn-group btn-group-sm" role="group">
+                                                    <a href="@Url.Action("UpdateSLCart", "Cart", new { id = item.MASP, type = -1 })"
+                                                       class="btn btn-outline-secondary">
+                                                        <i class="bi bi-dash"> </i>
+                                                    </a>
+
+                                                    <span class="btn btn-light border" style="width: 40px; cursor: default; display: inline-flex; align-items: center; justify-content: center;">
+                                                        @item.SoLuong
+                                                    </span>
+
+                                                    <a href="@Url.Action("UpdateSLCart", "Cart", new { id = item.MASP, type = 1 })"
+                                                       class="btn btn-outline-secondary">
+                                                        <i class="bi bi-plus"> </i>
+                                                    </a>
+                                                </div>
+                                            </td>
+
+                                            <td class="text-end fw-bold text-primary">
+                                                @item.ThanhTien.ToString("N0", new CultureInfo("vi-VN")) đ
+                                            </td>
+
+                                            <td class="text-center pe-3">
+                                                <a href="@Url.Action("RemoveFromCart", "Cart", new { id = item.MASP })"
+                                                   class="text-danger"
+                                                   onclick="return confirm('Bạn có chắc muốn xóa @item.TENSP khỏi giỏ hàng?')">
+                                                    <i class="bi bi-trash fs-5"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-between align-items-center">
+                    <a href="@Url.Action("Index", "Home")" class="btn btn-outline-dark">
+                        <i class="bi bi-arrow-left me-2"></i> Tiếp tục mua sắm
+                    </a>
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="card shadow-sm border-0 bg-light">
+                    <div class="card-header bg-dark text-white fw-bold text-uppercase py-3">
+                        <i class="bi bi-receipt me-2"></i> Tóm tắt đơn hàng
+                    </div>
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between mb-2">
+                            <span class="text-muted">Tổng tiền hàng:</span>
+                            <span class="fw-bold">@Model.TongTien().ToString("N0", new CultureInfo("vi-VN")) đ</span>
+                        </div>
+                        <div class="d-flex justify-content-between mb-3">
+                            <span class="text-muted">Phí vận chuyển:</span>
+                            <span class="fw-bold text-success">Miễn phí</span>
+                        </div>
+
+                        <hr />
+
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <span class="fs-5 fw-bold text-dark">TỔNG CỘNG:</span>
+                            <span class="fs-4 fw-bold text-danger">
+                                @Model.TongTien().ToString("N0", new CultureInfo("vi-VN")) đ
+                            </span>
+                        </div>
+
+                        <a href="@Url.Action("Index", "Payment")" class="btn btn-primary w-100 btn-lg shadow-sm fw-bold text-uppercase">
+                            Thanh toán ngay <i class="bi bi-credit-card ms-2"></i>
+                        </a>
+
+                        <div class="mt-3 text-center small text-muted">
+                            <i class="bi bi-shield-lock-fill"></i> Bảo mật thanh toán 100%
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="text-center py-5">
+            <div class="mb-4">
+                <i class="bi bi-cart-x text-muted" style="font-size: 5rem;"></i>
+            </div>
+            <h3 class="text-muted fw-normal mb-3">Giỏ hàng của bạn đang trống!</h3>
+            <p class="text-muted mb-4">Có vẻ như bạn chưa chọn sản phẩm nào.</p>
+            <a href="@Url.Action("Product", "Home")" class="btn btn-primary px-5 py-2 rounded-pill">
+                <i class="bi bi-cart-plus me-2"></i> Quay lại mua sắm
+            </a>
+        </div>
+    }
+</div>

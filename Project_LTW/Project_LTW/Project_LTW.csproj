@@ -144,6 +144,7 @@
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\CartController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\PaymentController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="CUSTOMER.cs">
       <DependentUpon>QLQUANAO.tt</DependentUpon>
@@ -154,6 +155,8 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\Cart.cs" />
+    <Compile Include="Models\CartItem.cs" />
     <Compile Include="ORDER.cs">
       <DependentUpon>QLQUANAO.tt</DependentUpon>
     </Compile>
@@ -474,13 +477,15 @@
     <Content Include="Views\Home\Details.cshtml" />
     <Content Include="Views\Home\_Category.cshtml" />
     <Content Include="Views\Home\Product.cshtml" />
+    <Content Include="Views\Cart\Index.cshtml" />
+    <Content Include="Views\User\Login.cshtml" />
+    <Content Include="Views\User\Register.cshtml" />
+    <Content Include="Views\Payment\Index.cshtml" />
+    <Content Include="Views\Payment\Success.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Models\" />
     <Folder Include="Views\Admin\" />
-    <Folder Include="Views\Cart\" />
-    <Folder Include="Views\User\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.rtl.min.css.map" />

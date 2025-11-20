@@ -1,0 +1,125 @@
+﻿@using Project_LTW.Models
+@{
+    ViewBag.Title = "Thanh toán";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    // Kiểm tra null an toàn hơn
+    var cart = ViewBag.Cart as List<CartItem>;
+    var user = ViewBag.User as CUSTOMER;
+
+    // Xử lý null cho total để tránh lỗi
+    decimal total = ViewBag.Total != null ? (decimal)ViewBag.Total : 0;
+}
+
+<div class="container py-5">
+    <h2 class="mb-4 text-center">Thanh toán đơn hàng</h2>
+
+    @if (cart != null && cart.Count > 0)
+    {
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="card shadow-sm mb-4">
+                    <div class="card-header bg-dark text-white">
+                        <h5 class="mb-0"><i class="bi bi-truck me-2"></i>Thông tin giao hàng</h5>
+                    </div>
+                    <div class="card-body">
+                        @using (Html.BeginForm("Index", "Payment", FormMethod.Post, new { @class = "needs-validation", novalidate = "novalidate" }))
+                        {
+                            @Html.AntiForgeryToken()
+
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="ShipName" class="form-label">Họ tên người nhận *</label>
+                                    <input type="text" class="form-control" id="ShipName" name="ShipName"
+                                           value="@(user != null ? user.HOTEN : "")" required>
+                                    <div class="invalid-feedback">Vui lòng nhập họ tên</div>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="ShipPhone" class="form-label">Số điện thoại *</label>
+                                    <input type="tel" class="form-control" id="ShipPhone" name="ShipPhone"
+                                           value="@(user != null ? user.DIENTHOAI : "")" required>
+                                    <div class="invalid-feedback">Vui lòng nhập số điện thoại</div>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="ShipAddress" class="form-label">Địa chỉ giao hàng *</label>
+                                <textarea class="form-control" id="ShipAddress" name="ShipAddress"
+                                          rows="3" required placeholder="Số nhà, tên đường, phường/xã, quận/huyện..."></textarea>
+                                <div class="invalid-feedback">Vui lòng nhập địa chỉ giao hàng</div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="Note" class="form-label">Ghi chú (tùy chọn)</label>
+                                <textarea class="form-control" id="Note" name="Note" rows="2" placeholder="Ví dụ: Giao giờ hành chính, gọi trước khi giao..."></textarea>
+                            </div>
+
+                           /* @if (ViewBag.Error != null)
+                            {
+                                <div class="alert alert-danger">@ViewBag.Error</div>
+                            }*/
+
+                            <button type="submit" class="btn btn-primary btn-lg w-100">
+                                <i class="bi bi-credit-card me-2"></i>Xác nhận đặt hàng
+                            </button>
+                        }
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-light">
+                        <h5 class="mb-0"><i class="bi bi-receipt me-2"></i>Tóm tắt đơn hàng</h5>
+                    </div>
+                    <div class="card-body">
+                        @foreach (var item in cart)
+                        {
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <div>
+                                    <h6 class="mb-0">@item.TENSP</h6>
+                                    <small class="text-muted">@item.SoLuong x @item.DonGia.ToString("N0")đ</small>
+                                </div>
+                                <span class="fw-bold">@((item.SoLuong * item.DonGia).ToString("N0"))đ</span>
+                            </div>
+                        }
+                        <hr>
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h5 class="mb-0">Tổng cộng:</h5>
+                            <h4 class="mb-0 text-danger">@total.ToString("N0")đ</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="text-center py-5">
+            <div class="mb-4">
+                <i class="bi bi-cart-x text-muted" style="font-size: 5rem;"></i>
+            </div>
+            <h3 class="text-muted">Giỏ hàng trống!</h3>
+            <p class="text-muted mb-4">Bạn chưa có sản phẩm nào để thanh toán.</p>
+            <a href="@Url.Action("Index", "Home")" class="btn btn-primary">Tiếp tục mua sắm</a>
+        </div>
+    }
+</div>
+
+<script>
+    // Bootstrap form validation
+    (function () {
+        'use strict'
+        var forms = document.querySelectorAll('.needs-validation')
+        Array.prototype.slice.call(forms)
+            .forEach(function (form) {
+                form.addEventListener('submit', function (event) {
+                    if (!form.checkValidity()) {
+                        event.preventDefault()
+                        event.stopPropagation()
+                    }
+                    form.classList.add('was-validated')
+                }, false)
+            })
+    })()
+</script>

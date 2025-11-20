@@ -11,6 +11,7 @@
     .page-spacer {
         margin-top: 120px; /* Bạn có thể tăng số này lên nếu vẫn bị dính (vd: 50px) */
     }
+
     .product-gallery {
         position: relative;
     }
@@ -117,6 +118,7 @@
 
     @Html.Hidden("selectedColor", "", new { id = "selectedColor" })
     @Html.Hidden("selectedSize", "", new { id = "selectedSize" })
+    <input type="hidden" name="sanPhamID" value="@Model.SANPHAMID.Trim()" />
 
     <div class="row mt-4">
         <div class="col-md-4">

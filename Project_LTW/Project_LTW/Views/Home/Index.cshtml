@@ -1,4 +1,4 @@
-﻿@{
+﻿﻿@{
     ViewBag.Title = "Index";
 }
 @using Project_LTW;
@@ -105,7 +105,7 @@
                                                 </button>
                                                 <a href="@Url.Action("Details", "Home", new { id = item.SANPHAMID.Trim() })"
                                                    class="btn btn-dark btn-sm flex-fill">
-                                                    
+
                                                     Mua ngay
                                                 </a>
 
@@ -154,7 +154,7 @@
                                 <s class="text-light opacity-75">350.000đ</s>
                                 <p class="text-warning fw-bold fs-4 mb-2">Ưu đãi: 143.000đ</p>
                             </div>
-                            <button onclick="window.location.href='@Url.Action("Details", "Home")'"
+                            <button onclick="window.location.href='@Url.Action("AddtoCart", "Cart")'"
                                     class="btn btn-outline-light btn-lg">
                                 Mua ngay
                             </button>
@@ -184,10 +184,10 @@
 
                                             <div class="d-flex gap-2">
                                                 <button onclick="showToast()"
-                                                        class="btn btn-outline-primary btn-sm flex-fill">
+                                                        class="btn btn-outline-primary btn-sm flex-fill" >
                                                     <i class="bi bi-cart-plus"></i> Thêm vào giỏ hàng
                                                 </button>
-                                                <a href="@Url.Action("Details", "Home", new { id = item.SANPHAMID.Trim() })"
+                                                <a href="@Url.Action("AddtoCart", "Cart", new { id = item.SANPHAMID.Trim() })"
                                                    class="btn btn-dark btn-sm flex-fill">
 
                                                     Mua ngay
