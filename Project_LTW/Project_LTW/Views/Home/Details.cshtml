@@ -1,14 +1,16 @@
-﻿@model Project_LTW.PRODUCT
-@{
+﻿@{
     ViewBag.Title = "Details";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<!-- Đảm bảo các CDN được load trong _Layout.cshtml hoặc ở đây -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+@using System.Globalization
+@using Project_LTW;
+
 
 <style>
+    .page-spacer {
+        margin-top: 120px; /* Bạn có thể tăng số này lên nếu vẫn bị dính (vd: 50px) */
+    }
     .product-gallery {
         position: relative;
     }
@@ -110,15 +112,13 @@
     }
 </style>
 
-@using System.Globalization
-
 @using (Html.BeginForm("AddtoCart", "Cart", FormMethod.Post))
 {
-    @Html.HiddenFor(model => model.SANPHAMID)
+
     @Html.Hidden("selectedColor", "", new { id = "selectedColor" })
     @Html.Hidden("selectedSize", "", new { id = "selectedSize" })
 
-    <div class="row">
+    <div class="row mt-4">
         <div class="col-md-4">
             <div class="product-gallery">
                 <div class="main-image-container">
@@ -188,9 +188,10 @@
     </div>
 </div>
 
+
 <script>
     $(document).ready(function () {
-        console.log("jQuery is working!"); // Kiểm tra jQuery hoạt động
+        console.log("jQuery is working!");
 
         // 1. Xử lý click thumbnail
         $('.thumbnails').on("click", ".img-thumbnail", function () {

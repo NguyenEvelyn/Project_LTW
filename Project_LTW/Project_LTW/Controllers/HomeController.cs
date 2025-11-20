@@ -71,13 +71,32 @@ namespace Project_LTW.Controllers
             }
 
             // Dùng lại View Index.cshtml
-            return View("Index", list);
+            return View("Product", list);
         }
         // trang homepage 
         public ActionResult Index()
         {
-       
+            // 1. Lấy TOP 3 sản phẩm thuộc danh mục DM001 
+            var topDM001Products = db.PRODUCTs
+                // Lọc theo DM001 và đảm bảo còn hàng
+                .Where(p => p.DANHMUCID == "DM001" && p.SOLUONGTONKHO > 0)
+                // Sắp xếp để lấy các sản phẩm nổi bật/mới nhất
+                .OrderByDescending(p => p.SANPHAMID)
+                .Take(2); // Lấy 2 sản phẩm
+
+            // 2. Lấy TOP 2 sản phẩm thuộc danh mục DM003
+            var topDM003Products = db.PRODUCTs
+                // Lọc theo DM003 và đảm bảo còn hàng
+                .Where(p => p.DANHMUCID == "DM003" && p.SOLUONGTONKHO > 0)
+                // Sắp xếp để lấy các sản phẩm nổi bật/mới nhất
+                .OrderByDescending(p => p.SANPHAMID)
+                .Take(2); // Lấy 2 sản phẩm
+
+            ViewBag.MainApparelProducts = topDM001Products; // Dùng cho vị trí 1
+            ViewBag.AccessoryProducts = topDM003Products;   // Dùng cho vị trí 2
+
             return View();
+
         }
 
 

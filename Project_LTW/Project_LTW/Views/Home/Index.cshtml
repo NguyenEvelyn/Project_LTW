@@ -82,9 +82,9 @@
             <!-- Side Products -->
             <div class="col-lg-6">
                 <div class="row g-3 h-100">
-                    @if (ViewBag.TopProducts != null)
+                    @if (ViewBag.MainApparelProducts != null)
                     {
-                        foreach (var item in (IEnumerable<PRODUCT>)ViewBag.TopProducts.Take(2))
+                        foreach (var item in (IEnumerable<PRODUCT>)ViewBag.MainApparelProducts)
                         {
                             <div class="col-md-6">
                                 <div class="card h-100 product-card border-0 shadow-sm">
@@ -97,12 +97,18 @@
                                         <h6 class="card-title fw-semibold">@item.TENSANPHAM</h6>
                                         <div class="price-section mt-auto">
                                             <p class="text-danger fw-bold fs-5 mb-1">@Html.FormatValue(item.GIA, "{0:#,###}") VND</p>
-                                            <div class="btn-group w-100" role="group">
-                                                <button onclick="showToast()" class="btn btn-outline-primary btn-sm">
-                                                    <i class="bi bi-cart-plus"></i>
+
+                                            <div class="d-flex gap-2">
+                                                <button onclick="showToast()"
+                                                        class="btn btn-outline-primary btn-sm flex-fill">
+                                                    <i class="bi bi-cart-plus"></i> Thêm vào giỏ hàng
                                                 </button>
                                                 <a href="@Url.Action("Details", "Home", new { id = item.SANPHAMID.Trim() })"
-                                                   class="btn btn-dark btn-sm">Mua ngay</a>
+                                                   class="btn btn-dark btn-sm flex-fill">
+                                                    
+                                                    Mua ngay
+                                                </a>
+
                                             </div>
                                         </div>
                                     </div>
@@ -162,7 +168,7 @@
                 <div class="row g-3 h-100">
                     @if (ViewBag.AccessoryProducts != null)
                     {
-                        foreach (var item in (IEnumerable<PRODUCT>)ViewBag.AccessoryProducts.Take(2))
+                        foreach (var item in (IEnumerable<PRODUCT>)ViewBag.AccessoryProducts)
                         {
                             <div class="col-md-6">
                                 <div class="card h-100 product-card border-0 shadow-sm">
@@ -175,12 +181,18 @@
                                         <h6 class="card-title fw-semibold">@item.TENSANPHAM</h6>
                                         <div class="price-section mt-auto">
                                             <p class="text-danger fw-bold fs-5 mb-1">@Html.FormatValue(item.GIA, "{0:#,###}") VND</p>
-                                            <div class="btn-group w-100" role="group">
-                                                <button onclick="showToast()" class="btn btn-outline-primary btn-sm">
-                                                    <i class="bi bi-cart-plus"></i>
+
+                                            <div class="d-flex gap-2">
+                                                <button onclick="showToast()"
+                                                        class="btn btn-outline-primary btn-sm flex-fill">
+                                                    <i class="bi bi-cart-plus"></i> Thêm vào giỏ hàng
                                                 </button>
                                                 <a href="@Url.Action("Details", "Home", new { id = item.SANPHAMID.Trim() })"
-                                                   class="btn btn-dark btn-sm">Mua ngay</a>
+                                                   class="btn btn-dark btn-sm flex-fill">
+
+                                                    Mua ngay
+                                                </a>
+
                                             </div>
                                         </div>
                                     </div>
@@ -203,83 +215,6 @@
     </div>
 </section>
 
-<!-- Bottoms Section -->
-<section class="section-bottoms py-5 bg-light">
-    <div class="container">
-        <div class="row mb-4">
-            <div class="col-12">
-                <h2 class="section-title">BOTTOMS</h2>
-            </div>
-        </div>
-
-        <div class="row g-3">
-            <!-- Main Product -->
-            <div class="col-lg-6">
-                <div class="featured-product position-relative overflow-hidden rounded-3">
-                    <img src="@Url.Content("~/assets/homePage/Bottoms/main.png")"
-                         class="img-fluid w-100 product-image"
-                         alt="Hip Brief Underwear" />
-                    <div class="product-overlay position-absolute top-0 start-0 w-100 h-100 d-flex align-items-end">
-                        <div class="product-info text-white p-4 w-100">
-                            <h4 class="fw-bold">HIP BRIEF UNDERWEAR</h4>
-                            <div class="price-info">
-                                <s class="text-light opacity-75">390.000đ</s>
-                                <p class="text-warning fw-bold fs-4 mb-2">Ưu đãi: 99.000đ</p>
-                            </div>
-                            <button onclick="window.location.href='@Url.Action("Details", "Home")'"
-                                    class="btn btn-outline-light btn-lg">
-                                Mua ngay
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Side Products -->
-            <div class="col-lg-6">
-                <div class="row g-3 h-100">
-                    @if (ViewBag.BottomProducts != null)
-                    {
-                        foreach (var item in (IEnumerable<PRODUCT>)ViewBag.BottomProducts.Take(2))
-                        {
-                            <div class="col-md-6">
-                                <div class="card h-100 product-card border-0 shadow-sm">
-                                    <div class="card-img-top-container">
-                                        <img src="@Url.Content("~/assets/" + item.HINHANHDAIDIEN)"
-                                             class="card-img-top"
-                                             alt="@item.TENSANPHAM" />
-                                    </div>
-                                    <div class="card-body d-flex flex-column">
-                                        <h6 class="card-title fw-semibold">@item.TENSANPHAM</h6>
-                                        <div class="price-section mt-auto">
-                                            <p class="text-danger fw-bold fs-5 mb-1">@Html.FormatValue(item.GIA, "{0:#,###}") VND</p>
-                                            <div class="btn-group w-100" role="group">
-                                                <button onclick="showToast()" class="btn btn-outline-primary btn-sm">
-                                                    <i class="bi bi-cart-plus"></i>
-                                                </button>
-                                                <a href="@Url.Action("Details", "Home", new { id = item.SANPHAMID.Trim() })"
-                                                   class="btn btn-dark btn-sm">Mua ngay</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        }
-                    }
-                </div>
-            </div>
-        </div>
-
-        <div class="row mt-4">
-            <div class="col-12 text-center">
-                <a href="@Url.Action("Product", "Home")" class="btn btn-outline-dark see-more-btn">
-                    Xem thêm
-                    <i class="bi bi-arrow-right ms-2"></i>
-                </a>
-            </div>
-        </div>
-    </div>
-</section>
 
 <!-- Toast Notification -->
 <div class="toast-container position-fixed top-0 end-0 p-3">
