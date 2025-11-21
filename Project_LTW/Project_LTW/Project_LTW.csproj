@@ -143,6 +143,7 @@
     <Compile Include="CATEGORY.cs">
       <DependentUpon>QLQUANAO.tt</DependentUpon>
     </Compile>
+    <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\CartController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PaymentController.cs" />
