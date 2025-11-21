@@ -19,23 +19,34 @@ namespace Project_LTW.Controllers
         {
             var email = collect["Email"];
             var password = collect["Password"];
+        
+            var khachHang = db.CUSTOMERs.FirstOrDefault(k => k.EMAIL == email && k.PASSWORD == password);
 
-            // Kiểm tra tài khoản tồn tại trong DB
-            CUSTOMER kh = db.CUSTOMERs.FirstOrDefault(x => x.EMAIL == email && x.PASSWORD == password);
+            if (khachHang != null)
+            {
+                //  Đăng nhập thành công quyền KHÁCH
+                Session["User"] = khachHang;
 
-            if (kh != null)
-            {
-                // ✅ Đăng nhập thành công
-                Session["User"] = kh;
-                return RedirectToAction("Index", "Home");
+         
+                return RedirectToAction("Index", "Home", new { area = "" });
             }
-            else
+
+            
+            // Nếu không phải khách hàng, thử tìm trong bảng Staff
+            var nhanVien = db.STAFFs.FirstOrDefault(s => s.EMAIL == email && s.PASSWORD == password);
+
+            if (nhanVien != null)
             {
-                // ❌ Sai tài khoản hoặc mật khẩu
-                ViewBag.Error = "Email hoặc mật khẩu không đúng!";
-                return View("Login");
+                //  Đăng nhập thành công quyền ADMIN
+                Session["AdminUser"] = nhanVien; // Lưu session riêng cho Admin
+
+                // Chuyển hướng thẳng vào Dashboard Admin
+                
+                return RedirectToAction("Index", "HomeAdmin", new { area = "Admin" });
             }
-        }
+            // Nếu cả 2 bảng đều không tìm thấy
+            ViewBag.Error = "Email hoặc mật khẩu không đúng!";
+            return View("Login");}
 
         // --- PHẦN ĐĂNG KÝ ---
         [HttpGet]
@@ -141,6 +152,46 @@ namespace Project_LTW.Controllers
             }
 
             return View(order);
+        }
+        // HỦY ĐƠN HÀNG CỦA KHÁCH
+        // HỦY ĐƠN HÀNG (Sử dụng Procedure SQL để hoàn tồn kho)
+        public ActionResult CancelOrder(string id)
+        {
+            if (Session["User"] == null) return RedirectToAction("Login");
+
+            var user = Session["User"] as CUSTOMER;
+
+            // Kiểm tra sơ bộ xem đơn hàng có tồn tại và đúng chủ không
+            var order = db.ORDERS.FirstOrDefault(o => o.ORDERID == id);
+            if (order == null || order.KHACHHANGID != user.KHACHHANGID)
+            {
+                TempData["Error"] = "Đơn hàng không hợp lệ.";
+                return RedirectToAction("OrderHistory");
+            }
+
+            // Kiểm tra trạng thái trên C# trước cho chắc (dù SQL cũng có check)
+            if (order.TRANGTHAI != "Chờ xử lý")
+            {
+                TempData["Error"] = "Chỉ có thể hủy đơn hàng khi đang Chờ xử lý.";
+                return RedirectToAction("OrderHistory");
+            }
+
+            try
+            {
+                // --- GỌI PROCEDURE SQL ĐỂ HỦY VÀ HOÀN KHO ---
+               
+                db.Database.ExecuteSqlCommand("EXEC SP_HUYDONHANG @p0", id);
+
+                TempData["Success"] = "Đã hủy đơn hàng và hoàn lại tồn kho thành công!";
+            }
+            catch (Exception ex)
+            {
+                // Lấy lỗi từ SQL (Ví dụ: Đơn đã giao không thể hủy...)
+                var innerMessage = ex.InnerException != null ? ex.InnerException.Message : ex.Message;
+                TempData["Error"] = "Lỗi hủy đơn: " + innerMessage;
+            }
+
+            return RedirectToAction("OrderHistory");
         }
     }
 }

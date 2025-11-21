@@ -15,13 +15,13 @@ namespace Project_LTW.Areas.Admin.Controllers
         public ActionResult Index()
         {
             var items = db.PRODUCTs.OrderBy(x => x.TENSANPHAM).ToList();
-       
+
             return View(items);
         }
-       
+
         //  CHỨC NĂNG THÊM MỚI (CREATE)
-  
-        
+
+
         [HttpGet]
         public ActionResult Create()
         {
@@ -141,7 +141,7 @@ namespace Project_LTW.Areas.Admin.Controllers
                     productInDb.TENSANPHAM = model.TENSANPHAM;
                     productInDb.GIA = model.GIA;
                     productInDb.GIAGOC = model.GIAGOC; // Nhớ cập nhật cả giá gốc nếu có
-                   
+
                     productInDb.SOLUONGTONKHO = model.SOLUONGTONKHO;
                     productInDb.MOTA = model.MOTA;
                     productInDb.DANHMUCID = model.DANHMUCID;
@@ -204,19 +204,19 @@ namespace Project_LTW.Areas.Admin.Controllers
             {
                 try
                 {
-                    // Bước 1: Xóa dữ liệu bên bảng Màu sắc trước
+                    //  Xóa dữ liệu bên bảng Màu sắc trước
                     var colors = db.PRODUCT_COLOR.Where(c => c.SANPHAMID == id).ToList();
                     if (colors.Any()) db.PRODUCT_COLOR.RemoveRange(colors);
 
-                    // Bước 2: Xóa dữ liệu bên bảng Size trước
+                    //  Xóa dữ liệu bên bảng Size trước
                     var sizes = db.PRODUCT_SIZE.Where(s => s.SANPHAMID == id).ToList();
                     if (sizes.Any()) db.PRODUCT_SIZE.RemoveRange(sizes);
 
-                    // Bước 3: Xóa dữ liệu bên bảng Ảnh phụ (nếu có)
+                    //  Xóa dữ liệu bên bảng Ảnh phụ (nếu có)
                     var images = db.PRODUCT_IMAGE.Where(i => i.SANPHAMID == id).ToList();
                     if (images.Any()) db.PRODUCT_IMAGE.RemoveRange(images);
 
-                    // Bước 4: Xóa sản phẩm chính
+                    //  Xóa sản phẩm chính
                     db.PRODUCTs.Remove(item);
                     db.SaveChanges();
                 }
@@ -229,6 +229,14 @@ namespace Project_LTW.Areas.Admin.Controllers
                 }
             }
             return RedirectToAction("Index");
+        }
+        // Kiểm trả tồn kho bằng Procedure Cursor
+        public ActionResult CheckInventory()
+        {
+
+            var data = db.SP_KIEMTRATONKHO_CURSOR().ToList();
+
+            return View(data);
         }
     }
 }

@@ -862,31 +862,58 @@ RETURN
     GROUP BY O.ORDERID, O.NGAYDAT, O.TONGTIEN, O.TRANGTHAI
 );
 GO
+USE [FashionWeb]
+GO
 
---5.Cursor Duyệt từng khách hàng, in ra tổng số đơn hàng mỗi người.
+
+-- Xóa bản cũ
+IF OBJECT_ID('SP_THONGKEDONHANGTHEOKHACHHANG', 'P') IS NOT NULL
+    DROP PROCEDURE SP_THONGKEDONHANGTHEOKHACHHANG
+GO
+
+
 CREATE PROCEDURE SP_THONGKEDONHANGTHEOKHACHHANG
 AS
 BEGIN
-    DECLARE @KHID NCHAR(10), @TEN NVARCHAR(100), @SoDH INT;
+    -- 1. Tạo một bảng tạm để chứa kết quả
+    DECLARE @KetQua TABLE (
+        TenKhachHang NVARCHAR(100),
+        SoDonHang INT,
+        TongTienDaMua DECIMAL(18,2) -- Thêm cái này cho xịn
+    );
 
+    DECLARE @KHID NCHAR(10), @TEN NVARCHAR(100);
+    DECLARE @SoDH INT, @TongTien DECIMAL(18,2);
+
+    -- 2. Khai báo CURSOR
     DECLARE cur CURSOR FOR
         SELECT KHACHHANGID, HOTEN FROM CUSTOMER;
 
     OPEN cur;
     FETCH NEXT FROM cur INTO @KHID, @TEN;
 
+    -- 3. Duyệt từng dòng (Loop)
     WHILE @@FETCH_STATUS = 0
     BEGIN
-        SELECT @SoDH = COUNT(*) FROM ORDERS WHERE KHACHHANGID = @KHID;
-        PRINT N'Khách hàng: ' + @TEN + N' có ' + CAST(@SoDH AS NVARCHAR) + N' đơn hàng.';
+        -- Tính toán số liệu cho từng khách
+        SELECT @SoDH = COUNT(*), @TongTien = SUM(TONGTIEN) 
+        FROM ORDERS 
+        WHERE KHACHHANGID = @KHID;
+
+        -- Insert vào bảng tạm (Thay vì PRINT)
+        INSERT INTO @KetQua (TenKhachHang, SoDonHang, TongTienDaMua)
+        VALUES (@TEN, ISNULL(@SoDH, 0), ISNULL(@TongTien, 0));
+
         FETCH NEXT FROM cur INTO @KHID, @TEN;
     END;
 
     CLOSE cur;
     DEALLOCATE cur;
+
+    -- 4. Trả kết quả về cho Website
+    SELECT * FROM @KetQua ORDER BY SoDonHang DESC;
 END;
 GO
-
 
 -- ============================
 -- QUẢN LÝ SẢN PHẨM VÀ GIỎ HÀNG

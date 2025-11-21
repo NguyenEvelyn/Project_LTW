@@ -133,6 +133,9 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
+    <Compile Include="Areas\Admin\Controllers\DoanhThuController.cs" />
+    <Compile Include="Areas\Admin\Controllers\HomeAdminController.cs" />
+    <Compile Include="Areas\Admin\Controllers\OrderController.cs" />
     <Compile Include="Areas\Admin\Controllers\ProductController.cs" />
     <Compile Include="CART.cs">
       <DependentUpon>QLQUANAO.tt</DependentUpon>
@@ -158,6 +161,7 @@
     </Compile>
     <Compile Include="Models\Cart.cs" />
     <Compile Include="Models\CartItem.cs" />
+    <Compile Include="Models\TopKhachHang.cs" />
     <Compile Include="ORDER.cs">
       <DependentUpon>QLQUANAO.tt</DependentUpon>
     </Compile>
@@ -195,7 +199,16 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>QLQUANAO.edmx</DependentUpon>
     </Compile>
+    <Compile Include="SP_KIEMTRATONKHO_CURSOR1_Result.cs">
+      <DependentUpon>QLQUANAO.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SP_KIEMTRATONKHO_CURSOR_Result.cs">
+      <DependentUpon>QLQUANAO.tt</DependentUpon>
+    </Compile>
     <Compile Include="SP_THONGKEDOANHTHUTHEOTHANG_Result.cs">
+      <DependentUpon>QLQUANAO.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SP_THONGKEDONHANGTHEOKHACHHANG_Result.cs">
       <DependentUpon>QLQUANAO.tt</DependentUpon>
     </Compile>
     <Compile Include="STAFF.cs">
@@ -458,6 +471,11 @@
     <Content Include="Areas\Admin\Views\Product\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Product\Create.cshtml" />
     <Content Include="Areas\Admin\Views\Product\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\Order\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Order\Details.cshtml" />
+    <Content Include="Areas\Admin\Views\DoanhThu\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Product\CheckInventory.cshtml" />
+    <Content Include="Areas\Admin\Views\HomeAdmin\Index.cshtml" />
     <None Include="Scripts\jquery-3.7.0.intellisense.js" />
     <Content Include="Scripts\jquery-3.7.0.js" />
     <Content Include="Scripts\jquery-3.7.0.min.js" />

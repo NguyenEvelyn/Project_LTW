@@ -468,16 +468,35 @@
     <FunctionImport Name="SP_THONGKEDOANHTHUTHEOTHANG" ReturnType="Collection(FashionWebModel.SP_THONGKEDOANHTHUTHEOTHANG_Result)">
       <Parameter Name="NAM" Mode="In" Type="Int32" />
     </FunctionImport>
-    <FunctionImport Name="SP_THONGKEDONHANGTHEOKHACHHANG" />
     <FunctionImport Name="SP_CAPNHATTONKHOSAUDATHANG1">
       <Parameter Name="ORDERID" Mode="In" Type="String" />
     </FunctionImport>
     <FunctionImport Name="SP_CAPNHATTONKHOSAUDATHANG2">
       <Parameter Name="ORDERID" Mode="In" Type="String" />
     </FunctionImport>
+    <FunctionImport Name="SP_THONGKEDONHANGTHEOKHACHHANG" ReturnType="Collection(FashionWebModel.SP_THONGKEDONHANGTHEOKHACHHANG_Result)" />
+    <FunctionImport Name="SP_KIEMTRATONKHO_CURSOR" ReturnType="Collection(FashionWebModel.SP_KIEMTRATONKHO_CURSOR_Result)" />
+    <FunctionImport Name="SP_KIEMTRATONKHO_CURSOR1" ReturnType="Collection(FashionWebModel.SP_KIEMTRATONKHO_CURSOR1_Result)" />
   </EntityContainer>
   <ComplexType Name="SP_THONGKEDOANHTHUTHEOTHANG_Result">
     <Property Type="Int32" Name="THANG" Nullable="true" />
     <Property Type="Decimal" Name="DOANHTHU" Nullable="true" Precision="38" Scale="2" />
+  </ComplexType>
+  <ComplexType Name="SP_THONGKEDONHANGTHEOKHACHHANG_Result">
+    <Property Type="String" Name="TenKhachHang" Nullable="true" MaxLength="100" />
+    <Property Type="Int32" Name="SoDonHang" Nullable="true" />
+    <Property Type="Decimal" Name="TongTienDaMua" Nullable="true" Precision="18" Scale="2" />
+  </ComplexType>
+  <ComplexType Name="SP_KIEMTRATONKHO_CURSOR_Result">
+    <Property Type="String" Name="MaSP" Nullable="true" MaxLength="10" />
+    <Property Type="String" Name="TenSP" Nullable="true" MaxLength="200" />
+    <Property Type="Int32" Name="SoLuong" Nullable="true" />
+    <Property Type="String" Name="TrangThai" Nullable="true" MaxLength="200" />
+  </ComplexType>
+  <ComplexType Name="SP_KIEMTRATONKHO_CURSOR1_Result">
+    <Property Type="String" Name="MaSP" Nullable="true" MaxLength="10" />
+    <Property Type="String" Name="TenSP" Nullable="true" MaxLength="200" />
+    <Property Type="Int32" Name="SoLuong" Nullable="true" />
+    <Property Type="String" Name="TrangThai" Nullable="true" MaxLength="200" />
   </ComplexType>
 </Schema>

@@ -1,0 +1,57 @@
+﻿
+@{
+    ViewBag.Title = "CheckInventory";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+@model IEnumerable<Project_LTW.SP_KIEMTRATONKHO_CURSOR_Result>
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3 bg-danger text-white d-flex justify-content-between align-items-center">
+        <h6 class="m-0 fw-bold"><i class="bi bi-exclamation-triangle me-2"></i>CẢNH BÁO TỒN KHO (CURSOR)</h6>
+        <a href="@Url.Action("Index")" class="btn btn-sm btn-light text-danger fw-bold">Quay lại DS Sản phẩm</a>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th>Mã SP</th>
+                        <th>Tên sản phẩm</th>
+                        <th class="text-center">Tồn kho</th>
+                        <th>Trạng thái (Xử lý bởi Cursor)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                      
+                        if (item.SoLuong < 10)
+                        {
+                            <tr>
+                                <td>@item.MaSP</td>
+                                <td class="fw-bold">@item.TenSP</td>
+                                <td class="text-center fw-bold text-danger" style="font-size: 1.1em">
+                                    @item.SoLuong
+                                </td>
+                                <td>
+                                    @if (item.SoLuong <= 0)
+                                    {
+                                        <span class="badge bg-danger p-2 w-100">@item.TrangThai</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-warning text-dark p-2 w-100">@item.TrangThai</span>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div class="alert alert-secondary mt-3 mb-0 small">
+            <i class="bi bi-info-circle me-1"></i>
+            Dữ liệu trên được duyệt từng dòng bằng kỹ thuật <strong>CURSOR</strong> trong SQL Server để phân loại trạng thái.
+        </div>
+    </div>
+</div>

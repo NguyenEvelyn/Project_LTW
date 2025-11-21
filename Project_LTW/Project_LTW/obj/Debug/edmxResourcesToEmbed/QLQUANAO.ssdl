@@ -349,6 +349,7 @@
   <Function Name="SP_HUYDONHANG" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
     <Parameter Name="ORDERID" Type="nchar" Mode="In" />
   </Function>
+  <Function Name="SP_KIEMTRATONKHO_CURSOR" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
   <Function Name="SP_TAODONHANGTUGIOHANG" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
     <Parameter Name="OrderID" Type="nchar" Mode="In" />
     <Parameter Name="CartID" Type="int" Mode="In" />

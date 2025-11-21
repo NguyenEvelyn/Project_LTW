@@ -1,0 +1,150 @@
+﻿@model IEnumerable<Project_LTW.Models.TopKhachHang>
+
+@{
+    ViewBag.Title = "Báo cáo thống kê";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+
+    // Lấy dữ liệu mảng doanh thu từ Controller
+    string dataStr = ViewBag.DataDoanhThu as string;
+    string[] arrDoanhThu = dataStr != null ? dataStr.Split(',') : new string[12];
+}
+
+<div class="container-fluid">
+    <h3 class="text-dark fw-bold mb-4">BÁO CÁO KINH DOANH NĂM @ViewBag.NamHienTai</h3>
+
+    <div class="row">
+        <div class="col-md-6 mb-4">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h6 class="m-0 fw-bold"><i class="bi bi-calendar-check me-2"></i>Doanh thu từng tháng</h6>
+                </div>
+                <div class="card-body p-0">
+                    <table class="table table-hover table-bordered mb-0 text-center">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Tháng</th>
+                                <th>Doanh thu (VNĐ)</th>
+                                <th>Trạng thái</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for (int i = 0; i < 12; i++)
+                            {
+                                decimal doanhThu = 0;
+                                decimal.TryParse(arrDoanhThu[i], out doanhThu);
+
+                                <tr>
+                                    <td class="fw-bold">Tháng @(i + 1)</td>
+                                    <td class="text-danger fw-bold">
+                                        @doanhThu.ToString("N0") đ
+                                    </td>
+                                    <td>
+                                        @if (doanhThu > 0)
+                                        {
+                                            <span class="badge bg-success">Có doanh thu</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-secondary text-white-50">--</span>
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 mb-4">
+            <div class="card shadow">
+                <div class="card-header bg-warning text-dark">
+                    <h6 class="m-0 fw-bold"><i class="bi bi-trophy me-2"></i>Top Khách hàng (Cursor)</h6>
+                </div>
+                <div class="card-body p-0">
+                    <table class="table table-striped mb-0 align-middle">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>Khách hàng</th>
+                                <th class="text-center">Số đơn</th>
+                                <th class="text-end">Tổng chi tiêu</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model != null && Model.Any())
+                            {
+                                foreach (var kh in Model.Take(10)) // Lấy top 10
+                                {
+                                    <tr>
+                                        <td class="fw-bold">@kh.TenKhachHang</td>
+                                        <td class="text-center">
+                                            <span class="badge  text-dark">@kh.SoDonHang</span>
+                                        </td>
+                                        <td class="text-end text-danger fw-bold">
+                                            @string.Format("{0:N0}", kh.TongTienDaMua) đ
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td colspan="3" class="text-center text-muted py-3">Chưa có dữ liệu khách hàng</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+                <div class="card-footer text-muted small text-center">
+                    * Dữ liệu được tính toán bằng Stored Procedure & Cursor trong SQL Server
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    // 1. Hứng dữ liệu từ Controller
+    var rawData = '@ViewBag.ChartData'; // Chuỗi: "0,500000,0,..."
+    var dataValues = rawData.split(',').map(Number); // Tách chuỗi thành mảng số
+
+    // 2. Vẽ biểu đồ
+    var ctx = document.getElementById("myRevenueChart").getContext('2d');
+    var myChart = new Chart(ctx, {
+        type: 'bar', // Chọn 'bar' (cột) hoặc 'line' (đường) tùy ý
+        data: {
+            labels: ["Tháng 1", "Tháng 2", "Tháng 3", "Tháng 4", "Tháng 5", "Tháng 6", "Tháng 7", "Tháng 8", "Tháng 9", "Tháng 10", "Tháng 11", "Tháng 12"],
+            datasets: [{
+                label: 'Doanh thu (VNĐ)',
+                data: dataValues, // <-- Dữ liệu thật từ SQL Procedure
+                backgroundColor: 'rgba(54, 162, 235, 0.6)', // Màu cột
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        // Định dạng tiền tệ VNĐ trên trục Y
+                        callback: function(value) {
+                            return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(value);
+                        }
+                    }
+                }
+            },
+            plugins: {
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            var value = context.parsed.y;
+                            return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(value);
+                        }
+                    }
+                }
+            }
+        }
+    });
+</script>
