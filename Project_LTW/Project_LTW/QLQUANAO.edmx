@@ -928,6 +928,12 @@
           <Parameter Name="NAM" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="SP_THONGKEDONHANGTHEOKHACHHANG" />
+          <FunctionImport Name="SP_CAPNHATTONKHOSAUDATHANG1">
+            <Parameter Name="ORDERID" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="SP_CAPNHATTONKHOSAUDATHANG2">
+            <Parameter Name="ORDERID" Mode="In" Type="String" />
+          </FunctionImport>
         </EntityContainer>
         <ComplexType Name="SP_THONGKEDOANHTHUTHEOTHANG_Result">
           <Property Type="Int32" Name="THANG" Nullable="true" />
@@ -1111,6 +1117,8 @@
             </ResultMapping>
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="SP_THONGKEDONHANGTHEOKHACHHANG" FunctionName="FashionWebModel.Store.SP_THONGKEDONHANGTHEOKHACHHANG" />
+          <FunctionImportMapping FunctionImportName="SP_CAPNHATTONKHOSAUDATHANG1" FunctionName="FashionWebModel.Store.SP_CAPNHATTONKHOSAUDATHANG" />
+          <FunctionImportMapping FunctionImportName="SP_CAPNHATTONKHOSAUDATHANG2" FunctionName="FashionWebModel.Store.SP_CAPNHATTONKHOSAUDATHANG" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

@@ -186,5 +186,23 @@ namespace Project_LTW
         {
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SP_THONGKEDONHANGTHEOKHACHHANG");
         }
+    
+        public virtual int SP_CAPNHATTONKHOSAUDATHANG1(string oRDERID)
+        {
+            var oRDERIDParameter = oRDERID != null ?
+                new ObjectParameter("ORDERID", oRDERID) :
+                new ObjectParameter("ORDERID", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SP_CAPNHATTONKHOSAUDATHANG1", oRDERIDParameter);
+        }
+    
+        public virtual int SP_CAPNHATTONKHOSAUDATHANG2(string oRDERID)
+        {
+            var oRDERIDParameter = oRDERID != null ?
+                new ObjectParameter("ORDERID", oRDERID) :
+                new ObjectParameter("ORDERID", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SP_CAPNHATTONKHOSAUDATHANG2", oRDERIDParameter);
+        }
     }
 }

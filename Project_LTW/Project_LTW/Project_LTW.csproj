@@ -132,6 +132,8 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
+    <Compile Include="Areas\Admin\Controllers\ProductController.cs" />
     <Compile Include="CART.cs">
       <DependentUpon>QLQUANAO.tt</DependentUpon>
     </Compile>
@@ -141,7 +143,6 @@
     <Compile Include="CATEGORY.cs">
       <DependentUpon>QLQUANAO.tt</DependentUpon>
     </Compile>
-    <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\CartController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PaymentController.cs" />
@@ -451,6 +452,12 @@
     <Content Include="QLQUANAO.edmx.diagram">
       <DependentUpon>QLQUANAO.edmx</DependentUpon>
     </Content>
+    <Content Include="Areas\Admin\Views\web.config" />
+    <Content Include="Areas\Admin\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\_LayoutAdmin.cshtml" />
+    <Content Include="Areas\Admin\Views\Product\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Product\Create.cshtml" />
+    <Content Include="Areas\Admin\Views\Product\Edit.cshtml" />
     <None Include="Scripts\jquery-3.7.0.intellisense.js" />
     <Content Include="Scripts\jquery-3.7.0.js" />
     <Content Include="Scripts\jquery-3.7.0.min.js" />
@@ -482,9 +489,12 @@
     <Content Include="Views\User\Register.cshtml" />
     <Content Include="Views\Payment\Index.cshtml" />
     <Content Include="Views\Payment\Success.cshtml" />
+    <Content Include="Views\User\OrderHistory.cshtml" />
+    <Content Include="Views\User\OrderDetail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Areas\Admin\Data\" />
     <Folder Include="Views\Admin\" />
   </ItemGroup>
   <ItemGroup>

@@ -73,6 +73,28 @@ namespace Project_LTW.Controllers
         {
             return View("Index", "Payment");
         }
+
+        // Trong CartController.cs
+        public ActionResult ThemGioHang(string id, string type = "normal")
+        {
+            // Lấy giỏ hàng
+            var cart = GetCart(); // Tận dụng hàm GetCart() viết sẵn cho gọn
+
+            cart.Them(id);
+
+            // Lưu lại Session
+            Session["Cart"] = cart;
+
+            // Kiểm tra điều hướng
+            if (type == "buynow")
+            {
+                // Nếu bấm Mua Ngay -> Sang trang Thanh toán
+                return RedirectToAction("Index", "Payment");
+            }
+
+            // Mặc định -> Về trang Giỏ hàng
+            return RedirectToAction("Index", "Cart");
+        }
     }
 
     

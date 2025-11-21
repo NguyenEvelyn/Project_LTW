@@ -3,86 +3,20 @@
 }
 @model IEnumerable<Project_LTW.CATEGORY>
 
-<style>
-    .category-sidebar {
-        background: #f8f9fa;
-        border-radius: 10px;
-        padding: 20px;
-        margin-bottom: 20px;
-    }
-
-    .category-title {
-        font-size: 1.2rem;
-        font-weight: 600;
-        color: #2c3e50;
-        margin-bottom: 15px;
-        padding-bottom: 10px;
-        border-bottom: 2px solid #3498db;
-    }
-
-    .category-list {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-    }
-
-    .category-item {
-        margin-bottom: 8px;
-        border: none !important;
-        background: transparent !important;
-    }
-
-    .category-link {
-        display: block;
-        padding: 12px 15px;
-        color: #495057;
-        text-decoration: none;
-        border-radius: 8px;
-        transition: all 0.3s ease;
-        border-left: 3px solid transparent;
-        background: white;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    }
-
-        .category-link:hover {
-            background: #3498db;
-            color: white;
-            border-left: 3px solid #2980b9;
-            transform: translateX(5px);
-            text-decoration: none;
-        }
-
-    .category-count {
-        background: #e74c3c;
-        color: white;
-        padding: 3px 10px;
-        border-radius: 15px;
-        font-size: 0.8rem;
-        margin-left: 8px;
-        float: right;
-    }
-</style>
-
-
-<div class="category-sidebar">
-    <h5 class="category-title">
-        <i class="bi bi-grid-fill"></i> DANH MỤC SẢN PHẨM
-    </h5>
-
-    <ul class="category-list">
+<div class="card border-0 shadow-sm mb-4">
+    <div class="card-header bg-white border-bottom">
+        <h5 class="mb-0 fw-bold text-uppercase" style="font-size: 1rem;">Danh mục</h5>
+    </div>
+    <div class="list-group list-group-flush">
         @foreach (var item in Model)
         {
-            <li class="list-group-item category-item">
-               <a href="@Url.Action("TimKiemCategory", "Home", new { id = item.DANHMUCID.Trim() })"
-                 class="category-link text-decoration-none">
-                   <i class="bi bi-arrow-right-short"></i>
-                   @item.TENDANHMUC
-                   <span class="category-count">
-                       @item.PRODUCTs.Count()
-                   </span>
-               </a>
-            </li>
-        }
+            <a href="@Url.Action("TimKiemCategory", "Home", new { id = item.DANHMUCID.Trim() })"
+               class="list-group-item list-group-item-action d-flex justify-content-between align-items-center py-3 text-muted">
 
-    </ul>
+                <span>@item.TENDANHMUC</span>
+
+                <span class="badge bg-light text-secondary rounded-pill">@item.PRODUCTs.Count()</span>
+            </a>
+        }
+    </div>
 </div>

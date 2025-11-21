@@ -1,0 +1,54 @@
+﻿@model IEnumerable<Project_LTW.PRODUCT>
+
+@{
+    ViewBag.Title = "Danh sách sản phẩm";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="card shadow border-0">
+    <div class="card-header bg-white d-flex justify-content-between align-items-center py-3">
+        <h5 class="mb-0 fw-bold text-primary">DANH SÁCH SẢN PHẨM</h5>
+        <a href="@Url.Action("Create")" class="btn btn-success btn-sm">
+            <i class="bi bi-plus-lg"></i> Thêm mới
+        </a>
+    </div>
+    <div class="card-body">
+        <table class="table table-hover align-middle">
+            <thead class="table-light">
+                <tr>
+                    <th>Hình ảnh</th>
+                    <th>Tên sản phẩm</th>
+                    <th>Giá bán</th>
+                    <th>Tồn kho</th>
+                    <th>Hành động</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            <img src="@Url.Content("~/assets/" + item.HINHANHDAIDIEN)" style="width: 60px; height: 60px; object-fit: cover; border-radius: 5px;" />
+                        </td>
+                        <td class="fw-bold">@item.TENSANPHAM</td>
+                        <td class="text-danger">@decimal.Parse(item.GIA.ToString()).ToString("N0") đ</td>
+                        <td>
+                            @if (item.SOLUONGTONKHO <= 0)
+                            {
+                                <span class="badge bg-danger">Hết hàng</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-success">@item.SOLUONGTONKHO</span>
+                            }
+                        </td>
+                        <td>
+                            <a href="@Url.Action("Edit", new { id = item.SANPHAMID.Trim() })" class="btn btn-primary btn-sm"><i class="bi bi-pencil"></i></a>
+                            <a href="@Url.Action("Delete", new { id = item.SANPHAMID.Trim() })" class="btn btn-danger btn-sm"><i class="bi bi-trash"></i></a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

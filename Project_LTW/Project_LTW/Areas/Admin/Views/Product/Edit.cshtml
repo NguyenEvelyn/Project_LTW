@@ -1,0 +1,99 @@
+﻿@model Project_LTW.PRODUCT
+
+@{
+    ViewBag.Title = "Cập nhật sản phẩm";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="card shadow">
+    <div class="card-header bg-warning text-dark">
+        <h5 class="mb-0">CẬP NHẬT SẢN PHẨM: @Model.TENSANPHAM</h5>
+    </div>
+    <div class="card-body">
+        @using (Html.BeginForm("Edit", "Product", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(model => model.SANPHAMID)
+            @Html.HiddenFor(model => model.HINHANHDAIDIEN)
+
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Tên sản phẩm</label>
+                        @Html.EditorFor(model => model.TENSANPHAM, new { htmlAttributes = new { @class = "form-control" } })
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-bold">Giá bán (VNĐ)</label>
+                            @Html.EditorFor(model => model.GIA, new { htmlAttributes = new { @class = "form-control", type = "number" } })
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-bold">Giá gốc (VNĐ)</label>
+                            @Html.EditorFor(model => model.GIAGOC, new { htmlAttributes = new { @class = "form-control", type = "number" } })
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-bold">Số lượng tồn</label>
+                            @Html.EditorFor(model => model.SOLUONGTONKHO, new { htmlAttributes = new { @class = "form-control", type = "number" } })
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-bold">Màu sắc</label>
+                            @{
+                                string listColor = "";
+                                if (Model.PRODUCT_COLOR != null)
+                                {
+                                    listColor = string.Join(", ", Model.PRODUCT_COLOR.Select(c => c.MAUSAC));
+                                }
+                            }
+                            <input type="text" name="strMAUSAC" class="form-control" value="@listColor" placeholder="Ví dụ: Đỏ, Xanh" />
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-bold">Size</label>
+                            @{
+                                string listSize = "";
+                                if (Model.PRODUCT_SIZE != null)
+                                {
+                                    listSize = string.Join(", ", Model.PRODUCT_SIZE.Select(s => s.SIZE));
+                                }
+                            }
+                            <input type="text" name="strSIZE" class="form-control" value="@listSize" placeholder="Ví dụ: S, M, L" />
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Mô tả</label>
+                        <textarea class="form-control" name="MOTA" rows="5">@Model.MOTA</textarea>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Danh mục</label>
+                        @Html.DropDownList("DANHMUCID", null, htmlAttributes: new { @class = "form-select" })
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Hình ảnh hiện tại</label>
+                        <div class="mb-2 text-center">
+                            <img src="~/assets/@Model.HINHANHDAIDIEN" class="img-thumbnail" style="max-height: 200px" />
+                        </div>
+                        <label class="form-label fw-bold text-primary">Chọn ảnh mới (nếu muốn thay đổi)</label>
+                        <input type="file" name="UploadImage" class="form-control" accept="image/*" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-4">
+                <button type="submit" class="btn btn-warning"><i class="bi bi-pencil-square"></i> Cập nhật</button>
+                <a href="@Url.Action("Index")" class="btn btn-secondary">Quay lại</a>
+            </div>
+        }
+    </div>
+</div>

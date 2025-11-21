@@ -173,5 +173,7 @@
       </ResultMapping>
     </FunctionImportMapping>
     <FunctionImportMapping FunctionImportName="SP_THONGKEDONHANGTHEOKHACHHANG" FunctionName="FashionWebModel.Store.SP_THONGKEDONHANGTHEOKHACHHANG" />
+    <FunctionImportMapping FunctionImportName="SP_CAPNHATTONKHOSAUDATHANG1" FunctionName="FashionWebModel.Store.SP_CAPNHATTONKHOSAUDATHANG" />
+    <FunctionImportMapping FunctionImportName="SP_CAPNHATTONKHOSAUDATHANG2" FunctionName="FashionWebModel.Store.SP_CAPNHATTONKHOSAUDATHANG" />
   </EntityContainerMapping>
 </Mapping>

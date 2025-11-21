@@ -146,7 +146,7 @@
                 <div class="color-options">
                     @foreach (var color in Model.PRODUCT_COLOR)
                     {
-                        <p type="button" class="btn color-btn" data-color="@color.MAUSAC">@color.MAUSAC</p>
+                        <div type="button" class="btn color-btn" data-color="@color.MAUSAC">@color.MAUSAC</div>
                     }
                 </div>
                 <small class="text-danger d-none" id="colorError">Vui lòng chọn màu sắc</small>
@@ -157,7 +157,7 @@
                 <div class="size-options">
                     @foreach (var size in Model.PRODUCT_SIZE)
                     {
-                        <button type="button" class="btn size-btn" data-size="@size.SIZE">@size.SIZE</button>
+                        <div type="button" class="btn size-btn" data-size="@size.SIZE">@size.SIZE</div>
                     }
                 </div>
                 <small class="text-danger d-none" id="sizeError">Vui lòng chọn size</small>
@@ -191,73 +191,74 @@
 </div>
 
 
-<script>
-    $(document).ready(function () {
-        console.log("jQuery is working!");
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            console.log("jQuery đã chạy!");
 
-        // 1. Xử lý click thumbnail
-        $('.thumbnails').on("click", ".img-thumbnail", function () {
-            var newImageSrc = $(this).data("full-src");
-            console.log("Changing to image:", newImageSrc);
-            $("#mainImage").attr("src", newImageSrc);
-            $(".img-thumbnail").removeClass("active-thumb");
-            $(this).addClass("active-thumb");
+            // 1. Xử lý click thumbnail
+            $('.thumbnails').on("click", ".img-thumbnail", function () {
+                var newImageSrc = $(this).data("full-src");
+                $("#mainImage").attr("src", newImageSrc);
+                $(".img-thumbnail").removeClass("active-thumb");
+                $(this).addClass("active-thumb");
+            });
+
+            // 2. Xử lý chọn màu (Sửa lại sự kiện click cho chắc chắn)
+            $(document).on('click', '.color-btn', function () {
+                var selectedColor = $(this).data('color');
+                console.log("Đã chọn màu:", selectedColor);
+
+                $('.color-btn').removeClass('active');
+                $(this).addClass('active');
+                $('#selectedColor').val(selectedColor);
+                $('#colorError').addClass('d-none');
+
+                // Tìm ảnh thumbnail tương ứng màu để click
+                var $matchingThumbnail = $('.img-thumbnail[data-color="' + selectedColor + '"]');
+                if ($matchingThumbnail.length > 0) {
+                    $matchingThumbnail.first().click();
+                }
+            });
+
+            // 3. Xử lý chọn size
+            $(document).on('click', '.size-btn', function () {
+                var selectedSize = $(this).data('size');
+
+                $('.size-btn').removeClass('active');
+                $(this).addClass('active');
+                $('#selectedSize').val(selectedSize);
+                $('#sizeError').addClass('d-none');
+            });
+
+            // 4. Validate form
+            $('form').on('submit', function (e) {
+                var hasError = false;
+                if (!$('#selectedColor').val()) {
+                    $('#colorError').removeClass('d-none');
+                    hasError = true;
+                }
+                if (!$('#selectedSize').val()) {
+                    $('#sizeError').removeClass('d-none');
+                    hasError = true;
+                }
+                if (hasError) {
+                    e.preventDefault();
+                    $('html, body').animate({
+                        scrollTop: $('.color-options').offset().top - 150
+                    }, 500);
+                }
+            });
+
+            // 5. Tự động chọn option đầu tiên
+            setTimeout(function () {
+                if (!$('#selectedColor').val() && $('.color-btn').length > 0) {
+                    $('.color-btn').first().click();
+                }
+                if (!$('#selectedSize').val() && $('.size-btn').length > 0) {
+                    $('.size-btn').first().click();
+                }
+            }, 100);
         });
-
-        // 2. Xử lý chọn màu
-        $('.color-btn').on('click', function () {
-            var selectedColor = $(this).data('color');
-            console.log("Selected color:", selectedColor);
-
-            $('.color-btn').removeClass('active');
-            $(this).addClass('active');
-            $('#selectedColor').val(selectedColor);
-            $('#colorError').addClass('d-none');
-
-            var $matchingThumbnail = $('.img-thumbnail[data-color="' + selectedColor + '"]');
-            console.log("Found thumbnails:", $matchingThumbnail.length);
-
-            if ($matchingThumbnail.length > 0) {
-                $matchingThumbnail.first().click();
-            }
-        });
-
-        // 3. Xử lý chọn size
-        $('.size-btn').on('click', function () {
-            var selectedSize = $(this).data('size');
-            $('.size-btn').removeClass('active');
-            $(this).addClass('active');
-            $('#selectedSize').val(selectedSize);
-            $('#sizeError').addClass('d-none');
-        });
-
-        // 4. Validate form
-        $('form').on('submit', function (e) {
-            var hasError = false;
-            if (!$('#selectedColor').val()) {
-                $('#colorError').removeClass('d-none');
-                hasError = true;
-            }
-            if (!$('#selectedSize').val()) {
-                $('#sizeError').removeClass('d-none');
-                hasError = true;
-            }
-            if (hasError) {
-                e.preventDefault();
-                $('html, body').animate({
-                    scrollTop: $('.color-options').offset().top - 100
-                }, 500);
-            }
-        });
-
-        // 5. Tự động chọn option đầu tiên
-        setTimeout(function () {
-            if (!$('#selectedColor').val() && $('.color-btn').length > 0) {
-                $('.color-btn').first().click();
-            }
-            if (!$('#selectedSize').val() && $('.size-btn').length > 0) {
-                $('.size-btn').first().click();
-            }
-        }, 100);
-    });
-</script>
+    </script>
+}

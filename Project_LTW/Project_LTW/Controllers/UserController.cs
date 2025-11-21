@@ -96,5 +96,51 @@ namespace Project_LTW.Controllers
             Session["User"] = null; // Xóa session
             return RedirectToAction("Index", "Home"); // Quay về trang chủ
         }
+
+        // =============================================
+        //  DANH SÁCH ĐƠN HÀNG ĐÃ ĐẶT
+        // =============================================
+        public ActionResult OrderHistory()
+        {
+            // Kiểm tra đăng nhập
+            if (Session["User"] == null)
+                return RedirectToAction("Login");
+
+            var user = Session["User"] as CUSTOMER;
+
+            // Lấy danh sách đơn hàng của user đó, sắp xếp mới nhất lên đầu
+            var orders = db.ORDERS
+                           .Where(o => o.KHACHHANGID == user.KHACHHANGID)
+                           .OrderByDescending(o => o.NGAYDAT)
+                           .ToList();
+
+            return View(orders);
+        }
+
+        // =============================================
+        // XEM CHI TIẾT MỘT ĐƠN HÀNG
+        // =============================================
+        public ActionResult OrderDetail(string id)
+        {
+            if (Session["User"] == null)
+                return RedirectToAction("Login");
+
+            // Lấy đơn hàng theo ID
+            var order = db.ORDERS.FirstOrDefault(o => o.ORDERID == id);
+
+            if (order == null)
+            {
+                return HttpNotFound(); // Không tìm thấy đơn
+            }
+
+            // Bảo mật: Kiểm tra đơn này có đúng của user đang đăng nhập không?
+            var user = Session["User"] as CUSTOMER;
+            if (order.KHACHHANGID != user.KHACHHANGID)
+            {
+                return RedirectToAction("OrderHistory"); // Không phải của mình thì đá về danh sách
+            }
+
+            return View(order);
+        }
     }
 }
