@@ -39,25 +39,12 @@
                             <label class="form-label fw-bold">Số lượng tồn</label>
                             @Html.EditorFor(model => model.SOLUONGTONKHO, new { htmlAttributes = new { @class = "form-control", type = "number" } })
                         </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label fw-bold">Màu sắc</label>
-                            @{
-                                string listColor = "";
-                                if (Model.PRODUCT_COLOR != null)
-                                {
-                                    listColor = string.Join(", ", Model.PRODUCT_COLOR.Select(c => c.MAUSAC));
-                                }
-                            }
-                            <input type="text" name="strMAUSAC" class="form-control" value="@listColor" placeholder="Ví dụ: Đỏ, Xanh" />
-                        </div>
 
                         <div class="col-md-6 mb-3">
                             <label class="form-label fw-bold">Size</label>
                             @{
                                 string listSize = "";
+                                // Kiểm tra null an toàn
                                 if (Model.PRODUCT_SIZE != null)
                                 {
                                     listSize = string.Join(", ", Model.PRODUCT_SIZE.Select(s => s.SIZE));
@@ -80,15 +67,75 @@
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label fw-bold">Hình ảnh hiện tại</label>
+                        <label class="form-label fw-bold">Hình ảnh đại diện hiện tại</label>
                         <div class="mb-2 text-center">
                             <img src="~/assets/@Model.HINHANHDAIDIEN" class="img-thumbnail" style="max-height: 200px" />
                         </div>
+
                         <label class="form-label fw-bold text-primary">Chọn ảnh mới (nếu muốn thay đổi)</label>
                         <input type="file" name="UploadImage" class="form-control" accept="image/*" />
+
+                        @{
+                            // Lấy màu sắc hiện tại của ảnh đại diện (dùng ?. để tránh lỗi null)
+                            var mainImageColor = Model.PRODUCT_IMAGE?.FirstOrDefault(i => i.TENHINH == Model.HINHANHDAIDIEN)?.MAUSAC ?? "";
+                        }
+                        <label class="form-label mt-2">Màu sắc ảnh đại diện</label>
+                        <input type="text" name="MainImageColor" value="@mainImageColor" class="form-control" placeholder="Nhập màu (Vd: Đỏ)" />
                     </div>
                 </div>
             </div>
+
+            <hr />
+
+            <div class="row">
+                <div class="col-md-6">
+                    @{
+                        // Lọc ra các ảnh phụ (không phải ảnh đại diện) và chuyển thành List để đếm/lặp an toàn
+                        var subImages = Model.PRODUCT_IMAGE?.Where(i => i.TENHINH != Model.HINHANHDAIDIEN).ToList();
+                    }
+                    <h5 class="fw-bold mb-3">Ảnh phụ hiện tại (@(subImages?.Count ?? 0))</h5>
+
+                    @if (subImages != null && subImages.Count > 0)
+                    {
+                        int index = 0;
+                        foreach (var image in subImages)
+                        {
+                            <div class="d-flex align-items-center mb-3 p-2 border rounded">
+                                <img src="~/assets/@image.TENHINH" class="img-thumbnail me-3" style="width: 60px; height: 60px; object-fit: cover;" />
+
+                                <div class="flex-grow-1">
+                                    <label class="form-label mb-1">Màu sắc:</label>
+                                    <input type="text"
+                                           name="ExistingSubImageColors[@index]"
+                                           value="@image.MAUSAC"
+                                           class="form-control form-control-sm"
+                                           placeholder="Nhập màu" />
+                                </div>
+
+                                <div class="ms-3 text-danger d-flex flex-column align-items-center justify-content-center">
+                                    <label for="delete-@image.IMAGEID" class="form-label mb-1">Xóa?</label>
+                                    <input type="checkbox"
+                                           id="delete-@image.IMAGEID"
+                                           name="ImagesToDelete"
+                                           value="@image.IMAGEID"
+                                           class="form-check-input" />
+                                </div>
+                            </div>
+                            index++;
+                        }
+                    }
+                </div>
+
+                <div class="col-md-6">
+                    <h5 class="fw-bold mb-3">Thêm Ảnh phụ MỚI</h5>
+                    <input type="file" id="subImageUpload" name="SubImageFiles" class="form-control" accept="image/*" multiple="multiple" onchange="setupSubImagesForm(this)" />
+
+                    <div id="subImagesContainer" class="mt-3">
+                        <p class="text-muted">Chọn file để thêm ảnh và nhập màu tương ứng.</p>
+                    </div>
+                </div>
+            </div>
+
 
             <div class="mt-4">
                 <button type="submit" class="btn btn-warning"><i class="bi bi-pencil-square"></i> Cập nhật</button>
@@ -97,3 +144,48 @@
         }
     </div>
 </div>
+
+@section scripts {
+    <script>
+        // Hàm này tạo ra các input màu cho ảnh phụ MỚI
+        function setupSubImagesForm(input) {
+            const container = document.getElementById('subImagesContainer');
+            container.innerHTML = '';
+
+            if (input.files.length === 0) return;
+
+            for (let i = 0; i < input.files.length; i++) {
+                const file = input.files[i];
+                const reader = new FileReader();
+
+                reader.onload = function (e) {
+                    const imageItem = document.createElement('div');
+                    imageItem.className = 'd-flex align-items-center mb-3 p-2 border rounded bg-light';
+
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+                    img.className = 'img-thumbnail me-3';
+                    img.style.width = '80px';
+                    img.style.height = '80px';
+                    img.style.objectFit = 'cover';
+
+                    // Name="SubImageColors" được gửi thành mảng trong Controller
+                    const inputHtml = `
+                            <div class="flex-grow-1">
+                                <label class="form-label mb-1">Nhập màu cho ảnh mới (${file.name}):</label>
+                                <input type="text"
+                                       name="SubImageColors"
+                                       class="form-control form-control-sm"
+                                       placeholder="Vd: Đỏ" />
+                            </div>
+                        `;
+
+                    imageItem.appendChild(img);
+                    imageItem.innerHTML += inputHtml;
+                    container.appendChild(imageItem);
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+    </script>
+}

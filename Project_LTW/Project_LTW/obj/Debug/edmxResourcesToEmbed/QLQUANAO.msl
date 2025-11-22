@@ -172,8 +172,36 @@
         </ComplexTypeMapping>
       </ResultMapping>
     </FunctionImportMapping>
-    <FunctionImportMapping FunctionImportName="SP_THONGKEDONHANGTHEOKHACHHANG" FunctionName="FashionWebModel.Store.SP_THONGKEDONHANGTHEOKHACHHANG" />
     <FunctionImportMapping FunctionImportName="SP_CAPNHATTONKHOSAUDATHANG1" FunctionName="FashionWebModel.Store.SP_CAPNHATTONKHOSAUDATHANG" />
     <FunctionImportMapping FunctionImportName="SP_CAPNHATTONKHOSAUDATHANG2" FunctionName="FashionWebModel.Store.SP_CAPNHATTONKHOSAUDATHANG" />
+    <FunctionImportMapping FunctionImportName="SP_THONGKEDONHANGTHEOKHACHHANG" FunctionName="FashionWebModel.Store.SP_THONGKEDONHANGTHEOKHACHHANG">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="FashionWebModel.SP_THONGKEDONHANGTHEOKHACHHANG_Result">
+          <ScalarProperty Name="TenKhachHang" ColumnName="TenKhachHang" />
+          <ScalarProperty Name="SoDonHang" ColumnName="SoDonHang" />
+          <ScalarProperty Name="TongTienDaMua" ColumnName="TongTienDaMua" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="SP_KIEMTRATONKHO_CURSOR" FunctionName="FashionWebModel.Store.SP_KIEMTRATONKHO_CURSOR">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="FashionWebModel.SP_KIEMTRATONKHO_CURSOR_Result">
+          <ScalarProperty Name="MaSP" ColumnName="MaSP" />
+          <ScalarProperty Name="TenSP" ColumnName="TenSP" />
+          <ScalarProperty Name="SoLuong" ColumnName="SoLuong" />
+          <ScalarProperty Name="TrangThai" ColumnName="TrangThai" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="SP_KIEMTRATONKHO_CURSOR1" FunctionName="FashionWebModel.Store.SP_KIEMTRATONKHO_CURSOR">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="FashionWebModel.SP_KIEMTRATONKHO_CURSOR1_Result">
+          <ScalarProperty Name="MaSP" ColumnName="MaSP" />
+          <ScalarProperty Name="TenSP" ColumnName="TenSP" />
+          <ScalarProperty Name="SoLuong" ColumnName="SoLuong" />
+          <ScalarProperty Name="TrangThai" ColumnName="TrangThai" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
   </EntityContainerMapping>
 </Mapping>

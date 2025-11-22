@@ -1,0 +1,55 @@
+﻿@model IEnumerable<Project_LTW.ORDER>
+
+@{
+    ViewBag.Title = "Quản lý đơn hàng";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="card shadow">
+    <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+        <h5 class="mb-0">DANH SÁCH ĐƠN HÀNG</h5>
+    </div>
+    <div class="card-body">
+        <table class="table table-hover table-bordered">
+            <thead class="table-light">
+                <tr>
+                    <th>Mã đơn</th>
+                    <th>Khách hàng</th>
+                    <th>Ngày đặt</th>
+                    <th>Tổng tiền</th>
+                    <th>Trạng thái</th>
+                    <th>Hành động</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td><strong>#@item.ORDERID</strong></td>
+                        <td>
+                            @item.CUSTOMER.HOTEN <br />
+                            <small class="text-muted">@item.CUSTOMER.DIENTHOAI</small>
+                        </td>
+                        <td>@string.Format("{0:dd/MM/yyyy }", item.NGAYDAT)</td>
+                        <td class="text-danger fw-bold">@decimal.Parse(item.TONGTIEN.ToString()).ToString("N0") đ</td>
+                        <td>
+                            @if (item.TRANGTHAI == "Chờ xử lý")
+                            {<span class="badge bg-warning text-dark">Chờ xử lý</span> }
+                            else if (item.TRANGTHAI == "Đang giao")
+                            { <span class="badge bg-info text-dark">Đang giao</span> }
+                            else if (item.TRANGTHAI == "Đã giao")
+                            { <span class="badge bg-success">Đã giao</span> }
+                            else
+                            { <span class="badge bg-danger">@item.TRANGTHAI</span>}
+                        </td>
+                        <td>
+                            <a href="@Url.Action("Details", new { id = item.ORDERID.Trim() })" class="btn btn-sm btn-primary">
+                                <i class="bi bi-eye"></i> Xem & Xử lý
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

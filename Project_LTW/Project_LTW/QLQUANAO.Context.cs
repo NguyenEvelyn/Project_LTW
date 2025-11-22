@@ -182,11 +182,6 @@ namespace Project_LTW
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_THONGKEDOANHTHUTHEOTHANG_Result>("SP_THONGKEDOANHTHUTHEOTHANG", nAMParameter);
         }
     
-        public virtual int SP_THONGKEDONHANGTHEOKHACHHANG()
-        {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SP_THONGKEDONHANGTHEOKHACHHANG");
-        }
-    
         public virtual int SP_CAPNHATTONKHOSAUDATHANG1(string oRDERID)
         {
             var oRDERIDParameter = oRDERID != null ?
@@ -203,6 +198,21 @@ namespace Project_LTW
                 new ObjectParameter("ORDERID", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SP_CAPNHATTONKHOSAUDATHANG2", oRDERIDParameter);
+        }
+    
+        public virtual ObjectResult<SP_THONGKEDONHANGTHEOKHACHHANG_Result> SP_THONGKEDONHANGTHEOKHACHHANG()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_THONGKEDONHANGTHEOKHACHHANG_Result>("SP_THONGKEDONHANGTHEOKHACHHANG");
+        }
+    
+        public virtual ObjectResult<SP_KIEMTRATONKHO_CURSOR_Result> SP_KIEMTRATONKHO_CURSOR()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_KIEMTRATONKHO_CURSOR_Result>("SP_KIEMTRATONKHO_CURSOR");
+        }
+    
+        public virtual ObjectResult<SP_KIEMTRATONKHO_CURSOR1_Result> SP_KIEMTRATONKHO_CURSOR1()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_KIEMTRATONKHO_CURSOR1_Result>("SP_KIEMTRATONKHO_CURSOR1");
         }
     }
 }

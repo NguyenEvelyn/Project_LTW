@@ -1,0 +1,233 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+
+
+<style>
+    .small-box {
+        border-radius: 0.25rem;
+        box-shadow: 0 0 1px rgba(0,0,0,.125), 0 1px 3px rgba(0,0,0,.2);
+        display: block;
+        margin-bottom: 20px;
+        position: relative;
+        color: #fff;
+        overflow: hidden;
+    }
+
+        .small-box > .inner {
+            padding: 20px;
+        }
+
+        .small-box h3 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin: 0;
+        }
+
+        .small-box p {
+            font-size: 1.1rem;
+            margin-top: 5px;
+        }
+
+        .small-box .icon {
+            color: rgba(0,0,0,.15);
+            z-index: 0;
+        }
+
+            .small-box .icon > i {
+                font-size: 80px;
+                position: absolute;
+                right: 20px;
+                top: 20px;
+                transition: all .3s linear;
+            }
+
+        .small-box:hover .icon > i {
+            transform: scale(1.1);
+        }
+
+        .small-box > .small-box-footer {
+            background-color: rgba(0,0,0,.1);
+            color: rgba(255,255,255,.8);
+            display: block;
+            padding: 5px 0;
+            text-align: center;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+            .small-box > .small-box-footer:hover {
+                color: #fff;
+                background-color: rgba(0,0,0,.15);
+            }
+
+    /* Màu sắc */
+    .bg-info {
+        background-color: #17a2b8 !important;
+    }
+    /* Xanh dương */
+    .bg-success {
+        background-color: #28a745 !important;
+    }
+    /* Xanh lá */
+    .bg-warning {
+        background-color: #ffc107 !important;
+        color: #1f2d3d !important;
+    }
+    /* Vàng */
+    .bg-danger {
+        background-color: #dc3545 !important;
+    }
+    /* Đỏ */
+
+    /* Info Box nhỏ */
+    .info-box {
+        box-shadow: 0 0 1px rgba(0,0,0,.125), 0 1px 3px rgba(0,0,0,.2);
+        border-radius: 0.5rem;
+        background: #fff;
+        display: flex;
+        margin-bottom: 1rem;
+        min-height: 100px;
+        padding: 15px;
+        align-items: center;
+    }
+
+    .info-box-icon {
+        border-radius: 0.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2.5rem;
+        width: 80px;
+        height: 80px;
+        color: #fff;
+        margin-right: 15px;
+    }
+
+    .info-box-content {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .info-box-text {
+        font-size: 1rem;
+        color: #6c757d;
+        text-transform: uppercase;
+        font-weight: bold;
+    }
+
+    .info-box-number {
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: #343a40;
+    }
+</style>
+
+<div class="container-fluid py-4">
+    <h3 class="mb-4 text-gray-800 fw-bold border-bottom pb-2">TỔNG QUAN HỆ THỐNG</h3>
+
+    <div class="row">
+        <div class="col-lg-3 col-6">
+            <div class="small-box bg-success">
+                <div class="inner">
+                    <h3>@ViewBag.SoLuongSanPham</h3>
+                    <p>Sản phẩm đang bán</p>
+                </div>
+                <div class="icon">
+                    <i class="bi bi-box-seam"></i>
+                </div>
+                <a href="@Url.Action("Index", "Product")" class="small-box-footer">
+                    Quản lý sản phẩm <i class="bi bi-arrow-right-circle"></i>
+                </a>
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-6">
+            <div class="small-box bg-info">
+                <div class="inner">
+                    <h3>@ViewBag.DonHangMoi</h3>
+                    <p>Đơn hàng mới</p>
+                </div>
+                <div class="icon">
+                    <i class="bi bi-cart-check"></i>
+                </div>
+                <a href="@Url.Action("Index", "Order")" class="small-box-footer">
+                    Xử lý đơn hàng <i class="bi bi-arrow-right-circle"></i>
+                </a>
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-6">
+            <div class="small-box bg-warning">
+                <div class="inner" style="color: white !important;">
+                    <h3>@ViewBag.SoLuongKhachHang</h3>
+                    <p>Khách hàng thành viên</p>
+                </div>
+                <div class="icon">
+                    <i class="bi bi-people-fill"></i>
+                </div>
+                <a href="@Url.Action("Index", "Customer")" class="small-box-footer" style="color: white !important;">
+                    Xem danh sách <i class="bi bi-arrow-right-circle"></i>
+                </a>
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-6">
+            <div class="small-box bg-danger">
+                <div class="inner">
+                    <h3>@ViewBag.SoLuongDanhMuc</h3>
+                    <p>Danh mục / Loại hàng</p>
+                </div>
+                <div class="icon">
+                    <i class="bi bi-tags-fill"></i>
+                </div>
+                <a href="#" class="small-box-footer">
+                    Chi tiết <i class="bi bi-arrow-right-circle"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <h5 class="mt-4 mb-3 text-muted fw-bold">Truy cập nhanh</h5>
+    <div class="row">
+        <div class="col-md-4 col-sm-6">
+            <a href="@Url.Action("Index", "DoanhThu")" class="text-decoration-none">
+                <div class="info-box shadow-sm">
+                    <span class="info-box-icon bg-primary"><i class="bi bi-graph-up-arrow"></i></span>
+                    <div class="info-box-content">
+                        <span class="info-box-text">Báo cáo doanh thu</span>
+                        <span class="info-box-number text-primary">Xem ngay</span>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        <div class="col-md-4 col-sm-6">
+            <a href="@Url.Action("Index", "Product")" class="text-decoration-none">
+                <div class="info-box shadow-sm">
+                    <span class="info-box-icon bg-warning"><i class="bi bi-clipboard-data text-white"></i></span>
+                    <div class="info-box-content">
+                        <span class="info-box-text">Kiểm tra kho (Cursor)</span>
+                        <span class="info-box-number text-warning">Check tồn kho</span>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        <div class="col-md-4 col-sm-6">
+            <a href="@Url.Action("Index", "Home", new { area = "" })" class="text-decoration-none">
+                <div class="info-box shadow-sm">
+                    <span class="info-box-icon bg-dark"><i class="bi bi-shop"></i></span>
+                    <div class="info-box-content">
+                        <span class="info-box-text">Trang bán hàng</span>
+                        <span class="info-box-number text-dark">Về trang chủ</span>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+</div>
