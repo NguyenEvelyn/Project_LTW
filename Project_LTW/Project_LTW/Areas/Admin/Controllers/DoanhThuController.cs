@@ -4,8 +4,12 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Project_LTW.Models;
+using Project_LTW.Areas.Admin.Controllers;
+
+
 namespace Project_LTW.Areas.Admin.Controllers
 {
+    [CheckAdmin]
     public class DoanhThuController : Controller
     {
         // GET: Admin/DoanhThu

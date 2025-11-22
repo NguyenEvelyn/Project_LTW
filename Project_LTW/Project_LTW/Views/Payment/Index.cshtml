@@ -1,14 +1,22 @@
 ﻿@using Project_LTW.Models
+@using System.Linq
 @{
     ViewBag.Title = "Thanh toán";
     Layout = "~/Views/Shared/_Layout.cshtml";
 
-    // Kiểm tra null an toàn hơn
+    // Lấy dữ liệu từ ViewBag
     var cart = ViewBag.Cart as List<CartItem>;
     var user = ViewBag.User as CUSTOMER;
+    var savedAddresses = ViewBag.Addresses as List<ADDRESS>;
 
-    // Xử lý null cho total để tránh lỗi
+    // Xử lý null an toàn hơn
     decimal total = ViewBag.Total != null ? (decimal)ViewBag.Total : 0;
+
+    // Kiểm tra xem user có địa chỉ đã lưu hay không
+    bool hasSavedAddresses = savedAddresses != null && savedAddresses.Any();
+
+    // Nếu có địa chỉ lưu, mặc định chọn địa chỉ đầu tiên
+    bool isFirstAddressSelected = hasSavedAddresses;
 }
 
 <div class="container py-5">
@@ -43,16 +51,91 @@
                             </div>
 
                             <div class="mb-3">
-                                <label for="ShipAddress" class="form-label">Địa chỉ giao hàng *</label>
-                                <textarea class="form-control" id="ShipAddress" name="ShipAddress"
-                                          rows="3" required placeholder="Số nhà, tên đường, phường/xã, quận/huyện..."></textarea>
-                                <div class="invalid-feedback">Vui lòng nhập địa chỉ giao hàng</div>
+                                <label class="form-label fw-bold">Địa chỉ giao hàng *</label>
+
+                                @if (hasSavedAddresses)
+                                {
+                                    <div class="border p-3 rounded-3 mb-3 bg-light">
+                                        <p class="fw-bold mb-2 text-primary">Chọn địa chỉ đã lưu:</p>
+
+                                        @foreach (var address in savedAddresses)
+                                        {
+                                            // Format địa chỉ đầy đủ để hiển thị và lưu
+                                            string fullAddress = $"{address.DUONG}, {address.THANHPHO}, {address.TINH}";
+                                            bool isFirst = savedAddresses.IndexOf(address) == 0;
+
+                                            <div class="form-check mb-1">
+                                                <input class="form-check-input address-option" type="radio" name="addressOption"
+                                                       id="address_@address.DIACHIID" value="saved_@address.DIACHIID"
+                                                       data-address-value="@fullAddress" required @(isFirst ? "checked" : "")>
+                                                <label class="form-check-label" for="address_@address.DIACHIID">
+                                                    @fullAddress
+                                                    @if (isFirst)
+                                                    {<span class="badge bg-primary ms-2">Mặc định</span>}
+                                                </label>
+                                            </div>
+                                        }
+
+                                        <hr class="my-2">
+
+                                        <div class="form-check">
+                                            <input class="form-check-input address-option" type="radio" name="addressOption" id="address_new"
+                                                   value="new_address" required @(!isFirstAddressSelected ? "checked" : "")>
+                                            <label class="form-check-label fw-bold" for="address_new">
+                                                Hoặc nhập địa chỉ mới
+                                            </label>
+                                        </div>
+                                    </div>
+
+
+                                    <textarea class="form-control" id="ShipAddressManual"
+                                              rows="3" placeholder="Số nhà, tên đường, phường/xã, quận/huyện..."
+                                              style="@(isFirstAddressSelected ? "display:none;" : "")"></textarea>
+
+
+                                    <input type="hidden" id="ShipAddress" name="ShipAddress" required />
+                                }
+                                else
+                                {
+
+                                    <textarea class="form-control" id="ShipAddressManual" name="ShipAddress"
+                                              rows="3" required placeholder="Số nhà, tên đường, phường/xã, quận/huyện..."></textarea>
+
+                                    <input type="hidden" name="addressOption" value="new_address" />
+                                }
+
+                                <div class="invalid-feedback">Vui lòng chọn hoặc nhập địa chỉ giao hàng.</div>
                             </div>
 
                             <div class="mb-3">
                                 <label for="Note" class="form-label">Ghi chú (tùy chọn)</label>
                                 <textarea class="form-control" id="Note" name="Note" rows="2" placeholder="Ví dụ: Giao giờ hành chính, gọi trước khi giao..."></textarea>
                             </div>
+
+                            <div class="mb-4">
+                                <label class="form-label fw-bold">Phương thức thanh toán *</label>
+                                <div class="border p-3 rounded-3 bg-light">
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input payment-method" type="radio" name="PaymentMethod"
+                                               id="payment_cod" value="COD" required checked>
+                                        <label class="form-check-label fw-bold" for="payment_cod">
+                                            <i class="bi bi-box-seam me-1"></i> Thanh toán khi nhận hàng (COD)
+                                        </label>
+                                        <p class="text-muted small ms-4 mb-0">Thanh toán bằng tiền mặt trực tiếp cho nhân viên giao hàng.</p>
+                                    </div>
+
+                                    <div class="form-check">
+                                        <input class="form-check-input payment-method" type="radio" name="PaymentMethod"
+                                               id="payment_transfer" value="Chuyển khoản">
+                                        <label class="form-check-label fw-bold" for="payment_transfer">
+                                            <i class="bi bi-bank me-1"></i> Chuyển khoản Ngân hàng
+                                        </label>
+                                        <p class="text-muted small ms-4 mb-0">Thanh toán trước qua ngân hàng. Đơn hàng sẽ được xử lý sau khi xác nhận thanh toán.</p>
+                                    </div>
+                                </div>
+                                <div class="invalid-feedback">Vui lòng chọn phương thức thanh toán.</div>
+                            </div>
+
 
                             if (ViewBag.Error != null)
                             {
@@ -64,62 +147,133 @@
                             </button>
                         }
                     </div>
-                </div>
-            </div>
+                                                        </div>
+                                                    </div>
 
-            <div class="col-lg-4">
-                <div class="card shadow-sm">
-                    <div class="card-header bg-light">
-                        <h5 class="mb-0"><i class="bi bi-receipt me-2"></i>Tóm tắt đơn hàng</h5>
-                    </div>
-                    <div class="card-body">
-                        @foreach (var item in cart)
-                        {
-                            <div class="d-flex justify-content-between align-items-center mb-2">
-                                <div>
-                                    <h6 class="mb-0">@item.TENSP</h6>
-                                    <small class="text-muted">@item.SoLuong x @item.DonGia.ToString("N0")đ</small>
-                                </div>
-                                <span class="fw-bold">@((item.SoLuong * item.DonGia).ToString("N0"))đ</span>
-                            </div>
-                        }
-                        <hr>
-                        <div class="d-flex justify-content-between align-items-center mb-3">
-                            <h5 class="mb-0">Tổng cộng:</h5>
-                            <h4 class="mb-0 text-danger">@total.ToString("N0")đ</h4>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    }
-    else
-    {
-        <div class="text-center py-5">
-            <div class="mb-4">
-                <i class="bi bi-cart-x text-muted" style="font-size: 5rem;"></i>
-            </div>
-            <h3 class="text-muted">Giỏ hàng trống!</h3>
-            <p class="text-muted mb-4">Bạn chưa có sản phẩm nào để thanh toán.</p>
-            <a href="@Url.Action("Index", "Home")" class="btn btn-primary">Tiếp tục mua sắm</a>
-        </div>
-    }
-</div>
+                                                    <div class="col-lg-4">
+                                                        <div class="card shadow-sm">
+                                                            <div class="card-header bg-light">
+                                                                <h5 class="mb-0"><i class="bi bi-receipt me-2"></i>Tóm tắt đơn hàng</h5>
+                                                            </div>
+                                                            <div class="card-body">
+                                                                @foreach (var item in cart)
+                                                                {
+                                                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                                                        <div>
+                                                                            <h6 class="mb-0">@item.TENSP</h6>
+                                                                            <small class="text-muted">@item.SoLuong x @item.DonGia.ToString("N0")đ</small>
+                                                                        </div>
+                                                                        <span class="fw-bold">@((item.SoLuong * item.DonGia).ToString("N0"))đ</span>
+                                                                    </div>
+                                                                }
+                                                                <hr>
+                                                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                                                    <h5 class="mb-0">Tổng cộng:</h5>
+                                                                    <h4 class="mb-0 text-danger">@total.ToString("N0")đ</h4>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            }
+                                            else
+                                            {
+                                                <div class="text-center py-5">
+                                                    <div class="mb-4">
+                                                        <i class="bi bi-cart-x text-muted" style="font-size: 5rem;"></i>
+                                                    </div>
+                                                    <h3 class="text-muted">Giỏ hàng trống!</h3>
+                                                    <p class="text-muted mb-4">Bạn chưa có sản phẩm nào để thanh toán.</p>
+                                                    <a href="@Url.Action("Index", "Home")" class="btn btn-primary">Tiếp tục mua sắm</a>
+                                                </div>
+                                            }
+                                        </div>
 
-<script>
-    // Bootstrap form validation
-    (function () {
-        'use strict'
-        var forms = document.querySelectorAll('.needs-validation')
-        Array.prototype.slice.call(forms)
-            .forEach(function (form) {
-                form.addEventListener('submit', function (event) {
-                    if (!form.checkValidity()) {
-                        event.preventDefault()
-                        event.stopPropagation()
-                    }
-                    form.classList.add('was-validated')
-                }, false)
-            })
-    })()
-</script>
+                                        @section scripts {
+                                        <script>
+                                            // Bootstrap form validation
+                                            (function () {
+                                                'use strict'
+                                                var forms = document.querySelectorAll('.needs-validation')
+                                                Array.prototype.slice.call(forms)
+                                                    .forEach(function (form) {
+                                                        form.addEventListener('submit', function (event) {
+                                                            if (!form.checkValidity()) {
+                                                                event.preventDefault()
+                                                                event.stopPropagation()
+                                                            }
+                                                            form.classList.add('was-validated')
+                                                        }, false)
+                                                    })
+                                            })()
+
+                                            // Logic xử lý chọn địa chỉ đã lưu và nhập địa chỉ mới
+                                            document.addEventListener('DOMContentLoaded', function () {
+                                                const addressOptions = document.querySelectorAll('input[name="addressOption"]');
+                                                const manualInput = document.getElementById('ShipAddressManual');
+                                                const finalAddressInput = document.getElementById('ShipAddress');
+
+                                                // Chỉ chạy logic phức tạp khi có địa chỉ đã lưu
+                                                if (!manualInput || !finalAddressInput) {
+                                                    // Đây là trường hợp không có địa chỉ đã lưu.
+                                                    // Textarea đã có sẵn name="ShipAddress" và required.
+                                                    // Không cần logic JS phức tạp.
+                                                    return;
+                                                }
+
+                                                // === LOGIC CHO TRƯỜNG HỢP CÓ ĐỊA CHỈ ĐÃ LƯU (hasSavedAddresses = true) ===
+
+                                                // 1. Hàm xử lý khi Radio Button thay đổi
+                                                function handleAddressSelection() {
+                                                    const selectedRadio = document.querySelector('input[name="addressOption"]:checked');
+
+                                                    if (!selectedRadio) { return; }
+
+                                                    const selectedValue = selectedRadio.value;
+
+                                                    // Trường hợp 1: Chọn nhập địa chỉ mới
+                                                    if (selectedValue === 'new_address') {
+                                                        manualInput.style.display = 'block';
+                                                        manualInput.setAttribute('required', 'required');
+
+                                                        // Chuyển tên ShipAddress từ Hidden Field sang Textarea để gửi giá trị nhập tay
+                                                        manualInput.setAttribute('name', 'ShipAddress');
+                                                        finalAddressInput.removeAttribute('name');
+                                                        finalAddressInput.removeAttribute('required');
+
+                                                    }
+                                                    // Trường hợp 2: Chọn địa chỉ đã lưu
+                                                    else if (selectedValue.startsWith('saved_')) {
+                                                        manualInput.style.display = 'none';
+                                                        manualInput.removeAttribute('required');
+                                                        manualInput.removeAttribute('name'); // Đảm bảo Textarea không gửi dữ liệu
+
+                                                        // Lấy giá trị địa chỉ đầy đủ từ thuộc tính data-address-value
+                                                        const addressValue = selectedRadio.getAttribute('data-address-value');
+
+                                                        // Chuyển tên ShipAddress từ Textarea về Hidden Field
+                                                        finalAddressInput.setAttribute('name', 'ShipAddress');
+                                                        finalAddressInput.setAttribute('required', 'required');
+                                                        finalAddressInput.value = addressValue; // Cập nhật hidden field
+                                                    }
+                                                }
+
+                                                // 2. Đồng bộ hóa giá trị Textarea sang Hidden Field khi nhập
+                                                manualInput.addEventListener('input', function() {
+                                                    const selectedRadio = document.querySelector('input[name="addressOption"]:checked');
+                                                    if (selectedRadio && selectedRadio.value === 'new_address') {
+                                                         // Không cần đồng bộ nếu đã chuyển name="ShipAddress" cho Textarea
+                                                         // finalAddressInput.value = manualInput.value;
+                                                    }
+                                                });
+
+                                                // 3. Lắng nghe sự kiện thay đổi trên các radio button
+                                                addressOptions.forEach(radio => {
+                                                    radio.addEventListener('change', handleAddressSelection);
+                                                });
+
+                                                // 4. Thiết lập trạng thái ban đầu (RẤT QUAN TRỌNG)
+                                                handleAddressSelection();
+                                            });
+                                        </script>
+                                        }

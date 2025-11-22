@@ -1,0 +1,135 @@
+﻿@model Project_LTW.CUSTOMER
+
+@{
+    ViewBag.Title = "Thông tin Tài khoản";
+    Layout = "~/Views/Shared/_Layout.cshtml"; // Sử dụng Layout Front-end
+}
+
+<div class="container my-5">
+    <h2 class="text-center mb-4">THÔNG TIN TÀI KHOẢN</h2>
+    <hr />
+
+    <div class="row">
+
+        <div class="col-md-3">
+            <div class="list-group shadow-sm">
+
+                <a href="@Url.Action("AccountProfile", "User")" class="list-group-item list-group-item-action active">
+                    <i class="bi bi-person-circle me-2"></i> Thông tin cá nhân
+                </a>
+
+                <a href="@Url.Action("OrderHistory", "User")" class="list-group-item list-group-item-action">
+                    <i class="bi bi-receipt me-2"></i> Lịch sử Đơn hàng
+                </a>
+
+                <a href="@Url.Action("ChangePassword", "User")" class="list-group-item list-group-item-action">
+                    <i class="bi bi-key me-2"></i> Đổi mật khẩu
+                </a>
+
+                <a href="@Url.Action("Logout", "User")" class="list-group-item list-group-item-action text-danger">
+                    <i class="bi bi-box-arrow-right me-2"></i> Đăng xuất
+                </a>
+            </div>
+        </div>
+
+        <div class="col-md-9">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-warning text-white fw-bold">
+                    Cập nhật Thông tin Cơ bản
+                </div>
+                <div class="card-body">
+
+                    @if (!string.IsNullOrEmpty(ViewBag.Error))
+                    {
+                        <div class="alert alert-danger">@ViewBag.Error</div>
+                    }
+                    @if (TempData["SuccessMessage"] != null)
+                    {
+                        <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+                    }
+                    @if (TempData["Error"] != null)
+                    {
+                        <div class="alert alert-danger">@TempData["Error"]</div>
+                    }
+
+                    @using (Html.BeginForm("UpdateProfile", "User", FormMethod.Post, new { @class = "row g-3" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        @Html.HiddenFor(model => model.KHACHHANGID)
+                        @Html.HiddenFor(model => model.PASSWORD) // Giữ lại mật khẩu cũ
+
+                        <div class="col-md-6">
+                            <label for="HOTEN" class="form-label">Họ và Tên</label>
+                            @Html.EditorFor(model => model.HOTEN, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.HOTEN, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="col-md-6">
+                            <label for="EMAIL" class="form-label">Email</label>
+                            @Html.EditorFor(model => model.EMAIL, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.EMAIL, "", new { @class = "text-danger" })
+                            <div class="form-text">Email đăng nhập không thể thay đổi.</div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label for="DIENTHOAI" class="form-label">Số điện thoại</label>
+                            @Html.EditorFor(model => model.DIENTHOAI, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.DIENTHOAI, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="col-12 mt-4">
+                            <button type="submit" class="btn btn-warning">Lưu thông tin</button>
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <div class="card shadow-sm border-0 mt-4">
+                <div class="card-header bg-secondary text-white fw-bold d-flex justify-content-between align-items-center">
+                    Địa chỉ giao hàng đã lưu
+                    <a href="@Url.Action("AddAddress", "User")" class="btn btn-sm btn-light"><i class="bi bi-plus"></i> Thêm mới</a>
+                </div>
+                <div class="card-body">
+                    @if (Model.ADDRESSes != null && Model.ADDRESSes.Any())
+                    {
+                        <ul class="list-group list-group-flush">
+                            @foreach (var address in Model.ADDRESSes)
+                            {
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    <span>
+                                        **@address.DUONG**, @address.THANHPHO, @address.TINH
+                                    </span>
+                                    <div class="d-flex gap-2">
+                                        <a href="@Url.Action("EditAddress", "User", new { addressId = address.DIACHIID })"
+                                           class="btn btn-sm btn-outline-warning">Sửa</a>
+
+                                        @using (Html.BeginForm("DeleteAddress", "User", FormMethod.Post, new { @style = "display: inline;" }))
+                                        {
+                                            @Html.AntiForgeryToken()
+                                            @Html.Hidden("id", address.DIACHIID)
+                                            <button type="submit" class="btn btn-sm btn-outline-danger"
+                                                    onclick="return confirm('Bạn chắc chắn muốn xóa địa chỉ này?');">
+                                                <i class="bi bi-trash"></i> Xóa
+                                            </button>
+                                        }
+                                    </div>
+                                </li>
+                            }
+                        </ul>
+                    }
+                    else
+                    {
+                        <p class="text-muted text-center">Bạn chưa lưu địa chỉ nào.</p>
+                    }
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+}

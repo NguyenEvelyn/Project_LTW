@@ -3,15 +3,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Data.Entity;
+using Project_LTW.Areas.Admin.Controllers;
+
+
 
 namespace Project_LTW.Areas.Admin.Controllers
 {
+    [CheckAdmin] // <--- THÊM DÒNG NÀY
     public class HomeAdminController : Controller
     {
         // GET: Admin/HomeAdmin
   
             FashionWebEntities db = new FashionWebEntities();
 
+        
         // GET: Admin/Home
         public ActionResult Index()
         {

@@ -6,9 +6,12 @@ using System.Web.Mvc;
 using System.IO;
 using Project_LTW.Models;
 using System.Data.Entity;
+using Project_LTW.Areas.Admin.Controllers;
+
 
 namespace Project_LTW.Areas.Admin.Controllers
 {
+    [CheckAdmin] // <--- THÊM DÒNG NÀY
     public class ProductController : Controller
     {
         // GET: Admin/Product
