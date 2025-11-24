@@ -1,4 +1,4 @@
-﻿// T4 code generation is enabled for model 'D:\PRJ_LTW_DOAN\Project_LTW\Project_LTW\Project_LTW\QLQUANAO.edmx'. 
+﻿// T4 code generation is enabled for model 'C:\Users\Phuong Uyen\OneDrive\Documents\GitHub\Project_LTW\Project_LTW\Project_LTW\QLQUANAO.edmx'. 
 // To enable legacy code generation, change the value of the 'Code Generation Strategy' designer
 // property to 'Legacy ObjectContext'. This property is available in the Properties Window when the model
 // is open in the designer.

@@ -13,27 +13,6 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="CARTs">
-      <EntityTypeMapping TypeName="FashionWebModel.CART">
-        <MappingFragment StoreEntitySet="CART">
-          <ScalarProperty Name="CARTID" ColumnName="CARTID" />
-          <ScalarProperty Name="KHACHHANGID" ColumnName="KHACHHANGID" />
-          <ScalarProperty Name="MANV" ColumnName="MANV" />
-          <ScalarProperty Name="NGAYTAO" ColumnName="NGAYTAO" />
-          <ScalarProperty Name="TRANGTHAI" ColumnName="TRANGTHAI" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="CARTDETAILs">
-      <EntityTypeMapping TypeName="FashionWebModel.CARTDETAIL">
-        <MappingFragment StoreEntitySet="CARTDETAIL">
-          <ScalarProperty Name="CARTDETAILID" ColumnName="CARTDETAILID" />
-          <ScalarProperty Name="CARTID" ColumnName="CARTID" />
-          <ScalarProperty Name="SANPHAMID" ColumnName="SANPHAMID" />
-          <ScalarProperty Name="SOLUONG" ColumnName="SOLUONG" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="CATEGORies">
       <EntityTypeMapping TypeName="FashionWebModel.CATEGORY">
         <MappingFragment StoreEntitySet="CATEGORY">
@@ -59,6 +38,8 @@
         <MappingFragment StoreEntitySet="ORDERDETAIL">
           <ScalarProperty Name="ORDERID" ColumnName="ORDERID" />
           <ScalarProperty Name="SANPHAMID" ColumnName="SANPHAMID" />
+          <ScalarProperty Name="MAUSAC" ColumnName="MAUSAC" />
+          <ScalarProperty Name="SIZE" ColumnName="SIZE" />
           <ScalarProperty Name="SOLUONG" ColumnName="SOLUONG" />
           <ScalarProperty Name="DONGIA" ColumnName="DONGIA" />
           <ScalarProperty Name="THANHTIEN" ColumnName="THANHTIEN" />
@@ -75,7 +56,6 @@
           <ScalarProperty Name="TONGTIEN" ColumnName="TONGTIEN" />
           <ScalarProperty Name="TRANGTHAI" ColumnName="TRANGTHAI" />
           <ScalarProperty Name="GHICHU" ColumnName="GHICHU" />
-          <ScalarProperty Name="MANV_XULY" ColumnName="MANV_XULY" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -133,7 +113,6 @@
     <EntitySetMapping Name="STAFFs">
       <EntityTypeMapping TypeName="FashionWebModel.STAFF">
         <MappingFragment StoreEntitySet="STAFF">
-          <ScalarProperty Name="PASSWORD" ColumnName="PASSWORD" />
           <ScalarProperty Name="MANV" ColumnName="MANV" />
           <ScalarProperty Name="HOTEN" ColumnName="HOTEN" />
           <ScalarProperty Name="GIOITINH" ColumnName="GIOITINH" />
@@ -141,6 +120,7 @@
           <ScalarProperty Name="DIACHI" ColumnName="DIACHI" />
           <ScalarProperty Name="DIENTHOAI" ColumnName="DIENTHOAI" />
           <ScalarProperty Name="EMAIL" ColumnName="EMAIL" />
+          <ScalarProperty Name="PASSWORD" ColumnName="PASSWORD" />
           <ScalarProperty Name="CHUCVU" ColumnName="CHUCVU" />
           <ScalarProperty Name="LUONG" ColumnName="LUONG" />
           <ScalarProperty Name="NGAYVAOLAM" ColumnName="NGAYVAOLAM" />
@@ -159,27 +139,12 @@
       </ResultMapping>
     </FunctionImportMapping>
     <FunctionImportMapping FunctionImportName="SP_CAPNHATTHONGTIN_KHACHHANG" FunctionName="FashionWebModel.Store.SP_CAPNHATTHONGTIN_KHACHHANG" />
-    <FunctionImportMapping FunctionImportName="SP_CAPNHATTONKHOSAUDATHANG" FunctionName="FashionWebModel.Store.SP_CAPNHATTONKHOSAUDATHANG" />
-    <FunctionImportMapping FunctionImportName="SP_HUYDONHANG" FunctionName="FashionWebModel.Store.SP_HUYDONHANG" />
-    <FunctionImportMapping FunctionImportName="SP_TAODONHANGTUGIOHANG" FunctionName="FashionWebModel.Store.SP_TAODONHANGTUGIOHANG" />
-    <FunctionImportMapping FunctionImportName="SP_THEMKHACHHANGDIACHI" FunctionName="FashionWebModel.Store.SP_THEMKHACHHANGDIACHI" />
-    <FunctionImportMapping FunctionImportName="SP_THEMSANPHAMMOI" FunctionName="FashionWebModel.Store.SP_THEMSANPHAMMOI" />
-    <FunctionImportMapping FunctionImportName="SP_THONGKEDOANHTHUTHEOTHANG" FunctionName="FashionWebModel.Store.SP_THONGKEDOANHTHUTHEOTHANG">
+    <FunctionImportMapping FunctionImportName="SP_HUYDONHANG" FunctionName="FashionWebModel.Store.SP_HUYDONHANG">
       <ResultMapping>
-        <ComplexTypeMapping TypeName="FashionWebModel.SP_THONGKEDOANHTHUTHEOTHANG_Result">
-          <ScalarProperty Name="THANG" ColumnName="THANG" />
-          <ScalarProperty Name="DOANHTHU" ColumnName="DOANHTHU" />
-        </ComplexTypeMapping>
-      </ResultMapping>
-    </FunctionImportMapping>
-    <FunctionImportMapping FunctionImportName="SP_CAPNHATTONKHOSAUDATHANG1" FunctionName="FashionWebModel.Store.SP_CAPNHATTONKHOSAUDATHANG" />
-    <FunctionImportMapping FunctionImportName="SP_CAPNHATTONKHOSAUDATHANG2" FunctionName="FashionWebModel.Store.SP_CAPNHATTONKHOSAUDATHANG" />
-    <FunctionImportMapping FunctionImportName="SP_THONGKEDONHANGTHEOKHACHHANG" FunctionName="FashionWebModel.Store.SP_THONGKEDONHANGTHEOKHACHHANG">
-      <ResultMapping>
-        <ComplexTypeMapping TypeName="FashionWebModel.SP_THONGKEDONHANGTHEOKHACHHANG_Result">
-          <ScalarProperty Name="TenKhachHang" ColumnName="TenKhachHang" />
-          <ScalarProperty Name="SoDonHang" ColumnName="SoDonHang" />
-          <ScalarProperty Name="TongTienDaMua" ColumnName="TongTienDaMua" />
+        <ComplexTypeMapping TypeName="FashionWebModel.SP_HUYDONHANG_Result">
+          <ScalarProperty Name="MaDonHang" ColumnName="MaDonHang" />
+          <ScalarProperty Name="KetQuaXuLy" ColumnName="KetQuaXuLy" />
+          <ScalarProperty Name="CanLienHeKhachHoanTien" ColumnName="CanLienHeKhachHoanTien" />
         </ComplexTypeMapping>
       </ResultMapping>
     </FunctionImportMapping>
@@ -193,15 +158,36 @@
         </ComplexTypeMapping>
       </ResultMapping>
     </FunctionImportMapping>
-    <FunctionImportMapping FunctionImportName="SP_KIEMTRATONKHO_CURSOR1" FunctionName="FashionWebModel.Store.SP_KIEMTRATONKHO_CURSOR">
+    <FunctionImportMapping FunctionImportName="SP_PHANLOAI_SANPHAM_BANCHAY" FunctionName="FashionWebModel.Store.SP_PHANLOAI_SANPHAM_BANCHAY">
       <ResultMapping>
-        <ComplexTypeMapping TypeName="FashionWebModel.SP_KIEMTRATONKHO_CURSOR1_Result">
+        <ComplexTypeMapping TypeName="FashionWebModel.SP_PHANLOAI_SANPHAM_BANCHAY_Result">
           <ScalarProperty Name="MaSP" ColumnName="MaSP" />
           <ScalarProperty Name="TenSP" ColumnName="TenSP" />
-          <ScalarProperty Name="SoLuong" ColumnName="SoLuong" />
-          <ScalarProperty Name="TrangThai" ColumnName="TrangThai" />
+          <ScalarProperty Name="TongDaBan" ColumnName="TongDaBan" />
+          <ScalarProperty Name="DanhGia" ColumnName="DanhGia" />
         </ComplexTypeMapping>
       </ResultMapping>
     </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="SP_THEMKHACHHANGDIACHI" FunctionName="FashionWebModel.Store.SP_THEMKHACHHANGDIACHI" />
+    <FunctionImportMapping FunctionImportName="SP_THEMSANPHAMMOI" FunctionName="FashionWebModel.Store.SP_THEMSANPHAMMOI" />
+    <FunctionImportMapping FunctionImportName="SP_THONGKEDOANHTHUTHEOTHANG" FunctionName="FashionWebModel.Store.SP_THONGKEDOANHTHUTHEOTHANG">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="FashionWebModel.SP_THONGKEDOANHTHUTHEOTHANG_Result">
+          <ScalarProperty Name="THANG" ColumnName="THANG" />
+          <ScalarProperty Name="DOANHTHU" ColumnName="DOANHTHU" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="SP_THONGKEDONHANGTHEOKHACHHANG" FunctionName="FashionWebModel.Store.SP_THONGKEDONHANGTHEOKHACHHANG">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="FashionWebModel.SP_THONGKEDONHANGTHEOKHACHHANG_Result">
+          <ScalarProperty Name="TenKhachHang" ColumnName="TenKhachHang" />
+          <ScalarProperty Name="SoDonHang" ColumnName="SoDonHang" />
+          <ScalarProperty Name="TongTienDaMua" ColumnName="TongTienDaMua" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="SP_CAPNHATTONKHOSAUDATHANG" FunctionName="FashionWebModel.Store.SP_CAPNHATTONKHOSAUDATHANG" />
+    <FunctionImportMapping FunctionImportName="SP_CAPNHATTONKHOSAUDATHANG1" FunctionName="FashionWebModel.Store.SP_CAPNHATTONKHOSAUDATHANG" />
   </EntityContainerMapping>
 </Mapping>

@@ -90,18 +90,12 @@ namespace Project_LTW.Controllers
             if (string.IsNullOrEmpty(finalShipAddressContent))
             {
                 ViewBag.Error = "Vui lòng nhập hoặc chọn địa chỉ giao hàng.";
-                return View();
-            }
-            // ---------------------------------------
-
-            // ... (logic kiểm tra giỏ hàng - bạn tự thêm vào nếu chưa có) ...
-
-            // 3. BẮT ĐẦU TRANSACTION
+                return View(); }
             using (var scope = db.Database.BeginTransaction())
             {
                 try
                 {
-                    // BƯỚC 1: TẠO VÀ LƯU BẢNG ADDRESS (CHỈ KHI LÀ ĐỊA CHỈ MỚI) (Giữ nguyên)
+                   
                     if (finalAddressID == null)
                     {
                         string newAddressID = "DC" + DateTime.Now.Ticks.ToString().Substring(10);
@@ -118,7 +112,7 @@ namespace Project_LTW.Controllers
                         finalAddressID = newAddressID;
                     }
 
-                    // BƯỚC 2: TẠO ORDER (Giữ nguyên)
+                    //  TẠO ORDER 
                     ORDER newOrder = new ORDER();
                     string orderId = "DH" + DateTime.Now.Ticks.ToString().Substring(10);
                     newOrder.ORDERID = orderId;
@@ -127,7 +121,7 @@ namespace Project_LTW.Controllers
                     newOrder.TONGTIEN = cartInfo.TongTien();
                     newOrder.TRANGTHAI = "Chờ xử lý";
                     newOrder.DIACHIID = finalAddressID;
-                    newOrder.MANV_XULY = null;
+                   
 
                     string fullNote = $"{ShipName} - {ShipPhone}";
                     if (!string.IsNullOrEmpty(Note)) fullNote += $" | Note: {Note}";
@@ -136,7 +130,7 @@ namespace Project_LTW.Controllers
                     db.ORDERS.Add(newOrder);
                     db.SaveChanges();
 
-                    // BƯỚC 3: LƯU CHI TIẾT ĐƠN HÀNG & CẬP NHẬT TỒN KHO (Giữ nguyên)
+                    
                     foreach (var item in cartInfo.list)
                     {
                         ORDERDETAIL detail = new ORDERDETAIL();
@@ -150,40 +144,36 @@ namespace Project_LTW.Controllers
                     db.SaveChanges();
                     db.SP_CAPNHATTONKHOSAUDATHANG(newOrder.ORDERID);
 
-                    // ==========================================================
-                    // BƯỚC 4: LƯU THANH TOÁN (PAYMENT) - CẬP NHẬT
-                    // ==========================================================
+                  
                     PAYMENT pay = new PAYMENT();
                     pay.PAYMENTID = "PM" + DateTime.Now.Ticks.ToString().Substring(10);
                     pay.ORDERID = newOrder.ORDERID;
 
-                    // Gán Phương thức thanh toán đã chọn từ View
+                   
                     pay.PHUONGTHUCTT = PaymentMethod;
 
-                    // Xác định trạng thái thanh toán ban đầu
+                  
                     if (PaymentMethod == "COD")
                     {
                         pay.TRANGTHAITT = "Chưa thanh toán";
-                        pay.NGAYTT = null; // Ngày thanh toán null cho COD
+                        pay.NGAYTT = null; 
                     }
-                    else // Các phương thức khác (chuyển khoản)
+                    else 
                     {
                         pay.TRANGTHAITT = "Chờ xác nhận";
-                        pay.NGAYTT = DateTime.Now; // Ghi nhận thời điểm yêu cầu thanh toán
+                        pay.NGAYTT = DateTime.Now;
                     }
 
                     db.PAYMENTs.Add(pay);
                     db.SaveChanges();
 
-                    // ==========================================================
-                    // HOÀN TẤT
-                    // ==========================================================
+                   
                     scope.Commit();
                     Session["Cart"] = null;
                     TempData["SuccessMessage"] = "Đặt hàng thành công! Mã đơn: " + newOrder.ORDERID;
                     return RedirectToAction("Success", "Payment");
                 }
-                // ... (Xử lý Catch Error giữ nguyên) ...
+               
                 catch (System.Data.Entity.Validation.DbEntityValidationException dbEx)
                 {
                     scope.Rollback();
@@ -204,9 +194,7 @@ namespace Project_LTW.Controllers
             }
         }
 
-        // ==========================================
-        // 3. Trang thông báo thành công
-        // ==========================================
+  
         public ActionResult Success()
         {
             if (TempData["SuccessMessage"] == null) return RedirectToAction("Index", "Home");

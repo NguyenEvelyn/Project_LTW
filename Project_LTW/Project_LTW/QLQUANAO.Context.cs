@@ -28,8 +28,6 @@ namespace Project_LTW
         }
     
         public virtual DbSet<ADDRESS> ADDRESSes { get; set; }
-        public virtual DbSet<CART> CARTs { get; set; }
-        public virtual DbSet<CARTDETAIL> CARTDETAILs { get; set; }
         public virtual DbSet<CATEGORY> CATEGORies { get; set; }
         public virtual DbSet<CUSTOMER> CUSTOMERs { get; set; }
         public virtual DbSet<ORDERDETAIL> ORDERDETAILs { get; set; }
@@ -76,39 +74,27 @@ namespace Project_LTW
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SP_CAPNHATTHONGTIN_KHACHHANG", kHACHHANGIDParameter, hOTENParameter, nGAYSINHParameter, eMAILParameter, dIENTHOAIParameter);
         }
     
-        public virtual int SP_CAPNHATTONKHOSAUDATHANG(string oRDERID)
+        public virtual ObjectResult<SP_HUYDONHANG_Result> SP_HUYDONHANG(string oRDERID, string lYDO)
         {
             var oRDERIDParameter = oRDERID != null ?
                 new ObjectParameter("ORDERID", oRDERID) :
                 new ObjectParameter("ORDERID", typeof(string));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SP_CAPNHATTONKHOSAUDATHANG", oRDERIDParameter);
+            var lYDOParameter = lYDO != null ?
+                new ObjectParameter("LYDO", lYDO) :
+                new ObjectParameter("LYDO", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_HUYDONHANG_Result>("SP_HUYDONHANG", oRDERIDParameter, lYDOParameter);
         }
     
-        public virtual int SP_HUYDONHANG(string oRDERID)
+        public virtual ObjectResult<SP_KIEMTRATONKHO_CURSOR_Result> SP_KIEMTRATONKHO_CURSOR()
         {
-            var oRDERIDParameter = oRDERID != null ?
-                new ObjectParameter("ORDERID", oRDERID) :
-                new ObjectParameter("ORDERID", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SP_HUYDONHANG", oRDERIDParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_KIEMTRATONKHO_CURSOR_Result>("SP_KIEMTRATONKHO_CURSOR");
         }
     
-        public virtual int SP_TAODONHANGTUGIOHANG(string orderID, Nullable<int> cartID, string diaChiID)
+        public virtual ObjectResult<SP_PHANLOAI_SANPHAM_BANCHAY_Result> SP_PHANLOAI_SANPHAM_BANCHAY()
         {
-            var orderIDParameter = orderID != null ?
-                new ObjectParameter("OrderID", orderID) :
-                new ObjectParameter("OrderID", typeof(string));
-    
-            var cartIDParameter = cartID.HasValue ?
-                new ObjectParameter("CartID", cartID) :
-                new ObjectParameter("CartID", typeof(int));
-    
-            var diaChiIDParameter = diaChiID != null ?
-                new ObjectParameter("DiaChiID", diaChiID) :
-                new ObjectParameter("DiaChiID", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SP_TAODONHANGTUGIOHANG", orderIDParameter, cartIDParameter, diaChiIDParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_PHANLOAI_SANPHAM_BANCHAY_Result>("SP_PHANLOAI_SANPHAM_BANCHAY");
         }
     
         public virtual int SP_THEMKHACHHANGDIACHI(string kHACHHANGID, string hOTEN, Nullable<System.DateTime> nGAYSINH, string eMAIL, string pASSWORD, string dIENTHOAI)
@@ -182,6 +168,20 @@ namespace Project_LTW
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_THONGKEDOANHTHUTHEOTHANG_Result>("SP_THONGKEDOANHTHUTHEOTHANG", nAMParameter);
         }
     
+        public virtual ObjectResult<SP_THONGKEDONHANGTHEOKHACHHANG_Result> SP_THONGKEDONHANGTHEOKHACHHANG()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_THONGKEDONHANGTHEOKHACHHANG_Result>("SP_THONGKEDONHANGTHEOKHACHHANG");
+        }
+    
+        public virtual int SP_CAPNHATTONKHOSAUDATHANG(string oRDERID)
+        {
+            var oRDERIDParameter = oRDERID != null ?
+                new ObjectParameter("ORDERID", oRDERID) :
+                new ObjectParameter("ORDERID", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SP_CAPNHATTONKHOSAUDATHANG", oRDERIDParameter);
+        }
+    
         public virtual int SP_CAPNHATTONKHOSAUDATHANG1(string oRDERID)
         {
             var oRDERIDParameter = oRDERID != null ?
@@ -189,30 +189,6 @@ namespace Project_LTW
                 new ObjectParameter("ORDERID", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SP_CAPNHATTONKHOSAUDATHANG1", oRDERIDParameter);
-        }
-    
-        public virtual int SP_CAPNHATTONKHOSAUDATHANG2(string oRDERID)
-        {
-            var oRDERIDParameter = oRDERID != null ?
-                new ObjectParameter("ORDERID", oRDERID) :
-                new ObjectParameter("ORDERID", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SP_CAPNHATTONKHOSAUDATHANG2", oRDERIDParameter);
-        }
-    
-        public virtual ObjectResult<SP_THONGKEDONHANGTHEOKHACHHANG_Result> SP_THONGKEDONHANGTHEOKHACHHANG()
-        {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_THONGKEDONHANGTHEOKHACHHANG_Result>("SP_THONGKEDONHANGTHEOKHACHHANG");
-        }
-    
-        public virtual ObjectResult<SP_KIEMTRATONKHO_CURSOR_Result> SP_KIEMTRATONKHO_CURSOR()
-        {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_KIEMTRATONKHO_CURSOR_Result>("SP_KIEMTRATONKHO_CURSOR");
-        }
-    
-        public virtual ObjectResult<SP_KIEMTRATONKHO_CURSOR1_Result> SP_KIEMTRATONKHO_CURSOR1()
-        {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_KIEMTRATONKHO_CURSOR1_Result>("SP_KIEMTRATONKHO_CURSOR1");
         }
     }
 }

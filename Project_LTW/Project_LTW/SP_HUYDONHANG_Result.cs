@@ -10,16 +10,11 @@
 namespace Project_LTW
 {
     using System;
-    using System.Collections.Generic;
     
-    public partial class CARTDETAIL
+    public partial class SP_HUYDONHANG_Result
     {
-        public int CARTDETAILID { get; set; }
-        public int CARTID { get; set; }
-        public string SANPHAMID { get; set; }
-        public int SOLUONG { get; set; }
-    
-        public virtual CART CART { get; set; }
-        public virtual PRODUCT PRODUCT { get; set; }
+        public string MaDonHang { get; set; }
+        public string KetQuaXuLy { get; set; }
+        public Nullable<bool> CanLienHeKhachHoanTien { get; set; }
     }
 }

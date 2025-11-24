@@ -17,7 +17,6 @@ namespace Project_LTW
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public PRODUCT()
         {
-            this.CARTDETAILs = new HashSet<CARTDETAIL>();
             this.ORDERDETAILs = new HashSet<ORDERDETAIL>();
             this.PRODUCT_COLOR = new HashSet<PRODUCT_COLOR>();
             this.PRODUCT_IMAGE = new HashSet<PRODUCT_IMAGE>();
@@ -33,8 +32,6 @@ namespace Project_LTW
         public string MOTA { get; set; }
         public string HINHANHDAIDIEN { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CARTDETAIL> CARTDETAILs { get; set; }
         public virtual CATEGORY CATEGORY { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ORDERDETAIL> ORDERDETAILs { get; set; }
