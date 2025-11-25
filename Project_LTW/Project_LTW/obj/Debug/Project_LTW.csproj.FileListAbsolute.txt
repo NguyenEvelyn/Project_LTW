@@ -247,10 +247,6 @@ C:\Users\PC\Documents\Project_LTW\Project_LTW\Project_LTW\obj\Debug\Project_LTW.
 C:\Users\PC\Documents\Project_LTW\Project_LTW\Project_LTW\obj\Debug\Project_.FBBE394D.Up2Date
 C:\Users\PC\Documents\Project_LTW\Project_LTW\Project_LTW\obj\Debug\Project_LTW.dll
 C:\Users\PC\Documents\Project_LTW\Project_LTW\Project_LTW\obj\Debug\Project_LTW.pdb
-C:\Users\Phuong Uyen\OneDrive\Documents\GitHub\Project_LTW\Project_LTW\Project_LTW\obj\Debug\Project_LTW.csproj.AssemblyReference.cache
-C:\Users\Phuong Uyen\OneDrive\Documents\GitHub\Project_LTW\Project_LTW\Project_LTW\obj\Debug\Project_LTW.csproj.CoreCompileInputs.cache
-C:\Users\Phuong Uyen\OneDrive\Documents\GitHub\Project_LTW\Project_LTW\Project_LTW\obj\Debug\Project_LTW.dll
-C:\Users\Phuong Uyen\OneDrive\Documents\GitHub\Project_LTW\Project_LTW\Project_LTW\obj\Debug\Project_LTW.pdb
 C:\Users\Phuong Uyen\OneDrive\Documents\GitHub\Project_LTW\Project_LTW\Project_LTW\bin\Project_LTW.dll.config
 C:\Users\Phuong Uyen\OneDrive\Documents\GitHub\Project_LTW\Project_LTW\Project_LTW\bin\Project_LTW.dll
 C:\Users\Phuong Uyen\OneDrive\Documents\GitHub\Project_LTW\Project_LTW\Project_LTW\bin\Project_LTW.pdb
@@ -329,4 +325,8 @@ C:\Users\Phuong Uyen\OneDrive\Documents\GitHub\Project_LTW\Project_LTW\Project_L
 C:\Users\Phuong Uyen\OneDrive\Documents\GitHub\Project_LTW\Project_LTW\Project_LTW\bin\Newtonsoft.Json.xml
 C:\Users\Phuong Uyen\OneDrive\Documents\GitHub\Project_LTW\Project_LTW\Project_LTW\bin\Antlr3.Runtime.pdb
 C:\Users\Phuong Uyen\OneDrive\Documents\GitHub\Project_LTW\Project_LTW\Project_LTW\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
+C:\Users\Phuong Uyen\OneDrive\Documents\GitHub\Project_LTW\Project_LTW\Project_LTW\obj\Debug\Project_LTW.csproj.AssemblyReference.cache
+C:\Users\Phuong Uyen\OneDrive\Documents\GitHub\Project_LTW\Project_LTW\Project_LTW\obj\Debug\Project_LTW.csproj.CoreCompileInputs.cache
 C:\Users\Phuong Uyen\OneDrive\Documents\GitHub\Project_LTW\Project_LTW\Project_LTW\obj\Debug\Project_.FBBE394D.Up2Date
+C:\Users\Phuong Uyen\OneDrive\Documents\GitHub\Project_LTW\Project_LTW\Project_LTW\obj\Debug\Project_LTW.dll
+C:\Users\Phuong Uyen\OneDrive\Documents\GitHub\Project_LTW\Project_LTW\Project_LTW\obj\Debug\Project_LTW.pdb

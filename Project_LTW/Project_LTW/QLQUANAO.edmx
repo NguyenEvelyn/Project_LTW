@@ -716,10 +716,10 @@
           </FunctionImport>
           <FunctionImport Name="SP_THONGKEDONHANGTHEOKHACHHANG" ReturnType="Collection(FashionWebModel.SP_THONGKEDONHANGTHEOKHACHHANG_Result)" />
           <FunctionImport Name="SP_CAPNHATTONKHOSAUDATHANG">
-            <Parameter Name="ORDERID" Mode="In" Type="String" />
+          <Parameter Name="ORDERID" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="SP_CAPNHATTONKHOSAUDATHANG1">
-            <Parameter Name="ORDERID" Mode="In" Type="String" />
+          <Parameter Name="ORDERID" Mode="In" Type="String" />
           </FunctionImport>
         </EntityContainer>
         <ComplexType Name="SP_HUYDONHANG_Result">

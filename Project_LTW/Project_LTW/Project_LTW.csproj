@@ -139,6 +139,7 @@
     <Compile Include="Areas\Admin\Controllers\HomeAdminController.cs" />
     <Compile Include="Areas\Admin\Controllers\OrderController.cs" />
     <Compile Include="Areas\Admin\Controllers\ProductController.cs" />
+    <Compile Include="Areas\Admin\Controllers\StaffController.cs" />
     <Compile Include="CATEGORY.cs">
       <DependentUpon>QLQUANAO.tt</DependentUpon>
     </Compile>
@@ -478,6 +479,7 @@
     <Content Include="QLQUANAO.edmx.diagram">
       <DependentUpon>QLQUANAO.edmx</DependentUpon>
     </Content>
+    <Content Include="Areas\Admin\Views\Staff\Create.cshtml" />
     <None Include="Scripts\jquery-3.7.0.intellisense.js" />
     <Content Include="Scripts\jquery-3.7.0.js" />
     <Content Include="Scripts\jquery-3.7.0.min.js" />

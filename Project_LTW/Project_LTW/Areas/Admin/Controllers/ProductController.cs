@@ -200,36 +200,47 @@ namespace Project_LTW.Areas.Admin.Controllers
         }
 
 
-        
-        // 2. XỬ LÝ CẬP NHẬT (EDIT - POST) ĐẢM BẢO CHÍNH XÁC
-        
+
+
         [HttpPost]
         [ValidateInput(false)]
         public ActionResult Edit(
-            PRODUCT model,
-            HttpPostedFileBase UploadImage,
-            string MainImageColor,            
-            List<HttpPostedFileBase> SubImageFiles, 
-            string[] SubImageColors,          
-            string strSIZE,                    
-            string[] ExistingSubImageColors,   
-            int[] ImagesToDelete               
-        )
+    PRODUCT model,
+    HttpPostedFileBase UploadImage,
+    string MainImageColor,
+    List<HttpPostedFileBase> SubImageFiles,
+    string[] SubImageColors,
+    string strSIZE,
+    string[] ExistingSubImageColors,
+    int[] ImagesToDelete,
+    int? SoLuongNhapThem // <--- 1. THÊM THAM SỐ NÀY
+)
         {
             if (ModelState.IsValid)
             {
                 var productInDb = db.PRODUCTs.Find(model.SANPHAMID);
                 if (productInDb != null)
                 {
-                    db.Entry(productInDb).CurrentValues.SetValues(model); 
+                   
+                    int tonKhoHienTai = productInDb.SOLUONGTONKHO ;
 
-                    // 2. Xử lý Ảnh Đại diện
+                 
+                    db.Entry(productInDb).CurrentValues.SetValues(model);
+
+                   
+                    if (SoLuongNhapThem.HasValue && SoLuongNhapThem.Value > 0)
+                    {
+                        
+                        productInDb.SOLUONGTONKHO = tonKhoHienTai + SoLuongNhapThem.Value;
+                    }
+                    
+
+                    // 2. Xử lý Ảnh Đại diện (Giữ nguyên code của bạn)
                     string newMainImageFilename = productInDb.HINHANHDAIDIEN;
                     bool hasNewMainImage = false;
 
                     if (UploadImage != null && UploadImage.ContentLength > 0)
                     {
-                  
                         string filename = System.IO.Path.GetFileName(UploadImage.FileName);
                         string path = Server.MapPath("~/assets/" + filename);
                         UploadImage.SaveAs(path);
@@ -238,9 +249,7 @@ namespace Project_LTW.Areas.Admin.Controllers
                         hasNewMainImage = true;
                     }
 
-                  
-
-                    // Xóa Size cũ 
+           
                     var oldSizes = db.PRODUCT_SIZE.Where(x => x.SANPHAMID == model.SANPHAMID).ToList();
                     db.PRODUCT_SIZE.RemoveRange(oldSizes);
 
@@ -255,12 +264,11 @@ namespace Project_LTW.Areas.Admin.Controllers
                         }
                     }
 
-                    // 4. XỬ LÝ PRODUCT_IMAGE (Xóa ảnh, Cập nhật màu ảnh cũ, Thêm ảnh mới)
+                  
 
-                    // 4a. Xóa Ảnh Phụ (Dùng HINHANHID)
+                    // 4a. Xóa Ảnh Phụ
                     if (ImagesToDelete != null && ImagesToDelete.Length > 0)
                     {
-                       
                         var imagesToRemove = db.PRODUCT_IMAGE.Where(i => ImagesToDelete.Contains(i.IMAGEID)).ToList();
                         db.PRODUCT_IMAGE.RemoveRange(imagesToRemove);
                     }
@@ -268,10 +276,8 @@ namespace Project_LTW.Areas.Admin.Controllers
                     // 4b. Cập nhật Màu Ảnh Phụ HIỆN CÓ
                     if (ExistingSubImageColors != null)
                     {
-                    
                         var existingSubImages = db.PRODUCT_IMAGE.Where(i => i.SANPHAMID == model.SANPHAMID && i.TENHINH != productInDb.HINHANHDAIDIEN)
                                                                 .OrderBy(i => i.IMAGEID).ToList();
-
                         for (int i = 0; i < existingSubImages.Count && i < ExistingSubImageColors.Length; i++)
                         {
                             existingSubImages[i].MAUSAC = ExistingSubImageColors[i]?.Trim();
@@ -282,14 +288,11 @@ namespace Project_LTW.Areas.Admin.Controllers
                     if (SubImageFiles != null && SubImageFiles.Count > 0)
                     {
                         int colorCount = SubImageColors?.Length ?? 0;
-
                         for (int i = 0; i < SubImageFiles.Count; i++)
                         {
                             var file = SubImageFiles[i];
-
                             if (file != null && file.ContentLength > 0)
                             {
-                              
                                 string filename = System.IO.Path.GetFileName(file.FileName);
                                 string path = Server.MapPath("~/assets/" + filename);
                                 file.SaveAs(path);
@@ -297,23 +300,17 @@ namespace Project_LTW.Areas.Admin.Controllers
                                 PRODUCT_IMAGE pImage = new PRODUCT_IMAGE();
                                 pImage.SANPHAMID = model.SANPHAMID;
                                 pImage.TENHINH = filename;
-
-                                if (i < colorCount)
-                                {
-                                    pImage.MAUSAC = SubImageColors[i]?.Trim();
-                                }
-
+                                if (i < colorCount) pImage.MAUSAC = SubImageColors[i]?.Trim();
                                 db.PRODUCT_IMAGE.Add(pImage);
                             }
                         }
                     }
 
-                    // 4d. Cập nhật/Thêm Ảnh Đại diện vào PRODUCT_IMAGE
+           
                     var mainImageEntry = db.PRODUCT_IMAGE.FirstOrDefault(img => img.SANPHAMID == model.SANPHAMID && img.TENHINH == productInDb.HINHANHDAIDIEN);
-
                     if (mainImageEntry == null)
                     {
-                        if (newMainImageFilename != "default.png")
+                        if (newMainImageFilename != "default.png") // Giả sử bạn có check này
                         {
                             db.PRODUCT_IMAGE.Add(new PRODUCT_IMAGE
                             {
@@ -325,82 +322,63 @@ namespace Project_LTW.Areas.Admin.Controllers
                     }
                     else
                     {
-         
                         mainImageEntry.MAUSAC = MainImageColor?.Trim();
-                        if (hasNewMainImage)
-                        {
-                            mainImageEntry.TENHINH = newMainImageFilename;
-                        }
+                        if (hasNewMainImage) mainImageEntry.TENHINH = newMainImageFilename;
                     }
 
-                   
-                    // 5. XỬ LÝ PRODUCT_COLOR
-                   
-
-                  
+                    // 5. XỬ LÝ PRODUCT_COLOR 
                     var oldColors = db.PRODUCT_COLOR.Where(x => x.SANPHAMID == model.SANPHAMID).ToList();
                     db.PRODUCT_COLOR.RemoveRange(oldColors);
 
                     HashSet<string> allUniqueColors = new HashSet<string>();
 
-                   
+            
                     var allCurrentImages = db.PRODUCT_IMAGE
-                                             .AsNoTracking() 
-                                             .Where(i => i.SANPHAMID == model.SANPHAMID)
-                                             .Select(i => new { i.IMAGEID, i.MAUSAC })
-                                             .ToList(); 
+                                            .AsNoTracking()
+                                            .Where(i => i.SANPHAMID == model.SANPHAMID)
+                                            .Select(i => new { i.IMAGEID, i.MAUSAC })
+                                            .ToList();
 
-              
                     if (ImagesToDelete != null)
                     {
-                        allCurrentImages = allCurrentImages
-                                           .Where(i => !ImagesToDelete.Contains(i.IMAGEID))
-                                           .ToList();
+                        allCurrentImages = allCurrentImages.Where(i => !ImagesToDelete.Contains(i.IMAGEID)).ToList();
                     }
 
-                 
                     foreach (var image in allCurrentImages)
                     {
-                        if (!string.IsNullOrWhiteSpace(image.MAUSAC))
-                        {
-                            allUniqueColors.Add(image.MAUSAC.Trim());
-                        }
+                        if (!string.IsNullOrWhiteSpace(image.MAUSAC)) allUniqueColors.Add(image.MAUSAC.Trim());
                     }
 
-           
                     if (SubImageColors != null)
                     {
                         foreach (var colorInput in SubImageColors)
                         {
-                            if (!string.IsNullOrWhiteSpace(colorInput))
-                            {
-                                allUniqueColors.Add(colorInput.Trim());
-                            }
+                            if (!string.IsNullOrWhiteSpace(colorInput)) allUniqueColors.Add(colorInput.Trim());
                         }
                     }
+
+                    
+                    if (!string.IsNullOrWhiteSpace(MainImageColor)) allUniqueColors.Add(MainImageColor.Trim());
 
                     foreach (var color in allUniqueColors)
                     {
                         db.PRODUCT_COLOR.Add(new PRODUCT_COLOR { SANPHAMID = model.SANPHAMID, MAUSAC = color });
                     }
 
-
                     db.SaveChanges();
                     return RedirectToAction("Index");
                 }
             }
 
-     
             ViewBag.DANHMUCID = new SelectList(db.CATEGORies, "DANHMUCID", "TENDANHMUC", model.DANHMUCID);
             return View(model);
         }
 
 
-   
 
-    // 4. XÓA SẢN PHẨM
+        // 4. XÓA SẢN PHẨM
 
-    public ActionResult Delete(string id)
+        public ActionResult Delete(string id)
         {
             var item = db.PRODUCTs.Find(id);
             if (item != null)
