@@ -2,7 +2,7 @@
 
 @{
     ViewBag.Title = "Thông tin Tài khoản";
-    Layout = "~/Views/Shared/_Layout.cshtml"; // Sử dụng Layout Front-end
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <div class="container my-5">
@@ -13,19 +13,15 @@
 
         <div class="col-md-3">
             <div class="list-group shadow-sm">
-
                 <a href="@Url.Action("AccountProfile", "User")" class="list-group-item list-group-item-action active">
                     <i class="bi bi-person-circle me-2"></i> Thông tin cá nhân
                 </a>
-
                 <a href="@Url.Action("OrderHistory", "User")" class="list-group-item list-group-item-action">
                     <i class="bi bi-receipt me-2"></i> Lịch sử Đơn hàng
                 </a>
-
                 <a href="@Url.Action("ChangePassword", "User")" class="list-group-item list-group-item-action">
                     <i class="bi bi-key me-2"></i> Đổi mật khẩu
                 </a>
-
                 <a href="@Url.Action("Logout", "User")" class="list-group-item list-group-item-action text-danger">
                     <i class="bi bi-box-arrow-right me-2"></i> Đăng xuất
                 </a>
@@ -33,6 +29,8 @@
         </div>
 
         <div class="col-md-9">
+
+            @* === 1. CARD CẬP NHẬT THÔNG TIN CƠ BẢN === *@
             <div class="card shadow-sm border-0">
                 <div class="card-header bg-warning text-white fw-bold">
                     Cập nhật Thông tin Cơ bản
@@ -57,7 +55,7 @@
                         @Html.AntiForgeryToken()
                         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                         @Html.HiddenFor(model => model.KHACHHANGID)
-                        @Html.HiddenFor(model => model.PASSWORD) // Giữ lại mật khẩu cũ
+                        @Html.HiddenFor(model => model.PASSWORD)
 
                         <div class="col-md-6">
                             <label for="HOTEN" class="form-label">Họ và Tên</label>
@@ -67,7 +65,7 @@
 
                         <div class="col-md-6">
                             <label for="EMAIL" class="form-label">Email</label>
-                            @Html.EditorFor(model => model.EMAIL, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.EditorFor(model => model.EMAIL, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
                             @Html.ValidationMessageFor(model => model.EMAIL, "", new { @class = "text-danger" })
                             <div class="form-text">Email đăng nhập không thể thay đổi.</div>
                         </div>
@@ -85,6 +83,38 @@
                 </div>
             </div>
 
+            <hr class="my-4" />
+
+            @* === 2. CARD THÔNG TIN NGÀY SINH === *@
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-info text-white fw-bold d-flex justify-content-between align-items-center">
+                    Thông tin Ngày sinh
+                </div>
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span id="display-ngaysinh">
+                            @if (Model.NGAYSINH.HasValue)
+                            {
+                                <i class="bi bi-calendar-check me-2 text-success"></i>
+                                
+                                <strong>@Model.NGAYSINH.Value.ToString("dd/MM/yyyy")</strong>
+                            }
+                            
+                            else
+                            {
+                            <i class="bi bi-calendar-plus me-2 text-primary"></i>
+                            @: Chưa có. Bấm <strong>Thêm Ngày sinh</strong> để cập nhật!
+                            }
+                        </span>
+                        <button type="button" class="btn btn-sm btn-outline-warning" data-bs-toggle="modal" data-bs-target="#editNgaySinhModal">
+                            <i class="bi bi-pencil me-1"></i>
+                            @(Model.NGAYSINH.HasValue ? "Sửa Ngày sinh" : "Thêm Ngày sinh")
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            @* === 3. CARD ĐỊA CHỈ === *@
             <div class="card shadow-sm border-0 mt-4">
                 <div class="card-header bg-secondary text-white fw-bold d-flex justify-content-between align-items-center">
                     Địa chỉ giao hàng đã lưu
@@ -129,7 +159,88 @@
     </div>
 </div>
 
+@* ========================================================== *@
+@* === MODAL SỬA/THÊM NGÀY SINH === *@
+@* ========================================================== *@
+<div class="modal fade" id="editNgaySinhModal" tabindex="-1" aria-labelledby="editNgaySinhModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-warning text-white">
+                <h5 class="modal-title" id="editNgaySinhModalLabel">Cập nhật Ngày sinh</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            @using (Html.BeginForm("UpdateNgaySinh", "User", FormMethod.Post, new { id = "ngaysinhForm" }))
+            {
+                @Html.AntiForgeryToken()
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="newNgaySinh" class="form-label">Chọn Ngày sinh mới:</label>
+                        @* Lưu ý: Giá trị input type="date" phải là định dạng yyyy-MM-dd *@
+                        <input type="date" class="form-control" id="newNgaySinh" name="NGAYSINH"
+                               value="@(Model.NGAYSINH.HasValue ? Model.NGAYSINH.Value.ToString("yyyy-MM-dd") : "")" required />
+                        <div class="text-danger" id="ngaysinhError"></div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                    <button type="submit" class="btn btn-warning">Lưu thay đổi</button>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+
 @section scripts {
     <script src="~/Scripts/jquery.validate.min.js"></script>
     <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            // Xử lý gửi form Ngày sinh bằng Ajax
+            $("#ngaysinhForm").submit(function (e) {
+                e.preventDefault();
+
+                var form = $(this);
+                var url = '@Url.Action("UpdateNgaySinh", "User")';
+                var data = form.serialize();
+
+                var ngaysinh = $('#newNgaySinh').val();
+                if (!ngaysinh) {
+                    $('#ngaysinhError').text('Vui lòng chọn ngày sinh.');
+                    return;
+                } else {
+                    $('#ngaysinhError').text('');
+                }
+
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    data: data,
+                    success: function (response) {
+                        if (response.success) {
+                            // Tạo đối tượng Date, sử dụng toLocaleDateString để định dạng dd/MM/yyyy
+                            var formattedDate = new Date(ngaysinh + 'T00:00:00').toLocaleDateString('vi-VN');
+
+                            // Cập nhật hiển thị
+                            $('#display-ngaysinh').html('<i class="bi bi-calendar-check me-2 text-success"></i> <strong>' + formattedDate + '</strong>');
+
+                            // Cập nhật chữ trên nút
+                            $('[data-bs-target="#editNgaySinhModal"]').html('<i class="bi bi-pencil me-1"></i> Sửa Ngày sinh');
+
+                            // Ẩn modal và thông báo
+                            $('#editNgaySinhModal').modal('hide');
+                            alert(response.message);
+
+                        } else {
+                            $('#ngaysinhError').text(response.message);
+                        }
+                    },
+                    error: function () {
+                        alert("Đã xảy ra lỗi khi kết nối đến server.");
+                    }
+                });
+            });
+        });
+    </script>
 }
