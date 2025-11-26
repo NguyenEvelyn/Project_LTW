@@ -1,5 +1,5 @@
-﻿﻿@{
-    ViewBag.Title = "Index";
+﻿@{
+    ViewBag.Title = "Trang chủ";
 }
 @using Project_LTW;
 
@@ -7,31 +7,21 @@
     <i class="bi bi-arrow-up-circle m-0"></i>
 </button>
 
-<!-- Banner Section -->
 <div id="carouselExampleInterval" class="carousel slide" data-bs-ride="carousel">
     <div class="carousel-inner">
         <div class="carousel-item active" data-bs-interval="10000">
-            <img src="@Url.Content("~/assets/homePage/banner/1136x532_2x-100_180425 - Copy.jpg")"
-                 class="d-block w-100"
-                 alt="Banner 1" />
+            <img src="@Url.Content("~/assets/homePage/banner/1136x532_2x-100_180425 - Copy.jpg")" class="d-block w-100" alt="Banner 1" />
         </div>
         <div class="carousel-item" data-bs-interval="5000">
-            <img src="@Url.Content("~/assets/homePage/banner/artboard_4_2x-100 - Copy.jpg")"
-                 class="d-block w-100"
-                 alt="Banner 2" />
+            <img src="@Url.Content("~/assets/homePage/banner/artboard_4_2x-100 - Copy.jpg")" class="d-block w-100" alt="Banner 2" />
         </div>
         <div class="carousel-item" data-bs-interval="5000">
-            <img src="@Url.Content("~/assets/homePage/banner/1366x532_280325 - Copy.jpg")"
-                 class="d-block w-100"
-                 alt="Banner 3" />
+            <img src="@Url.Content("~/assets/homePage/banner/1366x532_280325 - Copy.jpg")" class="d-block w-100" alt="Banner 3" />
         </div>
         <div class="carousel-item" data-bs-interval="5000">
-            <img src="@Url.Content("~/assets/homePage/banner/crop-file.jpg")"
-                 class="d-block w-100"
-                 alt="Banner 4" />
+            <img src="@Url.Content("~/assets/homePage/banner/crop-file.jpg")" class="d-block w-100" alt="Banner 4" />
         </div>
     </div>
-
     <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="prev">
         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
         <span class="visually-hidden">Previous</span>
@@ -42,181 +32,141 @@
     </button>
 </div>
 
-<!-- Decor Section -->
-<div class="container mt-4">
-    <img src="~/assets/homePage/decor.png" class="img-fluid" alt="Decoration" />
+<div class="container py-5">
+    <div class="row">
+
+        <div class="col-lg-3 mb-4">
+            @Html.Action("_Category", "Home")
+        </div>
+
+        <div class="col-lg-9">
+
+            <section class="section-tops mb-5">
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <h2 class="section-title">TOPS</h2>
+                    </div>
+                </div>
+
+                <div class="row g-3">
+                    <div class="col-lg-6">
+                        <div class="featured-product position-relative overflow-hidden rounded-3">
+                            <img src="@Url.Content("~/assets/homePage/TOPS/main.jpg")" class="img-fluid w-100 product-image" alt="Main Top" />
+                            <div class="product-overlay position-absolute top-0 start-0 w-100 h-100 d-flex align-items-end">
+                                <div class="product-info text-white p-4 w-100">
+                                    <h4 class="fw-bold">LED SIGN /teddy bear/ NEW TEE™</h4>
+                                    <div class="price-info">
+                                        <s class="text-light opacity-75">390.000đ</s>
+                                        <p class="text-warning fw-bold fs-4 mb-2">99.000đ</p>
+                                    </div>
+                                    <button onclick="window.location.href='@Url.Action("Details", "Home")'" class="btn btn-outline-light">Mua ngay</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-6">
+                        <div class="row g-3 h-100">
+                            @if (ViewBag.MainApparelProducts != null)
+                            {
+                                foreach (var item in (IEnumerable<PRODUCT>)ViewBag.MainApparelProducts)
+                                {
+                                    <div class="col-md-6">
+                                        <div class="card h-100 product-card border-0 shadow-sm">
+                                            <div class="card-img-top-container">
+                                                <img src="@Url.Content("~/assets/" + item.HINHANHDAIDIEN)" class="card-img-top" alt="@item.TENSANPHAM" />
+                                            </div>
+                                            <div class="card-body d-flex flex-column">
+                                                <h6 class="card-title fw-semibold text-truncate">@item.TENSANPHAM</h6>
+                                                <div class="price-section mt-auto">
+                                                    <p class="text-danger fw-bold fs-5 mb-1">@Html.FormatValue(item.GIA, "{0:#,###}") đ</p>
+                                                    <div class="d-flex gap-2">
+                                                        <a href="@Url.Action("ThemGioHang", "Cart", new { id = item.SANPHAMID.Trim(), type = "normal" })" class="btn btn-outline-primary btn-sm flex-fill">
+                                                            <i class="bi bi-cart-plus"></i>
+                                                        </a>
+                                                        <a href="@Url.Action("ThemGioHang", "Cart", new { id = item.SANPHAMID.Trim(), type = "buynow" })" class="btn btn-dark btn-sm flex-fill">Mua</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            }
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <hr class="my-5" />
+
+            <section class="section-accessories">
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <h2 class="section-title">ACCESSORIES</h2>
+                    </div>
+                </div>
+
+                <div class="row g-3">
+                    <div class="col-lg-6">
+                        <div class="featured-product position-relative overflow-hidden rounded-3">
+                            <img src="@Url.Content("~/assets/homePage/ACCESSORIES/main.jpg")" class="img-fluid w-100 product-image" alt="Main Acc" />
+                            <div class="product-overlay position-absolute top-0 start-0 w-100 h-100 d-flex align-items-end">
+                                <div class="product-info text-white p-4 w-100">
+                                    <h4 class="fw-bold">/PUBLIC ICON/ LONG WALLET</h4>
+                                    <div class="price-info">
+                                        <s class="text-light opacity-75">350.000đ</s>
+                                        <p class="text-warning fw-bold fs-4 mb-2">143.000đ</p>
+                                    </div>
+                                    <button onclick="window.location.href='@Url.Action("AddtoCart", "Cart")'" class="btn btn-outline-light">Mua ngay</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-6">
+                        <div class="row g-3 h-100">
+                            @if (ViewBag.AccessoryProducts != null)
+                            {
+                                foreach (var item in (IEnumerable<PRODUCT>)ViewBag.AccessoryProducts)
+                                {
+                                    <div class="col-md-6">
+                                        <div class="card h-100 product-card border-0 shadow-sm">
+                                            <div class="card-img-top-container">
+                                                <img src="@Url.Content("~/assets/" + item.HINHANHDAIDIEN)" class="card-img-top" alt="@item.TENSANPHAM" />
+                                            </div>
+                                            <div class="card-body d-flex flex-column">
+                                                <h6 class="card-title fw-semibold text-truncate">@item.TENSANPHAM</h6>
+                                                <div class="price-section mt-auto">
+                                                    <p class="text-danger fw-bold fs-5 mb-1">@Html.FormatValue(item.GIA, "{0:#,###}") đ</p>
+                                                    <div class="d-flex gap-2">
+                                                        <a href="@Url.Action("ThemGioHang", "Cart", new { id = item.SANPHAMID.Trim(), type = "normal" })" class="btn btn-outline-primary btn-sm flex-fill">
+                                                            <i class="bi bi-cart-plus"></i>
+                                                        </a>
+                                                        <a href="@Url.Action("ThemGioHang", "Cart", new { id = item.SANPHAMID.Trim(), type = "buynow" })" class="btn btn-dark btn-sm flex-fill">Mua</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            }
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <div class="row mt-5">
+                <div class="col-12 text-center">
+                    <a href="@Url.Action("Product", "Home")" class="btn btn-outline-dark see-more-btn px-5 py-2 rounded-pill">
+                        Xem tất cả sản phẩm <i class="bi bi-arrow-right ms-2"></i>
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </div>
 </div>
 
-<!-- Tops Section -->
-<section class="section-tops py-5 bg-light">
-    <div class="container">
-        <div class="row mb-4">
-            <div class="col-12">
-                <h2 class="section-title">TOPS</h2>
-            </div>
-        </div>
-
-        <div class="row g-3">
-            <!-- Main Product -->
-            <div class="col-lg-6">
-                <div class="featured-product position-relative overflow-hidden rounded-3">
-                    <img src="@Url.Content("~/assets/homePage/TOPS/main.jpg")"
-                         class="img-fluid w-100 product-image"
-                         alt="LED SIGN Teddy Bear New Tee" />
-                    <div class="product-overlay position-absolute top-0 start-0 w-100 h-100 d-flex align-items-end">
-                        <div class="product-info text-white p-4 w-100">
-                            <h4 class="fw-bold">LED SIGN /teddy bear/ NEW TEE™</h4>
-                            <div class="price-info">
-                                <s class="text-light opacity-75">390.000đ</s>
-                                <p class="text-warning fw-bold fs-4 mb-2">Ưu đãi: 99.000đ</p>
-                            </div>
-                            <button onclick="window.location.href='@Url.Action("Details", "Home")'"
-                                    class="btn btn-outline-light btn-lg">
-                                Mua ngay
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Side Products -->
-            <div class="col-lg-6">
-                <div class="row g-3 h-100">
-                    @if (ViewBag.MainApparelProducts != null)
-                    {
-                        foreach (var item in (IEnumerable<PRODUCT>)ViewBag.MainApparelProducts)
-                        {
-                            <div class="col-md-6">
-                                <div class="card h-100 product-card border-0 shadow-sm">
-                                    <div class="card-img-top-container">
-                                        <img src="@Url.Content("~/assets/" + item.HINHANHDAIDIEN)"
-                                             class="card-img-top"
-                                             alt="@item.TENSANPHAM" />
-                                    </div>
-                                    <div class="card-body d-flex flex-column">
-                                        <h6 class="card-title fw-semibold">@item.TENSANPHAM</h6>
-                                        <div class="price-section mt-auto">
-                                            <p class="text-danger fw-bold fs-5 mb-1">@Html.FormatValue(item.GIA, "{0:#,###}") VND</p>
-
-                                            <div class="d-flex gap-2">
-                                                <a href="@Url.Action("ThemGioHang", "Cart", new { id = item.SANPHAMID.Trim(), type = "normal" })"
-                                                   class="btn btn-outline-primary btn-sm flex-fill">
-                                                    <i class="bi bi-cart-plus"></i> Thêm vào giỏ
-                                                </a>
-
-                                                <a href="@Url.Action("ThemGioHang", "Cart", new { id = item.SANPHAMID.Trim(), type = "buynow" })"
-                                                   class="btn btn-dark btn-sm flex-fill">
-                                                    Mua ngay
-                                                </a>
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        }
-                    }
-                </div>
-            </div>
-        </div>
-
-        <div class="row mt-4">
-            <div class="col-12 text-center">
-                <a href="@Url.Action("Product", "Home")" class="btn btn-outline-dark see-more-btn">
-                    Xem thêm
-                    <i class="bi bi-arrow-right ms-2"></i>
-                </a>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- Accessories Section -->
-<section class="section-accessories py-5 bg-white">
-    <div class="container">
-        <div class="row mb-4">
-            <div class="col-12">
-                <h2 class="section-title">ACCESSORIES</h2>
-            </div>
-        </div>
-
-        <div class="row g-3">
-            <!-- Main Product -->
-            <div class="col-lg-6">
-                <div class="featured-product position-relative overflow-hidden rounded-3">
-                    <img src="@Url.Content("~/assets/homePage/ACCESSORIES/main.jpg")"
-                         class="img-fluid w-100 product-image"
-                         alt="Public Icon Long Wallet" />
-                    <div class="product-overlay position-absolute top-0 start-0 w-100 h-100 d-flex align-items-end">
-                        <div class="product-info text-white p-4 w-100">
-                            <h4 class="fw-bold">/PUBLIC ICON/ LONG WALLET</h4>
-                            <div class="price-info">
-                                <s class="text-light opacity-75">350.000đ</s>
-                                <p class="text-warning fw-bold fs-4 mb-2">Ưu đãi: 143.000đ</p>
-                            </div>
-                            <button onclick="window.location.href='@Url.Action("AddtoCart", "Cart")'"
-                                    class="btn btn-outline-light btn-lg">
-                                Mua ngay
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Side Products -->
-            <div class="col-lg-6">
-                <div class="row g-3 h-100">
-                    @if (ViewBag.AccessoryProducts != null)
-                    {
-                        foreach (var item in (IEnumerable<PRODUCT>)ViewBag.AccessoryProducts)
-                        {
-                            <div class="col-md-6">
-                                <div class="card h-100 product-card border-0 shadow-sm">
-                                    <div class="card-img-top-container">
-                                        <img src="@Url.Content("~/assets/" + item.HINHANHDAIDIEN)"
-                                             class="card-img-top"
-                                             alt="@item.TENSANPHAM" />
-                                    </div>
-                                    <div class="card-body d-flex flex-column">
-                                        <h6 class="card-title fw-semibold">@item.TENSANPHAM</h6>
-                                        <div class="price-section mt-auto">
-                                            <p class="text-danger fw-bold fs-5 mb-1">@Html.FormatValue(item.GIA, "{0:#,###}") VND</p>
-
-                                            <div class="d-flex gap-2">
-                                                <a href="@Url.Action("ThemGioHang", "Cart", new { id = item.SANPHAMID.Trim(), type = "normal" })"
-                                                   class="btn btn-outline-primary btn-sm flex-fill">
-                                                    <i class="bi bi-cart-plus"></i> Thêm vào giỏ
-                                                </a>
-
-                                                <a href="@Url.Action("ThemGioHang", "Cart", new { id = item.SANPHAMID.Trim(), type = "buynow" })"
-                                                   class="btn btn-dark btn-sm flex-fill">
-                                                    Mua ngay
-                                                </a>
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        }
-                    }
-                </div>
-            </div>
-        </div>
-
-        <div class="row mt-4">
-            <div class="col-12 text-center">
-                <a href="@Url.Action("Product", "Home")" class="btn btn-outline-dark see-more-btn">
-                    Xem thêm
-                    <i class="bi bi-arrow-right ms-2"></i>
-                </a>
-            </div>
-        </div>
-    </div>
-</section>
-
-
-<!-- Toast Notification -->
 <div class="toast-container position-fixed top-0 end-0 p-3">
     <div id="add-success" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
         <div class="toast-header bg-success text-white">
@@ -231,6 +181,7 @@
 </div>
 
 <style>
+    /* Giữ nguyên CSS cũ của bạn */
     .section-title {
         font-weight: bolder;
         color: #333;
@@ -316,34 +267,11 @@
 </style>
 
 <script>
-    // Code cho Toast
-    function showToast() {
-        const toastEl = document.getElementById("add-success");
-        const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastEl, {
-            delay: 2000,
-        });
-        toastBootstrap.show();
-    }
-
-    // Code cho nút BackToTop
+    // Giữ nguyên Script cũ của bạn
+    function showToast() { const toastEl = document.getElementById("add-success"); const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastEl, { delay: 2000, }); toastBootstrap.show(); }
     const backToTopBtn = document.getElementById("backToTop");
-
-    window.addEventListener("scroll", () => {
-        if (window.scrollY > 300) {
-            backToTopBtn.style.display = "flex";
-        } else {
-            backToTopBtn.style.display = "none";
-        }
-    });
-
-    backToTopBtn.addEventListener("click", () => {
-        window.scrollTo({
-            top: 0,
-            behavior: "smooth",
-        });
-    });
-
-    // Khởi tạo tooltips
+    window.addEventListener("scroll", () => { if (window.scrollY > 300) { backToTopBtn.style.display = "flex"; } else { backToTopBtn.style.display = "none"; } });
+    backToTopBtn.addEventListener("click", () => { window.scrollTo({ top: 0, behavior: "smooth", }); });
     const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
     const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
 </script>

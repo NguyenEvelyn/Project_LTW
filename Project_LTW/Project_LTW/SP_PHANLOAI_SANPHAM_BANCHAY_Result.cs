@@ -11,11 +11,11 @@ namespace Project_LTW
 {
     using System;
     
-    public partial class SP_KIEMTRATONKHO_CURSOR1_Result
+    public partial class SP_PHANLOAI_SANPHAM_BANCHAY_Result
     {
         public string MaSP { get; set; }
         public string TenSP { get; set; }
-        public Nullable<int> SoLuong { get; set; }
-        public string TrangThai { get; set; }
+        public Nullable<int> TongDaBan { get; set; }
+        public string DanhGia { get; set; }
     }
 }

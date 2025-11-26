@@ -614,12 +614,8 @@
                 bool isAuthPage = (currentController == "User" && (currentAction == "Login" || currentAction == "Register"));
             }
 
-            @if (!isAuthPage)
-            {
-                <aside class="col-md-3 col-lg-2 mb-4">
-                    @Html.Action("_Category", "Home")
-                </aside>
-            }
+          
+          
 
             <main class="@(isAuthPage ? "col-12" : "col-md-9 col-lg-10")">
               @if (TempData["Success"] != null)

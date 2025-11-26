@@ -14,13 +14,6 @@ namespace Project_LTW
     
     public partial class STAFF
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public STAFF()
-        {
-            this.CARTs = new HashSet<CART>();
-            this.ORDERS = new HashSet<ORDER>();
-        }
-    
         public string MANV { get; set; }
         public string HOTEN { get; set; }
         public string GIOITINH { get; set; }
@@ -28,14 +21,9 @@ namespace Project_LTW
         public string DIACHI { get; set; }
         public string DIENTHOAI { get; set; }
         public string EMAIL { get; set; }
+        public string PASSWORD { get; set; }
         public string CHUCVU { get; set; }
         public Nullable<decimal> LUONG { get; set; }
         public Nullable<System.DateTime> NGAYVAOLAM { get; set; }
-        public string PASSWORD { get; set; }
-    
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CART> CARTs { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ORDER> ORDERS { get; set; }
     }
 }

@@ -11,25 +11,6 @@
     <Property Name="TINH" Type="nvarchar" MaxLength="100" />
     <Property Name="ZIPCODE" Type="varchar" MaxLength="10" />
   </EntityType>
-  <EntityType Name="CART">
-    <Key>
-      <PropertyRef Name="CARTID" />
-    </Key>
-    <Property Name="CARTID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="KHACHHANGID" Type="nchar" MaxLength="10" />
-    <Property Name="MANV" Type="nchar" MaxLength="10" />
-    <Property Name="NGAYTAO" Type="datetime" />
-    <Property Name="TRANGTHAI" Type="nvarchar" MaxLength="50" />
-  </EntityType>
-  <EntityType Name="CARTDETAIL">
-    <Key>
-      <PropertyRef Name="CARTDETAILID" />
-    </Key>
-    <Property Name="CARTDETAILID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="CARTID" Type="int" Nullable="false" />
-    <Property Name="SANPHAMID" Type="nchar" MaxLength="10" Nullable="false" />
-    <Property Name="SOLUONG" Type="int" Nullable="false" />
-  </EntityType>
   <EntityType Name="CATEGORY">
     <Key>
       <PropertyRef Name="DANHMUCID" />
@@ -52,9 +33,13 @@
     <Key>
       <PropertyRef Name="ORDERID" />
       <PropertyRef Name="SANPHAMID" />
+      <PropertyRef Name="MAUSAC" />
+      <PropertyRef Name="SIZE" />
     </Key>
     <Property Name="ORDERID" Type="nchar" MaxLength="10" Nullable="false" />
     <Property Name="SANPHAMID" Type="nchar" MaxLength="10" Nullable="false" />
+    <Property Name="MAUSAC" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="SIZE" Type="nvarchar" MaxLength="10" Nullable="false" />
     <Property Name="SOLUONG" Type="int" Nullable="false" />
     <Property Name="DONGIA" Type="decimal" Precision="18" Scale="2" Nullable="false" />
     <Property Name="THANHTIEN" Type="decimal" Precision="29" Scale="2" StoreGeneratedPattern="Computed" />
@@ -70,7 +55,6 @@
     <Property Name="TONGTIEN" Type="decimal" Precision="18" Scale="2" Nullable="false" />
     <Property Name="TRANGTHAI" Type="nvarchar" MaxLength="50" Nullable="false" />
     <Property Name="GHICHU" Type="nvarchar" MaxLength="500" />
-    <Property Name="MANV_XULY" Type="nchar" MaxLength="10" />
   </EntityType>
   <EntityType Name="PAYMENT">
     <Key>
@@ -148,54 +132,6 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK_CART_CUSTOMER">
-    <End Role="CUSTOMER" Type="Self.CUSTOMER" Multiplicity="0..1" />
-    <End Role="CART" Type="Self.CART" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="CUSTOMER">
-        <PropertyRef Name="KHACHHANGID" />
-      </Principal>
-      <Dependent Role="CART">
-        <PropertyRef Name="KHACHHANGID" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_CART_STAFF">
-    <End Role="STAFF" Type="Self.STAFF" Multiplicity="0..1" />
-    <End Role="CART" Type="Self.CART" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="STAFF">
-        <PropertyRef Name="MANV" />
-      </Principal>
-      <Dependent Role="CART">
-        <PropertyRef Name="MANV" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_CARTDETAIL_CART">
-    <End Role="CART" Type="Self.CART" Multiplicity="1" />
-    <End Role="CARTDETAIL" Type="Self.CARTDETAIL" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="CART">
-        <PropertyRef Name="CARTID" />
-      </Principal>
-      <Dependent Role="CARTDETAIL">
-        <PropertyRef Name="CARTID" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_CARTDETAIL_SANPHAM">
-    <End Role="PRODUCT" Type="Self.PRODUCT" Multiplicity="1" />
-    <End Role="CARTDETAIL" Type="Self.CARTDETAIL" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="PRODUCT">
-        <PropertyRef Name="SANPHAMID" />
-      </Principal>
-      <Dependent Role="CARTDETAIL">
-        <PropertyRef Name="SANPHAMID" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
   <Association Name="FK_ORDERDETAIL_ORDERS">
     <End Role="ORDERS" Type="Self.ORDERS" Multiplicity="1" />
     <End Role="ORDERDETAIL" Type="Self.ORDERDETAIL" Multiplicity="*" />
@@ -241,18 +177,6 @@
       </Principal>
       <Dependent Role="ORDERS">
         <PropertyRef Name="KHACHHANGID" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_ORDERS_STAFF">
-    <End Role="STAFF" Type="Self.STAFF" Multiplicity="0..1" />
-    <End Role="ORDERS" Type="Self.ORDERS" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="STAFF">
-        <PropertyRef Name="MANV" />
-      </Principal>
-      <Dependent Role="ORDERS">
-        <PropertyRef Name="MANV_XULY" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -348,13 +272,10 @@
   </Function>
   <Function Name="SP_HUYDONHANG" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
     <Parameter Name="ORDERID" Type="nchar" Mode="In" />
+    <Parameter Name="LYDO" Type="nvarchar" Mode="In" />
   </Function>
   <Function Name="SP_KIEMTRATONKHO_CURSOR" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
-  <Function Name="SP_TAODONHANGTUGIOHANG" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-    <Parameter Name="OrderID" Type="nchar" Mode="In" />
-    <Parameter Name="CartID" Type="int" Mode="In" />
-    <Parameter Name="DiaChiID" Type="nchar" Mode="In" />
-  </Function>
+  <Function Name="SP_PHANLOAI_SANPHAM_BANCHAY" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
   <Function Name="SP_THEMKHACHHANGDIACHI" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
     <Parameter Name="KHACHHANGID" Type="nchar" Mode="In" />
     <Parameter Name="HOTEN" Type="nvarchar" Mode="In" />
@@ -378,8 +299,6 @@
   <Function Name="SP_THONGKEDONHANGTHEOKHACHHANG" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
   <EntityContainer Name="FashionWebModelStoreContainer">
     <EntitySet Name="ADDRESS" EntityType="Self.ADDRESS" Schema="dbo" store:Type="Tables" />
-    <EntitySet Name="CART" EntityType="Self.CART" Schema="dbo" store:Type="Tables" />
-    <EntitySet Name="CARTDETAIL" EntityType="Self.CARTDETAIL" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="CATEGORY" EntityType="Self.CATEGORY" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="CUSTOMER" EntityType="Self.CUSTOMER" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="ORDERDETAIL" EntityType="Self.ORDERDETAIL" Schema="dbo" store:Type="Tables" />
@@ -393,22 +312,6 @@
     <AssociationSet Name="FK_ADDRESS_CUSTOMER" Association="Self.FK_ADDRESS_CUSTOMER">
       <End Role="CUSTOMER" EntitySet="CUSTOMER" />
       <End Role="ADDRESS" EntitySet="ADDRESS" />
-    </AssociationSet>
-    <AssociationSet Name="FK_CART_CUSTOMER" Association="Self.FK_CART_CUSTOMER">
-      <End Role="CUSTOMER" EntitySet="CUSTOMER" />
-      <End Role="CART" EntitySet="CART" />
-    </AssociationSet>
-    <AssociationSet Name="FK_CART_STAFF" Association="Self.FK_CART_STAFF">
-      <End Role="STAFF" EntitySet="STAFF" />
-      <End Role="CART" EntitySet="CART" />
-    </AssociationSet>
-    <AssociationSet Name="FK_CARTDETAIL_CART" Association="Self.FK_CARTDETAIL_CART">
-      <End Role="CART" EntitySet="CART" />
-      <End Role="CARTDETAIL" EntitySet="CARTDETAIL" />
-    </AssociationSet>
-    <AssociationSet Name="FK_CARTDETAIL_SANPHAM" Association="Self.FK_CARTDETAIL_SANPHAM">
-      <End Role="PRODUCT" EntitySet="PRODUCT" />
-      <End Role="CARTDETAIL" EntitySet="CARTDETAIL" />
     </AssociationSet>
     <AssociationSet Name="FK_ORDERDETAIL_ORDERS" Association="Self.FK_ORDERDETAIL_ORDERS">
       <End Role="ORDERS" EntitySet="ORDERS" />
@@ -424,10 +327,6 @@
     </AssociationSet>
     <AssociationSet Name="FK_ORDERS_CUSTOMER" Association="Self.FK_ORDERS_CUSTOMER">
       <End Role="CUSTOMER" EntitySet="CUSTOMER" />
-      <End Role="ORDERS" EntitySet="ORDERS" />
-    </AssociationSet>
-    <AssociationSet Name="FK_ORDERS_STAFF" Association="Self.FK_ORDERS_STAFF">
-      <End Role="STAFF" EntitySet="STAFF" />
       <End Role="ORDERS" EntitySet="ORDERS" />
     </AssociationSet>
     <AssociationSet Name="FK_PAYMENT_ORDER" Association="Self.FK_PAYMENT_ORDER">

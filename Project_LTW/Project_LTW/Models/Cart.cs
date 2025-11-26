@@ -32,7 +32,7 @@ namespace Project_LTW.Models
             else
             {
                 CartItem newItem = new CartItem(idChuan);
-                // Chỉ thêm nếu tìm thấy sản phẩm (tên không rỗng)
+               
                 if (!string.IsNullOrEmpty(newItem.TENSP))
                 {
                     list.Add(newItem);
@@ -40,7 +40,7 @@ namespace Project_LTW.Models
             }
         }
 
-        // Hàm Xóa
+   
         public void Xoa(string id)
         {
             string idChuan = id.Trim();

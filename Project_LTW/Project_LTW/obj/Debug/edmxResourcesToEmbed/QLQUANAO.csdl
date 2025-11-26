@@ -20,30 +20,6 @@
     <NavigationProperty Name="CUSTOMER" Relationship="Self.FK_ADDRESS_CUSTOMER" FromRole="ADDRESS" ToRole="CUSTOMER" />
     <NavigationProperty Name="ORDERS" Relationship="Self.FK_ORDERS_ADDRESS" FromRole="ADDRESS" ToRole="ORDERS" />
   </EntityType>
-  <EntityType Name="CART">
-    <Key>
-      <PropertyRef Name="CARTID" />
-    </Key>
-    <Property Name="CARTID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="KHACHHANGID" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
-    <Property Name="MANV" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
-    <Property Name="NGAYTAO" Type="DateTime" Precision="3" />
-    <Property Name="TRANGTHAI" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-    <NavigationProperty Name="CUSTOMER" Relationship="Self.FK_CART_CUSTOMER" FromRole="CART" ToRole="CUSTOMER" />
-    <NavigationProperty Name="STAFF" Relationship="Self.FK_CART_STAFF" FromRole="CART" ToRole="STAFF" />
-    <NavigationProperty Name="CARTDETAILs" Relationship="Self.FK_CARTDETAIL_CART" FromRole="CART" ToRole="CARTDETAIL" />
-  </EntityType>
-  <EntityType Name="CARTDETAIL">
-    <Key>
-      <PropertyRef Name="CARTDETAILID" />
-    </Key>
-    <Property Name="CARTDETAILID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="CARTID" Type="Int32" Nullable="false" />
-    <Property Name="SANPHAMID" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
-    <Property Name="SOLUONG" Type="Int32" Nullable="false" />
-    <NavigationProperty Name="CART" Relationship="Self.FK_CARTDETAIL_CART" FromRole="CARTDETAIL" ToRole="CART" />
-    <NavigationProperty Name="PRODUCT" Relationship="Self.FK_CARTDETAIL_SANPHAM" FromRole="CARTDETAIL" ToRole="PRODUCT" />
-  </EntityType>
   <EntityType Name="CATEGORY">
     <Key>
       <PropertyRef Name="DANHMUCID" />
@@ -63,16 +39,19 @@
     <Property Name="PASSWORD" Type="String" MaxLength="60" FixedLength="false" Unicode="true" Nullable="false" />
     <Property Name="DIENTHOAI" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
     <NavigationProperty Name="ADDRESSes" Relationship="Self.FK_ADDRESS_CUSTOMER" FromRole="CUSTOMER" ToRole="ADDRESS" />
-    <NavigationProperty Name="CARTs" Relationship="Self.FK_CART_CUSTOMER" FromRole="CUSTOMER" ToRole="CART" />
     <NavigationProperty Name="ORDERS" Relationship="Self.FK_ORDERS_CUSTOMER" FromRole="CUSTOMER" ToRole="ORDERS" />
   </EntityType>
   <EntityType Name="ORDERDETAIL">
     <Key>
       <PropertyRef Name="ORDERID" />
       <PropertyRef Name="SANPHAMID" />
+      <PropertyRef Name="MAUSAC" />
+      <PropertyRef Name="SIZE" />
     </Key>
     <Property Name="ORDERID" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
     <Property Name="SANPHAMID" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="MAUSAC" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="SIZE" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
     <Property Name="SOLUONG" Type="Int32" Nullable="false" />
     <Property Name="DONGIA" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
     <Property Name="THANHTIEN" Type="Decimal" Precision="29" Scale="2" annotation:StoreGeneratedPattern="Computed" />
@@ -90,11 +69,9 @@
     <Property Name="TONGTIEN" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
     <Property Name="TRANGTHAI" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
     <Property Name="GHICHU" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-    <Property Name="MANV_XULY" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
     <NavigationProperty Name="ADDRESS" Relationship="Self.FK_ORDERS_ADDRESS" FromRole="ORDERS" ToRole="ADDRESS" />
     <NavigationProperty Name="CUSTOMER" Relationship="Self.FK_ORDERS_CUSTOMER" FromRole="ORDERS" ToRole="CUSTOMER" />
     <NavigationProperty Name="ORDERDETAILs" Relationship="Self.FK_ORDERDETAIL_ORDERS" FromRole="ORDERS" ToRole="ORDERDETAIL" />
-    <NavigationProperty Name="STAFF" Relationship="Self.FK_ORDERS_STAFF" FromRole="ORDERS" ToRole="STAFF" />
     <NavigationProperty Name="PAYMENTs" Relationship="Self.FK_PAYMENT_ORDER" FromRole="ORDERS" ToRole="PAYMENT" />
   </EntityType>
   <EntityType Name="PAYMENT">
@@ -120,7 +97,6 @@
     <Property Name="SOLUONGTONKHO" Type="Int32" Nullable="false" />
     <Property Name="MOTA" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
     <Property Name="HINHANHDAIDIEN" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-    <NavigationProperty Name="CARTDETAILs" Relationship="Self.FK_CARTDETAIL_SANPHAM" FromRole="PRODUCT" ToRole="CARTDETAIL" />
     <NavigationProperty Name="CATEGORY" Relationship="Self.FK_PRODUCT_CATEGORY" FromRole="PRODUCT" ToRole="CATEGORY" />
     <NavigationProperty Name="ORDERDETAILs" Relationship="Self.FK_ORDERDETAIL_PRODUCT" FromRole="PRODUCT" ToRole="ORDERDETAIL" />
     <NavigationProperty Name="PRODUCT_COLOR" Relationship="Self.FK_PRODUCT_COLOR_PRODUCT" FromRole="PRODUCT" ToRole="PRODUCT_COLOR" />
@@ -166,12 +142,10 @@
     <Property Name="DIACHI" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
     <Property Name="DIENTHOAI" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
     <Property Name="EMAIL" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="PASSWORD" Type="String" MaxLength="60" FixedLength="false" Unicode="true" Nullable="false" />
     <Property Name="CHUCVU" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="LUONG" Type="Decimal" Precision="18" Scale="2" />
     <Property Name="NGAYVAOLAM" Type="DateTime" Precision="0" />
-    <NavigationProperty Name="CARTs" Relationship="Self.FK_CART_STAFF" FromRole="STAFF" ToRole="CART" />
-    <NavigationProperty Name="ORDERS" Relationship="Self.FK_ORDERS_STAFF" FromRole="STAFF" ToRole="ORDERS" />
-    <Property Name="PASSWORD" Type="String" Nullable="false" MaxLength="60" FixedLength="false" Unicode="true" />
   </EntityType>
   <Association Name="FK_ADDRESS_CUSTOMER">
     <End Role="CUSTOMER" Type="Self.CUSTOMER" Multiplicity="1" />
@@ -194,54 +168,6 @@
       </Principal>
       <Dependent Role="ORDERS">
         <PropertyRef Name="DIACHIID" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_CART_CUSTOMER">
-    <End Role="CUSTOMER" Type="Self.CUSTOMER" Multiplicity="0..1" />
-    <End Role="CART" Type="Self.CART" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="CUSTOMER">
-        <PropertyRef Name="KHACHHANGID" />
-      </Principal>
-      <Dependent Role="CART">
-        <PropertyRef Name="KHACHHANGID" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_CART_STAFF">
-    <End Role="STAFF" Type="Self.STAFF" Multiplicity="0..1" />
-    <End Role="CART" Type="Self.CART" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="STAFF">
-        <PropertyRef Name="MANV" />
-      </Principal>
-      <Dependent Role="CART">
-        <PropertyRef Name="MANV" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_CARTDETAIL_CART">
-    <End Role="CART" Type="Self.CART" Multiplicity="1" />
-    <End Role="CARTDETAIL" Type="Self.CARTDETAIL" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="CART">
-        <PropertyRef Name="CARTID" />
-      </Principal>
-      <Dependent Role="CARTDETAIL">
-        <PropertyRef Name="CARTID" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_CARTDETAIL_SANPHAM">
-    <End Role="PRODUCT" Type="Self.PRODUCT" Multiplicity="1" />
-    <End Role="CARTDETAIL" Type="Self.CARTDETAIL" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="PRODUCT">
-        <PropertyRef Name="SANPHAMID" />
-      </Principal>
-      <Dependent Role="CARTDETAIL">
-        <PropertyRef Name="SANPHAMID" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -290,18 +216,6 @@
       </Principal>
       <Dependent Role="ORDERDETAIL">
         <PropertyRef Name="SANPHAMID" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_ORDERS_STAFF">
-    <End Role="STAFF" Type="Self.STAFF" Multiplicity="0..1" />
-    <End Role="ORDERS" Type="Self.ORDER" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="STAFF">
-        <PropertyRef Name="MANV" />
-      </Principal>
-      <Dependent Role="ORDERS">
-        <PropertyRef Name="MANV_XULY" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -355,8 +269,6 @@
   </Association>
   <EntityContainer Name="FashionWebEntities" annotation:LazyLoadingEnabled="true">
     <EntitySet Name="ADDRESSes" EntityType="Self.ADDRESS" />
-    <EntitySet Name="CARTs" EntityType="Self.CART" />
-    <EntitySet Name="CARTDETAILs" EntityType="Self.CARTDETAIL" />
     <EntitySet Name="CATEGORies" EntityType="Self.CATEGORY" />
     <EntitySet Name="CUSTOMERs" EntityType="Self.CUSTOMER" />
     <EntitySet Name="ORDERDETAILs" EntityType="Self.ORDERDETAIL" />
@@ -375,22 +287,6 @@
       <End Role="ADDRESS" EntitySet="ADDRESSes" />
       <End Role="ORDERS" EntitySet="ORDERS" />
     </AssociationSet>
-    <AssociationSet Name="FK_CART_CUSTOMER" Association="Self.FK_CART_CUSTOMER">
-      <End Role="CUSTOMER" EntitySet="CUSTOMERs" />
-      <End Role="CART" EntitySet="CARTs" />
-    </AssociationSet>
-    <AssociationSet Name="FK_CART_STAFF" Association="Self.FK_CART_STAFF">
-      <End Role="STAFF" EntitySet="STAFFs" />
-      <End Role="CART" EntitySet="CARTs" />
-    </AssociationSet>
-    <AssociationSet Name="FK_CARTDETAIL_CART" Association="Self.FK_CARTDETAIL_CART">
-      <End Role="CART" EntitySet="CARTs" />
-      <End Role="CARTDETAIL" EntitySet="CARTDETAILs" />
-    </AssociationSet>
-    <AssociationSet Name="FK_CARTDETAIL_SANPHAM" Association="Self.FK_CARTDETAIL_SANPHAM">
-      <End Role="PRODUCT" EntitySet="PRODUCTs" />
-      <End Role="CARTDETAIL" EntitySet="CARTDETAILs" />
-    </AssociationSet>
     <AssociationSet Name="FK_PRODUCT_CATEGORY" Association="Self.FK_PRODUCT_CATEGORY">
       <End Role="CATEGORY" EntitySet="CATEGORies" />
       <End Role="PRODUCT" EntitySet="PRODUCTs" />
@@ -406,10 +302,6 @@
     <AssociationSet Name="FK_ORDERDETAIL_PRODUCT" Association="Self.FK_ORDERDETAIL_PRODUCT">
       <End Role="PRODUCT" EntitySet="PRODUCTs" />
       <End Role="ORDERDETAIL" EntitySet="ORDERDETAILs" />
-    </AssociationSet>
-    <AssociationSet Name="FK_ORDERS_STAFF" Association="Self.FK_ORDERS_STAFF">
-      <End Role="STAFF" EntitySet="STAFFs" />
-      <End Role="ORDERS" EntitySet="ORDERS" />
     </AssociationSet>
     <AssociationSet Name="FK_PAYMENT_ORDER" Association="Self.FK_PAYMENT_ORDER">
       <End Role="ORDERS" EntitySet="ORDERS" />
@@ -437,17 +329,12 @@
       <Parameter Name="EMAIL" Mode="In" Type="String" />
       <Parameter Name="DIENTHOAI" Mode="In" Type="String" />
     </FunctionImport>
-    <FunctionImport Name="SP_CAPNHATTONKHOSAUDATHANG">
+    <FunctionImport Name="SP_HUYDONHANG" ReturnType="Collection(FashionWebModel.SP_HUYDONHANG_Result)">
       <Parameter Name="ORDERID" Mode="In" Type="String" />
+      <Parameter Name="LYDO" Mode="In" Type="String" />
     </FunctionImport>
-    <FunctionImport Name="SP_HUYDONHANG">
-      <Parameter Name="ORDERID" Mode="In" Type="String" />
-    </FunctionImport>
-    <FunctionImport Name="SP_TAODONHANGTUGIOHANG">
-      <Parameter Name="OrderID" Mode="In" Type="String" />
-      <Parameter Name="CartID" Mode="In" Type="Int32" />
-      <Parameter Name="DiaChiID" Mode="In" Type="String" />
-    </FunctionImport>
+    <FunctionImport Name="SP_KIEMTRATONKHO_CURSOR" ReturnType="Collection(FashionWebModel.SP_KIEMTRATONKHO_CURSOR_Result)" />
+    <FunctionImport Name="SP_PHANLOAI_SANPHAM_BANCHAY" ReturnType="Collection(FashionWebModel.SP_PHANLOAI_SANPHAM_BANCHAY_Result)" />
     <FunctionImport Name="SP_THEMKHACHHANGDIACHI">
       <Parameter Name="KHACHHANGID" Mode="In" Type="String" />
       <Parameter Name="HOTEN" Mode="In" Type="String" />
@@ -468,16 +355,31 @@
     <FunctionImport Name="SP_THONGKEDOANHTHUTHEOTHANG" ReturnType="Collection(FashionWebModel.SP_THONGKEDOANHTHUTHEOTHANG_Result)">
       <Parameter Name="NAM" Mode="In" Type="Int32" />
     </FunctionImport>
+    <FunctionImport Name="SP_THONGKEDONHANGTHEOKHACHHANG" ReturnType="Collection(FashionWebModel.SP_THONGKEDONHANGTHEOKHACHHANG_Result)" />
+    <FunctionImport Name="SP_CAPNHATTONKHOSAUDATHANG">
+      <Parameter Name="ORDERID" Mode="In" Type="String" />
+    </FunctionImport>
     <FunctionImport Name="SP_CAPNHATTONKHOSAUDATHANG1">
       <Parameter Name="ORDERID" Mode="In" Type="String" />
     </FunctionImport>
-    <FunctionImport Name="SP_CAPNHATTONKHOSAUDATHANG2">
-      <Parameter Name="ORDERID" Mode="In" Type="String" />
-    </FunctionImport>
-    <FunctionImport Name="SP_THONGKEDONHANGTHEOKHACHHANG" ReturnType="Collection(FashionWebModel.SP_THONGKEDONHANGTHEOKHACHHANG_Result)" />
-    <FunctionImport Name="SP_KIEMTRATONKHO_CURSOR" ReturnType="Collection(FashionWebModel.SP_KIEMTRATONKHO_CURSOR_Result)" />
-    <FunctionImport Name="SP_KIEMTRATONKHO_CURSOR1" ReturnType="Collection(FashionWebModel.SP_KIEMTRATONKHO_CURSOR1_Result)" />
   </EntityContainer>
+  <ComplexType Name="SP_HUYDONHANG_Result">
+    <Property Type="String" Name="MaDonHang" Nullable="true" MaxLength="10" />
+    <Property Type="String" Name="KetQuaXuLy" Nullable="true" MaxLength="500" />
+    <Property Type="Boolean" Name="CanLienHeKhachHoanTien" Nullable="true" />
+  </ComplexType>
+  <ComplexType Name="SP_KIEMTRATONKHO_CURSOR_Result">
+    <Property Type="String" Name="MaSP" Nullable="true" MaxLength="10" />
+    <Property Type="String" Name="TenSP" Nullable="true" MaxLength="200" />
+    <Property Type="Int32" Name="SoLuong" Nullable="true" />
+    <Property Type="String" Name="TrangThai" Nullable="true" MaxLength="200" />
+  </ComplexType>
+  <ComplexType Name="SP_PHANLOAI_SANPHAM_BANCHAY_Result">
+    <Property Type="String" Name="MaSP" Nullable="true" MaxLength="10" />
+    <Property Type="String" Name="TenSP" Nullable="true" MaxLength="200" />
+    <Property Type="Int32" Name="TongDaBan" Nullable="true" />
+    <Property Type="String" Name="DanhGia" Nullable="true" MaxLength="100" />
+  </ComplexType>
   <ComplexType Name="SP_THONGKEDOANHTHUTHEOTHANG_Result">
     <Property Type="Int32" Name="THANG" Nullable="true" />
     <Property Type="Decimal" Name="DOANHTHU" Nullable="true" Precision="38" Scale="2" />
@@ -486,17 +388,5 @@
     <Property Type="String" Name="TenKhachHang" Nullable="true" MaxLength="100" />
     <Property Type="Int32" Name="SoDonHang" Nullable="true" />
     <Property Type="Decimal" Name="TongTienDaMua" Nullable="true" Precision="18" Scale="2" />
-  </ComplexType>
-  <ComplexType Name="SP_KIEMTRATONKHO_CURSOR_Result">
-    <Property Type="String" Name="MaSP" Nullable="true" MaxLength="10" />
-    <Property Type="String" Name="TenSP" Nullable="true" MaxLength="200" />
-    <Property Type="Int32" Name="SoLuong" Nullable="true" />
-    <Property Type="String" Name="TrangThai" Nullable="true" MaxLength="200" />
-  </ComplexType>
-  <ComplexType Name="SP_KIEMTRATONKHO_CURSOR1_Result">
-    <Property Type="String" Name="MaSP" Nullable="true" MaxLength="10" />
-    <Property Type="String" Name="TenSP" Nullable="true" MaxLength="200" />
-    <Property Type="Int32" Name="SoLuong" Nullable="true" />
-    <Property Type="String" Name="TrangThai" Nullable="true" MaxLength="200" />
   </ComplexType>
 </Schema>

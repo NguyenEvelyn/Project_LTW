@@ -56,7 +56,7 @@ CREATE TABLE PRODUCT (
     TENSANPHAM NVARCHAR(200) NOT NULL,
     DANHMUCID NCHAR(10) NOT NULL,
     GIAGOC DECIMAL(18,2) NOT NULL,         -- Giá gốc của sản phẩm
-    GIA DECIMAL(18,2) NOT NULL,            -- Giá đã giảm (giá hiển thị)
+    GIA DECIMAL(18,2) NOT NULL,            -- Giá đã giảm
     SOLUONGTONKHO INT NOT NULL,
     MOTA NVARCHAR(MAX) NULL,
     HINHANHDAIDIEN NVARCHAR(255) NULL,   -- Ảnh đại diện
@@ -113,7 +113,7 @@ CREATE TABLE STAFF (
     DIACHI NVARCHAR(200) NULL,
     DIENTHOAI VARCHAR(15) NULL,
     EMAIL NVARCHAR(100) NULL,
-    PASSWORD NVARCHAR(60) NOT NULL,       -- 🔒 Mật khẩu đăng nhập
+    PASSWORD NVARCHAR(60) NOT NULL,     
     CHUCVU NVARCHAR(50) NULL,
     LUONG DECIMAL(18,2) NULL,
     NGAYVAOLAM DATE DEFAULT GETDATE(),
@@ -122,37 +122,11 @@ CREATE TABLE STAFF (
 );
 GO
 
--- ============================
--- 9. CART  
--- ============================
-CREATE TABLE CART (
-    CARTID INT IDENTITY(1,1),
-    KHACHHANGID NCHAR(10) NULL,
-    MANV NCHAR(10) NULL,
-    NGAYTAO DATETIME DEFAULT GETDATE(),
-    TRANGTHAI NVARCHAR(50) DEFAULT N'Chưa thanh toán',
-    CONSTRAINT PK_CART PRIMARY KEY (CARTID),
-    CONSTRAINT FK_CART_CUSTOMER FOREIGN KEY (KHACHHANGID) REFERENCES CUSTOMER(KHACHHANGID),
-    CONSTRAINT FK_CART_STAFF FOREIGN KEY (MANV) REFERENCES STAFF(MANV)
-);
+
 GO
 
 -- ============================
--- 10. CARTDETAIL 
--- ============================
-CREATE TABLE CARTDETAIL (
-    CARTDETAILID INT IDENTITY(1,1),
-    CARTID INT NOT NULL,
-    SANPHAMID NCHAR(10) NOT NULL,
-    SOLUONG INT NOT NULL CHECK (SOLUONG > 0),
-    CONSTRAINT PK_CARTDETAIL PRIMARY KEY (CARTDETAILID),
-    CONSTRAINT FK_CARTDETAIL_CART FOREIGN KEY (CARTID) REFERENCES CART(CARTID),
-    CONSTRAINT FK_CARTDETAIL_SANPHAM FOREIGN KEY (SANPHAMID) REFERENCES PRODUCT(SANPHAMID)
-);
-GO
-
--- ============================
--- 11. ORDERS 
+-- 9. ORDERS 
 -- ============================
 CREATE TABLE ORDERS (
     ORDERID NCHAR(10) NOT NULL,
@@ -162,24 +136,29 @@ CREATE TABLE ORDERS (
     TONGTIEN DECIMAL(18,2) NOT NULL,
     TRANGTHAI NVARCHAR(50) NOT NULL,
     GHICHU NVARCHAR(500) NULL,
-    MANV_XULY NCHAR(10) NULL,
+
     CONSTRAINT PK_ORDERS PRIMARY KEY (ORDERID),
     CONSTRAINT FK_ORDERS_CUSTOMER FOREIGN KEY (KHACHHANGID) REFERENCES CUSTOMER(KHACHHANGID),
     CONSTRAINT FK_ORDERS_ADDRESS FOREIGN KEY (DIACHIID) REFERENCES ADDRESS(DIACHIID),
-    CONSTRAINT FK_ORDERS_STAFF FOREIGN KEY (MANV_XULY) REFERENCES STAFF(MANV)
+  
 );
 GO
 
 -- ============================
--- 12. ORDERDETAIL
+-- 10. ORDERDETAIL
 -- ============================
+
 CREATE TABLE ORDERDETAIL (
     ORDERID NCHAR(10) NOT NULL,
     SANPHAMID NCHAR(10) NOT NULL,
+    MAUSAC NVARCHAR(50) NOT NULL, 
+    SIZE NVARCHAR(10) NOT NULL,   
     SOLUONG INT NOT NULL,
     DONGIA DECIMAL(18,2) NOT NULL,
     THANHTIEN AS (SOLUONG * DONGIA) PERSISTED,
-    CONSTRAINT PK_ORDERDETAIL PRIMARY KEY (ORDERID, SANPHAMID),
+    
+    
+    CONSTRAINT PK_ORDERDETAIL PRIMARY KEY (ORDERID, SANPHAMID, MAUSAC, SIZE),
     CONSTRAINT FK_ORDERDETAIL_ORDERS FOREIGN KEY (ORDERID) REFERENCES ORDERS(ORDERID),
     CONSTRAINT FK_ORDERDETAIL_PRODUCT FOREIGN KEY (SANPHAMID) REFERENCES PRODUCT(SANPHAMID),
     CONSTRAINT CK_ORDERDETAIL_QTY CHECK (SOLUONG > 0),
@@ -188,7 +167,7 @@ CREATE TABLE ORDERDETAIL (
 GO
 
 -- ============================
--- 13. PAYMENT
+-- 11. PAYMENT
 -- ============================
 CREATE TABLE PAYMENT (
     PAYMENTID NCHAR(10) NOT NULL,
@@ -207,8 +186,6 @@ GO
 IF OBJECT_ID('ORDERDETAIL', 'U') IS NOT NULL DROP TABLE ORDERDETAIL;
 IF OBJECT_ID('PAYMENT', 'U') IS NOT NULL DROP TABLE PAYMENT;
 IF OBJECT_ID('ORDERS', 'U') IS NOT NULL DROP TABLE ORDERS;
-IF OBJECT_ID('CARTDETAIL', 'U') IS NOT NULL DROP TABLE CARTDETAIL;
-IF OBJECT_ID('CART', 'U') IS NOT NULL DROP TABLE CART;
 IF OBJECT_ID('PRODUCT_IMAGE', 'U') IS NOT NULL DROP TABLE PRODUCT_IMAGE;
 IF OBJECT_ID('PRODUCT_COLOR', 'U') IS NOT NULL DROP TABLE PRODUCT_COLOR;
 IF OBJECT_ID('PRODUCT_SIZE', 'U') IS NOT NULL DROP TABLE PRODUCT_SIZE;
@@ -656,7 +633,7 @@ INSERT INTO PRODUCT_IMAGE (SANPHAMID, MAUSAC, TENHINH) VALUES ('SP030', N'Seasam
 INSERT INTO PRODUCT_IMAGE (SANPHAMID, MAUSAC, TENHINH) VALUES ('SP030', N'Green', 'thumbnail/zigzag_laurielgreen.jpg');
 
 
--- ============ PART 3: DỮ LIỆU MẪU CHO CÁC BẢNG KHÁC ============
+-- ============ PART 3: DỮ LIỆU CHO CÁC BẢNG KHÁC ============
 
 -- CUSTOMERS (KHACHHANGID NCHAR(10))
 INSERT INTO CUSTOMER (KHACHHANGID, HOTEN, NGAYSINH, EMAIL, PASSWORD, DIENTHOAI) VALUES
@@ -677,32 +654,20 @@ INSERT INTO ADDRESS (DIACHIID, KHACHHANGID, DUONG, THANHPHO, TINH, ZIPCODE) VALU
 ('ADDR001', 'KH001', N'123 Đường Trường Chinh', N'TP.HCM', N'TP.HCM', '700000'),
 ('ADDR002', 'KH002', N'456 Đường Lê Trọng Tấn', N'TP.HCM', N'TP.HCM', '700001');
 
--- CART (CARTID INT identity, KHACHHANGID NCHAR(10), MANV NCHAR(10))
-INSERT INTO CART (KHACHHANGID, MANV, NGAYTAO, TRANGTHAI) VALUES
-('KH001', NULL, GETDATE(), N'Chưa thanh toán'),
-('KH002', NULL, GETDATE(), N'Chưa thanh toán'),
-(NULL, 'NV002', GETDATE(), N'Chưa thanh toán'); -- ví dụ nhân viên tạo giỏ hộ
 
--- CARTDETAIL (một ví dụ cho KH001)
--- Lấy CartID = SCOPE_IDENTITY không khả dụng ở đây; giả sử CartID 1,2,3 tương ứng
-INSERT INTO CARTDETAIL (CARTID, SANPHAMID, SOLUONG) VALUES
-(1, 'SP003', 1),
-(1, 'SP005', 2),
-(2, 'SP009', 1),
-(3, 'SP020', 1);
 
--- ORDERS (mẫu)
-INSERT INTO ORDERS (ORDERID, KHACHHANGID, DIACHIID, NGAYDAT, TONGTIEN, TRANGTHAI, GHICHU, MANV_XULY) VALUES
-('OR001', 'KH001', 'ADDR001', GETDATE(), 625000.00, N'Đang xử lý', N'Giao nhanh', 'NV001'),
-('OR002', 'KH002', 'ADDR002', GETDATE(), 150000.00, N'Hoàn tất', N'Giao tiêu chuẩn', NULL);
+-- ORDERS 
+INSERT INTO ORDERS (ORDERID, KHACHHANGID, DIACHIID, NGAYDAT, TONGTIEN, TRANGTHAI, GHICHU) VALUES
+('OR001', 'KH001', 'ADDR001', GETDATE(), 625000.00, N'Đang xử lý', N'Giao nhanh'),
+('OR002', 'KH002', 'ADDR002', GETDATE(), 150000.00, N'Hoàn tất', N'Giao tiêu chuẩn');
 
--- ORDERDETAIL (mẫu)
-INSERT INTO ORDERDETAIL (ORDERID, SANPHAMID, SOLUONG, DONGIA) VALUES
-('OR001', 'SP005', 1, 250000.00),
-('OR001', 'SP003', 1, 175000.00),
-('OR002', 'SP025', 1, 150000.00);
+-- ORDERDETAILS
+INSERT INTO ORDERDETAIL (ORDERID, SANPHAMID, MAUSAC, SIZE, SOLUONG, DONGIA) VALUES
+('OR001', 'SP005', N'Brown', N'L', 1, 250000.00),
+('OR001', 'SP003', N'RE/WH', N'30', 2, 175000.00),
+('OR002', 'SP025', N'White', N'M', 1, 150000.00);
 
--- PAYMENT (mẫu)
+-- PAYMENT 
 INSERT INTO PAYMENT (PAYMENTID, ORDERID, PHUONGTHUCTT, TRANGTHAITT, NGAYTT) VALUES
 ('PAY001', 'OR002', N'Chuyển khoản', N'Đã thanh toán', GETDATE());
 
@@ -727,25 +692,19 @@ SELECT * FROM PRODUCT_IMAGE;
 SELECT * FROM STAFF;
 
 -- ============================
--- 4. Giỏ hàng & chi tiết giỏ hàng
--- ============================
-SELECT * FROM CART;
-SELECT * FROM CARTDETAIL;
-
--- ============================
--- 5. Đơn hàng & chi tiết đơn hàng
+-- 4. Đơn hàng & chi tiết đơn hàng
 -- ============================
 SELECT * FROM ORDERS;
 SELECT * FROM ORDERDETAIL;
 
 -- ============================
--- 6. Thanh toán
+-- 5. Thanh toán
 -- ============================
 SELECT * FROM PAYMENT;
 
 -- ============================
 -- CHƯƠNG 2 CÀI ĐẶT YÊU CẦU XỬ LÝ 
--- ============================
+
 
 -- ============================
 -- QUẢN LÝ KHÁCH HÀNG VÀ GIỎ HÀNG
@@ -843,7 +802,7 @@ EXEC SP_CAPNHATTHONGTIN_KHACHHANG
 
 
 
---4.Function Trả về danh sách đơn hàng + tổng tiền + trạng thái 
+--3.Function Trả về danh sách đơn hàng + tổng tiền + trạng thái 
 
 CREATE FUNCTION FN_DANHSACHDONHANG_KH (@KHACHHANGID NCHAR(10))
 RETURNS TABLE
@@ -862,24 +821,17 @@ RETURN
     GROUP BY O.ORDERID, O.NGAYDAT, O.TONGTIEN, O.TRANGTHAI
 );
 GO
-USE [FashionWeb]
-GO
 
-
--- Xóa bản cũ
-IF OBJECT_ID('SP_THONGKEDONHANGTHEOKHACHHANG', 'P') IS NOT NULL
-    DROP PROCEDURE SP_THONGKEDONHANGTHEOKHACHHANG
-GO
-
+--4.Cursor Duyệt từng khách hàng, in ra tổng số đơn hàng mỗi người.
 
 CREATE PROCEDURE SP_THONGKEDONHANGTHEOKHACHHANG
 AS
 BEGIN
-    -- 1. Tạo một bảng tạm để chứa kết quả
+  
     DECLARE @KetQua TABLE (
         TenKhachHang NVARCHAR(100),
         SoDonHang INT,
-        TongTienDaMua DECIMAL(18,2) -- Thêm cái này cho xịn
+        TongTienDaMua DECIMAL(18,2)
     );
 
     DECLARE @KHID NCHAR(10), @TEN NVARCHAR(100);
@@ -891,16 +843,12 @@ BEGIN
 
     OPEN cur;
     FETCH NEXT FROM cur INTO @KHID, @TEN;
-
-    -- 3. Duyệt từng dòng (Loop)
     WHILE @@FETCH_STATUS = 0
     BEGIN
         -- Tính toán số liệu cho từng khách
         SELECT @SoDH = COUNT(*), @TongTien = SUM(TONGTIEN) 
         FROM ORDERS 
         WHERE KHACHHANGID = @KHID;
-
-        -- Insert vào bảng tạm (Thay vì PRINT)
         INSERT INTO @KetQua (TenKhachHang, SoDonHang, TongTienDaMua)
         VALUES (@TEN, ISNULL(@SoDH, 0), ISNULL(@TongTien, 0));
 
@@ -910,7 +858,7 @@ BEGIN
     CLOSE cur;
     DEALLOCATE cur;
 
-    -- 4. Trả kết quả về cho Website
+ 
     SELECT * FROM @KetQua ORDER BY SoDonHang DESC;
 END;
 GO
@@ -919,7 +867,7 @@ GO
 -- QUẢN LÝ SẢN PHẨM VÀ GIỎ HÀNG
 -- ============================
 
---6.Procedure Thêm sản phẩm kèm size, màu, kiểm tra tồn tại CATEGORY.
+--5.Procedure Thêm sản phẩm kèm size, màu, kiểm tra tồn tại CATEGORY.
 CREATE PROCEDURE SP_THEMSANPHAMMOI
     @SANPHAMID NCHAR(10),
     @TENSANPHAM NVARCHAR(100),
@@ -933,7 +881,7 @@ BEGIN
     BEGIN TRY
         BEGIN TRANSACTION;
 
-        -- Kiểm tra danh mục tồn tại
+  
         IF NOT EXISTS (SELECT 1 FROM CATEGORY WHERE DANHMUCID = @DANHMUCID)
         BEGIN
             RAISERROR (N'Danh mục không tồn tại!', 16, 1);
@@ -941,7 +889,7 @@ BEGIN
             RETURN;
         END;
 
-        -- Kiểm tra sản phẩm đã tồn tại chưa
+       
         IF EXISTS (SELECT 1 FROM PRODUCT WHERE SANPHAMID = @SANPHAMID)
         BEGIN
             RAISERROR (N'Mã sản phẩm đã tồn tại!', 16, 1);
@@ -949,15 +897,12 @@ BEGIN
             RETURN;
         END;
 
-        -- Bước 1: Thêm vào bảng PRODUCT
+    
         INSERT INTO PRODUCT (SANPHAMID, TENSANPHAM, DANHMUCID, GIA, SOLUONGTONKHO)
         VALUES (@SANPHAMID, @TENSANPHAM, @DANHMUCID, @GIA, @SOLUONGTONKHO);
-
-        -- Bước 2: Thêm size vào PRODUCT_SIZE
         INSERT INTO PRODUCT_SIZE (SANPHAMID, SIZE)
         VALUES (@SANPHAMID, @SIZE);
 
-        -- Bước 3: Thêm màu vào PRODUCT_COLOR
         INSERT INTO PRODUCT_COLOR (SANPHAMID, MAUSAC)
         VALUES (@SANPHAMID, @MAUSAC);
 
@@ -972,7 +917,7 @@ END;
 GO
 
 
---7.Trigger Khi thêm ORDERDETAIL, kiểm tra tồn kho đủ không. Nếu không đủ → rollback.
+--6.Trigger Khi thêm ORDERDETAIL, kiểm tra tồn kho đủ không. 
 
 CREATE TRIGGER TR_KIEMTRATONKHO
 ON ORDERDETAIL
@@ -998,7 +943,7 @@ END;
 GO
 
 
---8.Function Tính giá trung bình của các sản phẩm trong danh mục
+--7.Function Tính giá trung bình của các sản phẩm trong danh mục
 CREATE FUNCTION FN_GIATRUNGBINHSANPHAMDANHMUC(@DANHMUCID NCHAR(10))
 RETURNS DECIMAL(18,2)
 AS
@@ -1009,169 +954,149 @@ BEGIN
 END;
 GO
 
---9.Procedure Sau khi đơn hàng được tạo, trừ số lượng tồn trong kho.
-CREATE PROCEDURE SP_CAPNHATTONKHOSAUDATHANG
-    @ORDERID NCHAR(10)
+--8.Procedure Sau khi đơn hàng được tạo, trừ số lượng tồn trong kho.
+
+IF OBJECT_ID('SP_CAPNHATTONKHOSAUDATHANG', 'P') IS NOT NULL
+    DROP PROCEDURE SP_CAPNHATTONKHOSAUDATHANG;
+GO
+
+---------
+CREATE TRIGGER TR_CAPNHAT_TONKHO_KHI_DAT_HANG
+ON ORDERDETAIL
+AFTER INSERT
 AS
 BEGIN
-    UPDATE P
-    SET P.SOLUONGTONKHO = P.SOLUONGTONKHO - OD.SOLUONG
-    FROM PRODUCT P
-    JOIN ORDERDETAIL OD ON P.SANPHAMID = OD.SANPHAMID
-    WHERE OD.ORDERID = @ORDERID;
+    SET NOCOUNT ON;
+
+    BEGIN TRY
+        UPDATE P
+        SET P.SOLUONGTONKHO = P.SOLUONGTONKHO - I.SOLUONG
+        FROM PRODUCT P
+        INNER JOIN INSERTED I ON P.SANPHAMID = I.SANPHAMID;
+
+   
+        IF EXISTS (SELECT 1 FROM PRODUCT WHERE SOLUONGTONKHO < 0)
+        BEGIN
+            ROLLBACK TRANSACTION;
+            RAISERROR (N'Rất tiếc, sản phẩm này vừa hết hàng trong khi bạn đang thao tác!', 16, 1);
+            RETURN;
+        END
+
+    END TRY
+    BEGIN CATCH
+        IF @@TRANCOUNT > 0
+            ROLLBACK TRANSACTION;
+            
+        DECLARE @LoiNhan NVARCHAR(4000) = ERROR_MESSAGE();
+        RAISERROR(@LoiNhan, 16, 1);
+    END CATCH;
 END;
 GO
 
 
---10.Trigger Cập nhật tổng tiền đơn hàng
+--9.Trigger Cập nhật tổng tiền đơn hàng
+IF OBJECT_ID('TR_CAPNHAT_TONGTIEN_ORDERS', 'TR') IS NOT NULL
+    DROP TRIGGER TR_CAPNHAT_TONGTIEN_ORDERS;
+GO
+-------
 CREATE TRIGGER TR_CAPNHAT_TONGTIEN_ORDERS
 ON ORDERDETAIL
 AFTER INSERT, DELETE, UPDATE
 AS
 BEGIN
     SET NOCOUNT ON;
-
-    -- Khai báo bảng tạm để chứa các ORDERID bị ảnh hưởng
-    DECLARE @OrderIDs TABLE (ORDERID NCHAR(10));
-
-    -- Lấy tất cả ORDERID bị ảnh hưởng từ INSERTED và DELETED
-    INSERT INTO @OrderIDs (ORDERID)
+    DECLARE @DanhSachDonHang TABLE (ORDERID NCHAR(10));
+    INSERT INTO @DanhSachDonHang (ORDERID)
     SELECT ORDERID FROM INSERTED
     UNION
     SELECT ORDERID FROM DELETED;
-
-    -- Cập nhật TONGTIEN trong bảng ORDERS
+    --cập nhâth
     UPDATE O
-    SET O.TONGTIEN = ISNULL(
-                        (
-                            SELECT SUM(OD.SOLUONG * OD.DONGIA)
-                            FROM ORDERDETAIL OD
-                            WHERE OD.ORDERID = O.ORDERID
-                        ), 0)
+    SET O.TONGTIEN = (
+        SELECT ISNULL(SUM(OD.SOLUONG * OD.DONGIA), 0)
+        FROM ORDERDETAIL OD
+        WHERE OD.ORDERID = O.ORDERID
+    )
     FROM ORDERS O
-    JOIN @OrderIDs A ON O.ORDERID = A.ORDERID;
+    INNER JOIN @DanhSachDonHang DS ON O.ORDERID = DS.ORDERID;
 END;
 GO
 
---11. Cursor Cập nhật trạng thái sản phẩm theo tồn kho
-DECLARE @MASP NCHAR(10), @TEN NVARCHAR(200), @TON INT;
+--10. Cursor Cập nhật trạng thái sản phẩm theo tồn kho
+IF OBJECT_ID('SP_KIEMTRATONKHO_CURSOR', 'P') IS NOT NULL
+    DROP PROCEDURE SP_KIEMTRATONKHO_CURSOR
+GO
 
-DECLARE CUR_TONKHO CURSOR FOR
-SELECT SANPHAMID, TENSANPHAM, SOLUONGTONKHO FROM PRODUCT;
-
-OPEN CUR_TONKHO;
-FETCH NEXT FROM CUR_TONKHO INTO @MASP, @TEN, @TON;
-
-WHILE @@FETCH_STATUS = 0
+CREATE PROCEDURE SP_KIEMTRATONKHO_CURSOR
+AS
 BEGIN
-    IF @TON = 0
-        PRINT N'Sản phẩm ' + @TEN + N' (Mã ' + @MASP + N') đã hết hàng.';
-    ELSE IF @TON < 10
-        PRINT N'Sản phẩm ' + @TEN + N' (Mã ' + @MASP + N') sắp hết hàng.';
-    ELSE
-        PRINT N'Sản phẩm ' + @TEN + N' (Mã ' + @MASP + N') còn hàng ổn định.';
-    FETCH NEXT FROM CUR_TONKHO INTO @MASP, @TEN, @TON;
-END;
 
-CLOSE CUR_TONKHO;
-DEALLOCATE CUR_TONKHO;
+    DECLARE @KetQua TABLE (
+        MaSP NCHAR(10),
+        TenSP NVARCHAR(200),
+        SoLuong INT,
+        TrangThai NVARCHAR(200)
+    );
+
+    DECLARE @MASP NCHAR(10), @TEN NVARCHAR(200), @TON INT;
+
+
+    DECLARE CUR_TONKHO CURSOR FOR
+        SELECT SANPHAMID, TENSANPHAM, SOLUONGTONKHO FROM PRODUCT;
+
+    OPEN CUR_TONKHO;
+    FETCH NEXT FROM CUR_TONKHO INTO @MASP, @TEN, @TON;
+
+    WHILE @@FETCH_STATUS = 0
+    BEGIN
+        DECLARE @StatusText NVARCHAR(200);
+        IF @TON <= 0
+            SET @StatusText = N'Đã hết hàng';
+        ELSE IF @TON < 10
+            SET @StatusText = N'Sắp hết hàng (Cần nhập thêm)';
+        ELSE
+            SET @StatusText = N'Còn hàng ổn định';
+        INSERT INTO @KetQua (MaSP, TenSP, SoLuong, TrangThai)
+        VALUES (@MASP, @TEN, @TON, @StatusText);
+
+        FETCH NEXT FROM CUR_TONKHO INTO @MASP, @TEN, @TON;
+    END;
+
+    CLOSE CUR_TONKHO;
+    DEALLOCATE CUR_TONKHO;
+
+
+    SELECT * FROM @KetQua;
+END;
+GO
 
 
 -- ============================
 -- QUẢN LÝ ĐƠN HÀNG VÀ THANH TOÁN
 -- ============================
 
---12.Procedure Lấy giỏ hàng của KH → tạo đơn → ghi chi tiết → xoá giỏ.
-CREATE PROCEDURE SP_TAODONHANGTUGIOHANG
-    @OrderID NCHAR(10),
-    @CartID INT, -- Sửa kiểu dữ liệu của @CartID thành INT cho phù hợp với định nghĩa bảng CART
-    @DiaChiID NCHAR(10)
-AS
-BEGIN
-    -- Kiểm tra sự tồn tại của CartID và DiaChiID
-    IF NOT EXISTS (SELECT 1 FROM CART WHERE CARTID = @CartID)
-    BEGIN
-        RAISERROR (N'Mã giỏ hàng không tồn tại.', 16, 1);
-        RETURN;
-    END
 
-    IF NOT EXISTS (SELECT 1 FROM ADDRESS WHERE DIACHIID = @DiaChiID)
-    BEGIN
-        RAISERROR (N'Mã địa chỉ không tồn tại.', 16, 1);
-        RETURN;
-    END
-
-    -- Kiểm tra OrderID đã tồn tại chưa
-    IF EXISTS (SELECT 1 FROM ORDERS WHERE ORDERID = @OrderID)
-    BEGIN
-        RAISERROR (N'Mã đơn hàng đã tồn tại.', 16, 1);
-        RETURN;
-    END
-
-    BEGIN TRY
-        BEGIN TRANSACTION;
-
-        DECLARE @KhachHangID NCHAR(10);
-        DECLARE @TongTien DECIMAL(18,2);
-
-        -- Lấy KhachHangID từ CART
-        SELECT @KhachHangID = KHACHHANGID FROM CART WHERE CARTID = @CartID;
-
-        -- Tính Tổng Tiền (dùng GIA - giá đã giảm)
-        SELECT @TongTien = SUM(CD.SOLUONG * P.GIA)
-        FROM CARTDETAIL CD
-        JOIN PRODUCT P ON CD.SANPHAMID = P.SANPHAMID
-        WHERE CD.CARTID = @CartID;
-
-        -- THÊM DỮ LIỆU VÀO ORDERS
-        INSERT INTO ORDERS (ORDERID, KHACHHANGID, DIACHIID, NGAYDAT, TONGTIEN, TRANGTHAI)
-        VALUES (@OrderID, @KhachHangID, @DiaChiID, GETDATE(), ISNULL(@TongTien, 0), N'Chờ xác nhận');
-
-        -- THÊM DỮ LIỆU VÀO ORDERDETAIL
-        INSERT INTO ORDERDETAIL (ORDERID, SANPHAMID, SOLUONG, DONGIA)
-        SELECT @OrderID, CD.SANPHAMID, CD.SOLUONG, P.GIA -- SỬA LỖI: Chỉ định rõ CD.SANPHAMID và CD.SOLUONG
-        FROM CARTDETAIL CD
-        JOIN PRODUCT P ON CD.SANPHAMID = P.SANPHAMID
-        WHERE CARTID = @CartID;
-
-        -- XÓA CHI TIẾT GIỎ HÀNG
-        DELETE FROM CARTDETAIL WHERE CARTID = @CartID;
-        
-        -- Cập nhật trạng thái giỏ hàng (Tùy chọn)
-        -- UPDATE CART SET TRANGTHAI = N'Đã đặt hàng' WHERE CARTID = @CartID;
-
-        -- COMMIT TRANSACTION
-        COMMIT TRANSACTION;
-        PRINT N'Tạo đơn hàng thành công. Đơn hàng ID: ' + @OrderID;
-    END TRY
-    BEGIN CATCH
-        IF @@TRANCOUNT > 0
-            ROLLBACK TRANSACTION;
-        -- Báo lỗi chi tiết
-        DECLARE @ErrorMessage NVARCHAR(4000) = ERROR_MESSAGE();
-        DECLARE @ErrorSeverity INT = ERROR_SEVERITY();
-        DECLARE @ErrorState INT = ERROR_STATE();
-        
-        RAISERROR(@ErrorMessage, @ErrorSeverity, @ErrorState);
-    END CATCH;
-END;
-GO
-
---13.Trigger Khi bảng PAYMENT thêm mới và trạng thái là "Đã thanh toán", thì ORDERS đổi sang “Đã giao”
+--11.Trigger Khi bảng PAYMENT thêm mới và trạng thái là "Đã thanh toán", thì ORDERS đổi sang “Đã giao”
 CREATE TRIGGER TR_CAPNHATTRANGTHAISAUTHANHTOAN
 ON PAYMENT
 AFTER INSERT
 AS
 BEGIN
     UPDATE O
-    SET TRANGTHAI = N'ĐÃ GIAO HÀNG'
+    SET TRANGTHAI = N'ĐANG XỬ LÝ' 
     FROM ORDERS O
     JOIN INSERTED I ON O.ORDERID = I.ORDERID
     WHERE I.TRANGTHAITT = N'ĐÃ THANH TOÁN';
 END;
 GO
 
---14.Function Tính tổng tiền 1 đơn từ ORDERDETAIL.
+--- xóa Trigger
+IF OBJECT_ID('TR_CAPNHATTRANGTHAISAUTHANHTOAN', 'TR') IS NOT NULL
+    DROP TRIGGER TR_CAPNHATTRANGTHAISAUTHANHTOAN;
+GO
+
+
+--12.Function Tính tổng tiền 1 đơn từ ORDERDETAIL.
 CREATE FUNCTION FN_TONGTIENDONHANG(@ORDERID NCHAR(10))
 RETURNS DECIMAL(18,2)
 AS
@@ -1183,7 +1108,7 @@ END;
 GO
 
 
---15.Procedure Tổng hợp doanh thu mỗi tháng của năm
+--13.Procedure Tổng hợp doanh thu mỗi tháng của năm
 CREATE PROCEDURE SP_THONGKEDOANHTHUTHEOTHANG
     @NAM INT
 AS
@@ -1200,68 +1125,171 @@ GO
 
 
 
---16.Transaction Khi khách hủy đơn, rollback tiền + cập nhật tồn kho.
-
+--14.Transaction Khi khách hủy đơn, rollback tiền + cập nhật tồn kho.
+-- Xóa thủ tục 
+IF OBJECT_ID('SP_HUYDONHANG', 'P') IS NOT NULL
+    DROP PROCEDURE SP_HUYDONHANG;
+GO
+--------------------------------------------
 CREATE PROCEDURE SP_HUYDONHANG
-    @ORDERID NCHAR(10)
+    @ORDERID NCHAR(10),                
+    @LYDO NVARCHAR(200) = N'Khách yêu cầu hủy' 
 AS
 BEGIN
-    -- Kiểm tra OrderID có tồn tại không
-    IF NOT EXISTS (SELECT 1 FROM ORDERS WHERE ORDERID = @ORDERID)
-    BEGIN
-        RAISERROR (N'Mã đơn hàng không tồn tại. Vui lòng kiểm tra lại.', 16, 1);
-        RETURN;
-    END
+    SET NOCOUNT ON; 
+    DECLARE @TrangThaiHienTai NVARCHAR(50);
+    DECLARE @TrangThaiThanhToan NVARCHAR(50);
+    DECLARE @ThongBaoTraVe NVARCHAR(500);
+    DECLARE @CoCanHoanTien BIT = 0; 
+    SET @ORDERID = RTRIM(@ORDERID);
 
-    -- Bắt đầu Transaction
     BEGIN TRY
-        BEGIN TRANSACTION;
+        BEGIN TRANSACTION; 
 
-        -- 1. KIỂM TRA TRẠNG THÁI HIỆN TẠI
-        -- Chỉ cho phép hủy nếu trạng thái chưa phải là 'Hoàn tất' (đã giao) hoặc 'ĐÃ HỦY'
-        IF EXISTS (SELECT 1 FROM ORDERS WHERE ORDERID = @ORDERID 
-                   AND TRANGTHAI IN (N'Hoàn tất', N'ĐÃ GIAO HÀNG', N'ĐÃ HỦY'))
+    
+        SELECT @TrangThaiHienTai = TRANGTHAI 
+        FROM ORDERS WITH (UPDLOCK) 
+        WHERE ORDERID = @ORDERID;
+
+        IF @TrangThaiHienTai IS NULL
         BEGIN
-            RAISERROR (N'Không thể hủy đơn hàng này do đã chuyển sang trạng thái đã hoàn tất hoặc đã hủy.', 16, 1);
-            -- Lỗi nghiệp vụ, cần ROLLBACK
             ROLLBACK TRANSACTION;
+            RAISERROR (N'Lỗi: Không tìm thấy đơn hàng mã "%s".', 16, 1, @ORDERID);
+            RETURN;
+        END
+        IF @TrangThaiHienTai IN (N'Hoàn tất', N'ĐÃ GIAO HÀNG', N'ĐÃ HỦY')
+        BEGIN
+            ROLLBACK TRANSACTION;
+            RAISERROR (N'Lỗi: Đơn này đang ở trạng thái "%s" nên không hủy được.', 16, 1, @TrangThaiHienTai);
             RETURN;
         END
 
-        -- 2. HOÀN LẠI TỒN KHO (Tăng số lượng tồn kho lên)
+      
         UPDATE P
         SET P.SOLUONGTONKHO = P.SOLUONGTONKHO + OD.SOLUONG
         FROM PRODUCT P
-        JOIN ORDERDETAIL OD ON P.SANPHAMID = OD.SANPHAMID
+        INNER JOIN ORDERDETAIL OD ON P.SANPHAMID = OD.SANPHAMID
         WHERE OD.ORDERID = @ORDERID;
 
-        -- 3. CẬP NHẬT TRẠNG THÁI ĐƠN HÀNG
-        UPDATE ORDERS 
-        SET TRANGTHAI = N'ĐÃ HỦY',
-            MANV_XULY = NULL 
+    
+        SELECT @TrangThaiThanhToan = TRANGTHAITT 
+        FROM PAYMENT WITH (UPDLOCK) 
         WHERE ORDERID = @ORDERID;
 
-        -- COMMIT TRANSACTION nếu tất cả các bước trên thành công
-        COMMIT TRANSACTION;
-        PRINT N'Đơn hàng ID: ' + @ORDERID + N' đã được hủy thành công và tồn kho đã được hoàn lại.';
+        IF @TrangThaiThanhToan = N'ĐÃ THANH TOÁN'
+        BEGIN
+            UPDATE PAYMENT
+            SET TRANGTHAITT = N'CHỜ HOÀN TIỀN',
+                NGAYTT = GETDATE()
+            WHERE ORDERID = @ORDERID;
+            SET @CoCanHoanTien = 1; 
+            SET @ThongBaoTraVe = N'Đã hủy đơn thành công (Chờ hoàn tiền).';
+        END
+        ELSE
+        BEGIN
+            UPDATE PAYMENT
+            SET TRANGTHAITT = N'ĐÃ HỦY'
+            WHERE ORDERID = @ORDERID;
+            SET @ThongBaoTraVe = N'Đã hủy đơn hàng thành công.';
+        END
+
+     
+        UPDATE ORDERS 
+        SET TRANGTHAI = N'ĐÃ HỦY',
+            GHICHU = ISNULL(GHICHU, '') + N' | [Hủy ' + CONVERT(NVARCHAR, GETDATE(), 103) + N']: ' + @LYDO
+        WHERE ORDERID = @ORDERID;
+
+        COMMIT TRANSACTION; 
+
+        SELECT 
+            @ORDERID AS MaDonHang, 
+            @ThongBaoTraVe AS KetQuaXuLy,
+            @CoCanHoanTien AS CanLienHeKhachHoanTien;
+
     END TRY
     BEGIN CATCH
-        -- ROLLBACK TRANSACTION nếu có bất kỳ lỗi nào xảy ra
         IF @@TRANCOUNT > 0
             ROLLBACK TRANSACTION;
-        
-        -- Báo lỗi chi tiết
-        DECLARE @ErrorMessage NVARCHAR(4000) = ERROR_MESSAGE();
-        DECLARE @ErrorSeverity INT = ERROR_SEVERITY();
-        DECLARE @ErrorState INT = ERROR_STATE();
-        
-        RAISERROR(@ErrorMessage, @ErrorSeverity, @ErrorState);
+        DECLARE @LoiNhan NVARCHAR(4000) = ERROR_MESSAGE();
+        RAISERROR(@LoiNhan, 16, 1);
     END CATCH;
+END;
+GO
+       
+-- 15.Trigger: Đảm bảo Giá Bán (GIA) không được lớn hơn Giá Gốc (GIAGOC)
+CREATE TRIGGER TR_KIEMTRA_GIABAN_HOPLE
+ON PRODUCT
+AFTER INSERT, UPDATE
+AS
+BEGIN
+    SET NOCOUNT ON;
+    IF EXISTS (
+        SELECT 1 
+        FROM INSERTED 
+        WHERE GIA > GIAGOC
+    )
+    BEGIN
+       
+        RAISERROR (N'Lỗi dữ liệu: Giá bán (GIA) không được phép lớn hơn Giá gốc (GIAGOC). Vui lòng kiểm tra lại.', 16, 1);
+        ROLLBACK TRANSACTION;
+        RETURN;
+    END
+END;
+GO
+
+--16. Cursor Phân loại sản phẩm bán chạy
+CREATE PROCEDURE SP_PHANLOAI_SANPHAM_BANCHAY
+AS
+BEGIN
+    SET NOCOUNT ON;
+    DECLARE @BaoCaoHieuQua TABLE (
+        MaSP NCHAR(10),
+        TenSP NVARCHAR(200),
+        TongDaBan INT,
+        DanhGia NVARCHAR(100)
+    );
+
+    DECLARE @MaSP NCHAR(10), @TenSP NVARCHAR(200);
+    DECLARE @TongDaBan INT;
+    DECLARE cur_HieuQua CURSOR FOR
+        SELECT SANPHAMID, TENSANPHAM FROM PRODUCT;
+
+    OPEN cur_HieuQua;
+    FETCH NEXT FROM cur_HieuQua INTO @MaSP, @TenSP;
+
+    WHILE @@FETCH_STATUS = 0
+    BEGIN
+
+        SELECT @TongDaBan = ISNULL(SUM(OD.SOLUONG), 0)
+        FROM ORDERDETAIL OD
+        JOIN ORDERS O ON OD.ORDERID = O.ORDERID
+        WHERE OD.SANPHAMID = @MaSP AND O.TRANGTHAI <> N'ĐÃ HỦY';
+        DECLARE @NhanXet NVARCHAR(100);
+        
+        IF @TongDaBan >= 50
+            SET @NhanXet = N'Bán chạy';
+        ELSE IF @TongDaBan >= 10
+            SET @NhanXet = N'trung bình';
+        ELSE IF @TongDaBan > 0
+            SET @NhanXet = N'Bán chậm';
+        ELSE
+            SET @NhanXet = N'Tồn kho';
+
+        INSERT INTO @BaoCaoHieuQua (MaSP, TenSP, TongDaBan, DanhGia)
+        VALUES (@MaSP, @TenSP, @TongDaBan, @NhanXet);
+
+        FETCH NEXT FROM cur_HieuQua INTO @MaSP, @TenSP;
+    END;
+
+    CLOSE cur_HieuQua;
+    DEALLOCATE cur_HieuQua;
+
+
+    SELECT * FROM @BaoCaoHieuQua ORDER BY TongDaBan DESC;
 END;
 GO
 -- ============================
 -- CHƯƠNG 3 QUẢN TRỊ HỆ THỐNG
--- ============================
 
 
 -- 1. Login cho Quản lý (Application Admin)
@@ -1295,57 +1323,66 @@ ALTER ROLE StaffRole ADD MEMBER Staff_User;
 ALTER ROLE CustomerRole ADD MEMBER Customer_User;
 GO
 
-----  A. Cấp quyền cho ADMIN 
--- Toàn quyền trên các bảng, thực thi tất cả SP/Function
+
+-- PHÂN QUYỀN 
+
+---- A. Cấp quyền cho ADMIN
 GRANT SELECT, INSERT, UPDATE, DELETE ON SCHEMA :: dbo TO AdminRole;
-GRANT EXECUTE TO AdminRole; 
+GRANT EXECUTE TO AdminRole;
 GO
 
---  B. Cấp quyền cho STAFF ROLE (Bán hàng và xem thông tin)
--- SELECT trên các bảng cần thiết
+---- B. Cấp quyền cho STAFF 
+-- 1. Quyền xem dữ liệu cơ bản
 GRANT SELECT ON PRODUCT TO StaffRole;
+GRANT SELECT ON PRODUCT_SIZE TO StaffRole;
+GRANT SELECT ON PRODUCT_COLOR TO StaffRole;
+GRANT SELECT ON PRODUCT_IMAGE TO StaffRole;
 GRANT SELECT ON CUSTOMER TO StaffRole;
 GRANT SELECT ON ORDERS TO StaffRole;
-GRANT SELECT ON STAFF TO StaffRole;
--- Quyền thực thi các SP bán hàng
-GRANT EXECUTE ON SP_TAODONHANGTUGIOHANG TO StaffRole;
-GRANT EXECUTE ON SP_CAPNHATTONKHOSAUDATHANG TO StaffRole;
+GRANT SELECT ON ORDERDETAIL TO StaffRole;
+GRANT SELECT ON STAFF TO StaffRole; 
+GRANT SELECT ON CATEGORY TO StaffRole;
+
+-- 2. Quyền Xử lý đơn hàng
+GRANT UPDATE ON ORDERS TO StaffRole; 
+
+-- 3. Quyền thực thi các Procedure nghiệp vụ 
+GRANT EXECUTE ON SP_HUYDONHANG TO StaffRole;        
+
+-- 4. Quyền xem báo cáo & kiểm kê
+GRANT EXECUTE ON SP_KIEMTRATONKHO_CURSOR TO StaffRole;   
+GRANT EXECUTE ON SP_PHANLOAI_SANPHAM_BANCHAY TO StaffRole;
 GO
 
---  C. Cấp quyền cho CUSTOMER 
--- Quyền trên các bảng mua sắm (chỉ INSERT/UPDATE/DELETE trên giỏ hàng)
-
--- Quyền trên các bảng mua sắm
+---- C. Cấp quyền cho CUSTOMER 
+--  Quyền xem sản phẩm 
 GRANT SELECT ON PRODUCT TO CustomerRole;
+GRANT SELECT ON PRODUCT_SIZE TO CustomerRole;
+GRANT SELECT ON PRODUCT_COLOR TO CustomerRole;
+GRANT SELECT ON PRODUCT_IMAGE TO CustomerRole;
 GRANT SELECT ON CATEGORY TO CustomerRole;
-GRANT SELECT, INSERT, UPDATE, DELETE ON CART TO CustomerRole;
-GRANT SELECT, INSERT, UPDATE, DELETE ON CARTDETAIL TO CustomerRole;
 
--- Quyền thực thi các Stored Procedure 
+
+-- Quyền ĐẶT HÀNG và HỦY ĐƠN
+GRANT EXECUTE ON SP_HUYDONHANG TO CustomerRole;          
+
+-- Quyền quản lý thông tin cá nhân
 GRANT EXECUTE ON SP_THEMKHACHHANGDIACHI TO CustomerRole;
 GRANT EXECUTE ON SP_CAPNHATTHONGTIN_KHACHHANG TO CustomerRole;
 
--- SỬA LỖI: Sử dụng cú pháp GRANT VIEW DEFINITION ON OBJECT::
-GRANT VIEW DEFINITION ON OBJECT::FN_DANHSACHDONHANG_KH TO CustomerRole; 
--- Đối với Table-Valued Function (TVF), bạn phải dùng GRANT SELECT
+--  Quyền xem lịch sử đơn hàng 
 GRANT SELECT ON FN_DANHSACHDONHANG_KH TO CustomerRole;
 GO
 
-
 ---KHÁNH KO CHẠY Này 
--- 1. Hủy quyền kết nối mặc định của Public
+--  Hủy quyền kết nối mặc định 
 REVOKE CONNECT FROM [public];
 GO
--- 2. Ngăn CustomerRole tạo các đối tượng mới
-REVOKE CREATE TABLE TO CustomerRole;
-REVOKE CREATE VIEW TO CustomerRole;
-REVOKE CREATE FUNCTION TO CustomerRole;
+
+REVOKE CREATE TABLE, CREATE VIEW, CREATE PROCEDURE, CREATE FUNCTION FROM CustomerRole;
+REVOKE CREATE TABLE, CREATE VIEW, CREATE PROCEDURE, CREATE FUNCTION FROM StaffRole;
 GO
--- 3. Ngăn StaffRole tạo các đối tượng mới
-REVOKE CREATE TABLE TO StaffRole;
-REVOKE CREATE VIEW TO StaffRole;
-REVOKE CREATE FUNCTION TO StaffRole;
-GO
+
 
 
 

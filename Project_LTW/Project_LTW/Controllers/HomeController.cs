@@ -15,13 +15,9 @@ namespace Project_LTW.Controllers
         public ActionResult Product()
         {
 
-            var list = db.PRODUCTs.ToList();   // lấy dữ liệu từ DB
+            var list = db.PRODUCTs.ToList(); 
             return View(list);
-            
-        }
-
-        // Trong file: HomeController.cs
-
+         }
         public ActionResult Details(string id) 
         {
            
@@ -48,7 +44,7 @@ namespace Project_LTW.Controllers
             return PartialView(model);
         }
 
-        // GET: Tìm kiếm sản phẩm theo danh mục - ĐÃ SỬA
+        
         public ActionResult TimKiemCategory(string id)
         {
             if (string.IsNullOrEmpty(id))
@@ -56,15 +52,15 @@ namespace Project_LTW.Controllers
                 return RedirectToAction("Index");
             }
 
-            // THÊM DÒNG NÀY:
+          
             string trimmedId = id.Trim();
 
-            // Dùng 'trimmedId' cho tất cả các truy vấn bên dưới
+      
             List<PRODUCT> list = db.PRODUCTs
-                .Where(x => x.DANHMUCID == trimmedId && x.SOLUONGTONKHO > 0) // Sửa ở đây
+                .Where(x => x.DANHMUCID == trimmedId && x.SOLUONGTONKHO > 0) 
                 .ToList();
 
-            var category = db.CATEGORies.FirstOrDefault(c => c.DANHMUCID == trimmedId); // Sửa ở đây
+            var category = db.CATEGORies.FirstOrDefault(c => c.DANHMUCID == trimmedId);
             ViewBag.CategoryName = category?.TENDANHMUC ?? "Danh mục";
 
             if (list == null || list.Count == 0)
@@ -72,30 +68,25 @@ namespace Project_LTW.Controllers
                 ViewBag.ThongBao = "Không có sản phẩm nào thuộc chủ đề này.";
             }
 
-            // Dùng lại View Index.cshtml
+            
             return View("Product", list);
         }
-        // trang homepage 
+      
         public ActionResult Index()
         {
-            // 1. Lấy TOP 3 sản phẩm thuộc danh mục DM001 
+      
             var topDM001Products = db.PRODUCTs
-                // Lọc theo DM001 và đảm bảo còn hàng
+             
                 .Where(p => p.DANHMUCID == "DM001" && p.SOLUONGTONKHO > 0)
-                // Sắp xếp để lấy các sản phẩm nổi bật/mới nhất
-                .OrderByDescending(p => p.SANPHAMID)
-                .Take(2); // Lấy 2 sản phẩm
+                               .OrderByDescending(p => p.SANPHAMID)
+                .Take(2); 
+                       var topDM003Products = db.PRODUCTs
+                               .Where(p => p.DANHMUCID == "DM003" && p.SOLUONGTONKHO > 0)
+                               .OrderByDescending(p => p.SANPHAMID)
+                .Take(2); 
 
-            // 2. Lấy TOP 2 sản phẩm thuộc danh mục DM003
-            var topDM003Products = db.PRODUCTs
-                // Lọc theo DM003 và đảm bảo còn hàng
-                .Where(p => p.DANHMUCID == "DM003" && p.SOLUONGTONKHO > 0)
-                // Sắp xếp để lấy các sản phẩm nổi bật/mới nhất
-                .OrderByDescending(p => p.SANPHAMID)
-                .Take(2); // Lấy 2 sản phẩm
-
-            ViewBag.MainApparelProducts = topDM001Products; // Dùng cho vị trí 1
-            ViewBag.AccessoryProducts = topDM003Products;   // Dùng cho vị trí 2
+            ViewBag.MainApparelProducts = topDM001Products; 
+            ViewBag.AccessoryProducts = topDM003Products;   
 
             return View();
 
@@ -104,22 +95,21 @@ namespace Project_LTW.Controllers
         {
             if (string.IsNullOrWhiteSpace(keyword))
             {
-                // Nếu không nhập gì thì quay lại trang chủ
+         
                 return RedirectToAction("Index");
             }
 
-            // Chuẩn hóa từ khóa: bỏ dấu và chuyển thường
+           
             string tukhoaBoDau = RemoveDiacritics(keyword.Trim().ToLower());
 
-            // Lấy toàn bộ danh sách sản phẩm
+            
             List<PRODUCT> list = db.PRODUCTs.ToList();
 
-            // Tìm kiếm không phân biệt hoa/thường và có/không dấu
+            
             list = list.FindAll(x =>
                 RemoveDiacritics(x.TENSANPHAM.ToLower()).Contains(tukhoaBoDau)
             );
 
-            // Gửi lại từ khóa và kết quả ra view
             ViewBag.Keyword = keyword;
             return View("Product", list);
         }

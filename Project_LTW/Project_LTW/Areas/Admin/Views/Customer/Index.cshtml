@@ -1,0 +1,66 @@
+﻿@model IEnumerable<Project_LTW.CUSTOMER>
+
+@{
+    ViewBag.Title = "Quản lý Khách hàng";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="card shadow border-0">
+    <div class="card-header bg-white d-flex justify-content-between align-items-center py-3">
+        <h5 class="mb-0 fw-bold text-primary">DANH SÁCH KHÁCH HÀNG</h5>
+        <a href="@Url.Action("Create")" class="btn btn-success btn-sm">
+            <i class="bi bi-person-plus"></i> Thêm mới
+        </a>
+    </div>
+    <div class="card-body">
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <div class="alert alert-success alert-dismissible fade show">
+                @TempData["SuccessMessage"]
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        }
+
+        @if (TempData["ErrorMessage"] != null)
+        {
+            <div class="alert alert-danger alert-dismissible fade show">
+                @TempData["ErrorMessage"]
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        }
+
+        <table class="table table-hover align-middle">
+            <thead class="table-light">
+                <tr>
+                    <th>Mã KH</th>
+                    <th>Họ tên</th>
+                    <th>Email</th>
+                    <th>Số điện thoại</th>
+                    <th>Hành động</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td><strong>@item.KHACHHANGID</strong></td>
+                        <td>@item.HOTEN</td>
+                        <td>@item.EMAIL</td>
+                        <td>@(item.DIENTHOAI ?? "Chưa có")</td>
+                        <td>
+                            <a href="@Url.Action("Edit", "Customer", new { area = "Admin", id = item.KHACHHANGID.Trim() })"
+                               class="btn btn-primary btn-sm">
+                                <i class="bi bi-pencil"></i> Sửa
+                            </a>
+                            <a href="@Url.Action("Delete", "Customer", new { area = "Admin", id = item.KHACHHANGID.Trim() })"
+                               class="btn btn-danger btn-sm"
+                               onclick="return confirm('Bạn có chắc chắn muốn xóa khách hàng @item.HOTEN không?');">
+                                <i class="bi bi-trash"></i> Xóa
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>  

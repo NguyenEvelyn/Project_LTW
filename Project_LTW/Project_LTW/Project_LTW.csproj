@@ -134,16 +134,12 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
     <Compile Include="Areas\Admin\Controllers\CheckAdminAttribute.cs" />
+    <Compile Include="Areas\Admin\Controllers\CustomerController.cs" />
     <Compile Include="Areas\Admin\Controllers\DoanhThuController.cs" />
     <Compile Include="Areas\Admin\Controllers\HomeAdminController.cs" />
     <Compile Include="Areas\Admin\Controllers\OrderController.cs" />
     <Compile Include="Areas\Admin\Controllers\ProductController.cs" />
-    <Compile Include="CART.cs">
-      <DependentUpon>QLQUANAO.tt</DependentUpon>
-    </Compile>
-    <Compile Include="CARTDETAIL.cs">
-      <DependentUpon>QLQUANAO.tt</DependentUpon>
-    </Compile>
+    <Compile Include="Areas\Admin\Controllers\StaffController.cs" />
     <Compile Include="CATEGORY.cs">
       <DependentUpon>QLQUANAO.tt</DependentUpon>
     </Compile>
@@ -200,10 +196,13 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>QLQUANAO.edmx</DependentUpon>
     </Compile>
-    <Compile Include="SP_KIEMTRATONKHO_CURSOR1_Result.cs">
+    <Compile Include="SP_HUYDONHANG_Result.cs">
       <DependentUpon>QLQUANAO.tt</DependentUpon>
     </Compile>
     <Compile Include="SP_KIEMTRATONKHO_CURSOR_Result.cs">
+      <DependentUpon>QLQUANAO.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SP_PHANLOAI_SANPHAM_BANCHAY_Result.cs">
       <DependentUpon>QLQUANAO.tt</DependentUpon>
     </Compile>
     <Compile Include="SP_THONGKEDOANHTHUTHEOTHANG_Result.cs">
@@ -459,13 +458,6 @@
     <Content Include="bootstrap-5.3.5-dist\js\bootstrap.min.js.map" />
     <Content Include="assets\fonts\bootstrap-icons.woff" />
     <Content Include="assets\fonts\bootstrap-icons.woff2" />
-    <EntityDeploy Include="QLQUANAO.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>QLQUANAO.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <Content Include="QLQUANAO.edmx.diagram">
-      <DependentUpon>QLQUANAO.edmx</DependentUpon>
-    </Content>
     <Content Include="Areas\Admin\Views\web.config" />
     <Content Include="Areas\Admin\Views\_ViewStart.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\_LayoutAdmin.cshtml" />
@@ -477,6 +469,17 @@
     <Content Include="Areas\Admin\Views\DoanhThu\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Product\CheckInventory.cshtml" />
     <Content Include="Areas\Admin\Views\HomeAdmin\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Customer\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Customer\Create.cshtml" />
+    <Content Include="Areas\Admin\Views\Customer\Edit.cshtml" />
+    <EntityDeploy Include="QLQUANAO.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>QLQUANAO.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="QLQUANAO.edmx.diagram">
+      <DependentUpon>QLQUANAO.edmx</DependentUpon>
+    </Content>
+    <Content Include="Areas\Admin\Views\Staff\Create.cshtml" />
     <None Include="Scripts\jquery-3.7.0.intellisense.js" />
     <Content Include="Scripts\jquery-3.7.0.js" />
     <Content Include="Scripts\jquery-3.7.0.min.js" />

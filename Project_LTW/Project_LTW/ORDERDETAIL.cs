@@ -16,6 +16,8 @@ namespace Project_LTW
     {
         public string ORDERID { get; set; }
         public string SANPHAMID { get; set; }
+        public string MAUSAC { get; set; }
+        public string SIZE { get; set; }
         public int SOLUONG { get; set; }
         public decimal DONGIA { get; set; }
         public Nullable<decimal> THANHTIEN { get; set; }

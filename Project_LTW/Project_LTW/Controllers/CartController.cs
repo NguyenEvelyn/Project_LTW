@@ -11,7 +11,7 @@ namespace Project_LTW.Controllers
         // GET: Cart
         // 1. Hàm lấy giỏ hàng từ Session
         FashionWebEntities db = new FashionWebEntities();
-        // 1. Hàm lấy giỏ hàng từ Session
+       
         public Cart GetCart()
         {
             Cart cart = Session["Cart"] as Cart;
@@ -23,18 +23,17 @@ namespace Project_LTW.Controllers
             return cart;
         }
 
-        // 2. Thêm vào giỏ
-        // Sửa tên tham số thành 'sanPhamID' để khớp với name input bên View Details
+   
         [HttpPost]
         public ActionResult AddtoCart(string sanPhamID)
         {
             var cart = GetCart();
             cart.Them(sanPhamID);
-            Session["Cart"] = cart; // Cập nhật lại session
+            Session["Cart"] = cart; 
             return RedirectToAction("Index");
         }
 
-        // 3. Cập nhật số lượng (+ / -)
+        // 3. Cập nhật số lượng 
         public ActionResult UpdateSLCart(string id, int type)
         {
             var cart = GetCart();
@@ -77,22 +76,17 @@ namespace Project_LTW.Controllers
         // Trong CartController.cs
         public ActionResult ThemGioHang(string id, string type = "normal")
         {
-            // Lấy giỏ hàng
-            var cart = GetCart(); // Tận dụng hàm GetCart() viết sẵn cho gọn
-
+            
+            var cart = GetCart(); 
             cart.Them(id);
-
-            // Lưu lại Session
             Session["Cart"] = cart;
-
-            // Kiểm tra điều hướng
             if (type == "buynow")
             {
-                // Nếu bấm Mua Ngay -> Sang trang Thanh toán
+               
                 return RedirectToAction("Index", "Payment");
             }
 
-            // Mặc định -> Về trang Giỏ hàng
+           
             return RedirectToAction("Index", "Cart");
         }
     }

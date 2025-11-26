@@ -34,24 +34,18 @@
                         </div>
                     </div>
 
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label fw-bold">Số lượng tồn</label>
-                            @Html.EditorFor(model => model.SOLUONGTONKHO, new { htmlAttributes = new { @class = "form-control", type = "number" } })
-                        </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Size</label>
+                        @{
 
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label fw-bold">Size</label>
-                            @{
-                                string listSize = "";
-                                // Kiểm tra null an toàn
-                                if (Model.PRODUCT_SIZE != null)
-                                {
-                                    listSize = string.Join(", ", Model.PRODUCT_SIZE.Select(s => s.SIZE));
-                                }
+
+                            string listSize = "";
+                            if (Model.PRODUCT_SIZE != null)
+                            {
+                                listSize = string.Join(", ", Model.PRODUCT_SIZE.Select(s => s.SIZE));
                             }
-                            <input type="text" name="strSIZE" class="form-control" value="@listSize" placeholder="Ví dụ: S, M, L" />
-                        </div>
+                        }
+                        <input type="text" name="strSIZE" class="form-control" value="@listSize" placeholder="Ví dụ: S, M, L" />
                     </div>
 
                     <div class="mb-3">
@@ -76,7 +70,6 @@
                         <input type="file" name="UploadImage" class="form-control" accept="image/*" />
 
                         @{
-                            // Lấy màu sắc hiện tại của ảnh đại diện (dùng ?. để tránh lỗi null)
                             var mainImageColor = Model.PRODUCT_IMAGE?.FirstOrDefault(i => i.TENHINH == Model.HINHANHDAIDIEN)?.MAUSAC ?? "";
                         }
                         <label class="form-label mt-2">Màu sắc ảnh đại diện</label>
@@ -90,7 +83,6 @@
             <div class="row">
                 <div class="col-md-6">
                     @{
-                        // Lọc ra các ảnh phụ (không phải ảnh đại diện) và chuyển thành List để đếm/lặp an toàn
                         var subImages = Model.PRODUCT_IMAGE?.Where(i => i.TENHINH != Model.HINHANHDAIDIEN).ToList();
                     }
                     <h5 class="fw-bold mb-3">Ảnh phụ hiện tại (@(subImages?.Count ?? 0))</h5>
@@ -136,8 +128,23 @@
                 </div>
             </div>
 
+            <div class="row mt-3">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="fw-bold">Số lượng tồn kho hiện tại</label>
+                        @Html.EditorFor(model => model.SOLUONGTONKHO, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group" style="background-color: #e8f4fd; padding: 10px; border-radius: 5px; border: 1px dashed #007bff;">
+                        <label style="color: #007bff; font-weight: bold;">+ Nhập thêm hàng (Số lượng)</label>
+                        <input type="number" name="SoLuongNhapThem" class="form-control" placeholder="Nhập số lượng cộng thêm..." min="0" />
+                        <small class="text-muted">Nhập số vào đây để cộng dồn vào kho.</small>
+                    </div>
+                </div>
+            </div>
 
-            <div class="mt-4">
+            <div class="mt-4 mb-5">
                 <button type="submit" class="btn btn-warning"><i class="bi bi-pencil-square"></i> Cập nhật</button>
                 <a href="@Url.Action("Index")" class="btn btn-secondary">Quay lại</a>
             </div>
@@ -147,7 +154,6 @@
 
 @section scripts {
     <script>
-        // Hàm này tạo ra các input màu cho ảnh phụ MỚI
         function setupSubImagesForm(input) {
             const container = document.getElementById('subImagesContainer');
             container.innerHTML = '';
@@ -169,16 +175,15 @@
                     img.style.height = '80px';
                     img.style.objectFit = 'cover';
 
-                    // Name="SubImageColors" được gửi thành mảng trong Controller
                     const inputHtml = `
-                            <div class="flex-grow-1">
-                                <label class="form-label mb-1">Nhập màu cho ảnh mới (${file.name}):</label>
-                                <input type="text"
-                                       name="SubImageColors"
-                                       class="form-control form-control-sm"
-                                       placeholder="Vd: Đỏ" />
-                            </div>
-                        `;
+                                <div class="flex-grow-1">
+                                    <label class="form-label mb-1">Nhập màu cho ảnh mới (${file.name}):</label>
+                                    <input type="text"
+                                           name="SubImageColors"
+                                           class="form-control form-control-sm"
+                                           placeholder="Vd: Đỏ" />
+                                </div>
+                            `;
 
                     imageItem.appendChild(img);
                     imageItem.innerHTML += inputHtml;

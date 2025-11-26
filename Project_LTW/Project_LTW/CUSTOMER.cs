@@ -18,7 +18,6 @@ namespace Project_LTW
         public CUSTOMER()
         {
             this.ADDRESSes = new HashSet<ADDRESS>();
-            this.CARTs = new HashSet<CART>();
             this.ORDERS = new HashSet<ORDER>();
         }
     
@@ -31,8 +30,6 @@ namespace Project_LTW
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ADDRESS> ADDRESSes { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CART> CARTs { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ORDER> ORDERS { get; set; }
     }
