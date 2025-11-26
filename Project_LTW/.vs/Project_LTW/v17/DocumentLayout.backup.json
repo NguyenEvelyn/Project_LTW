@@ -3,16 +3,20 @@
   "WorkspaceRootPath": "D:\\D\u1EF1 \u00E1n L\u1EADp Tr\u00ECnh Web\\Project_LTW\\Project_LTW\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{FB02C958-9BD5-4C29-BDC6-D230BAD49EC3}|Project_LTW\\Project_LTW.csproj|d:\\d\u1EF1 \u00E1n l\u1EADp tr\u00ECnh web\\project_ltw\\project_ltw\\project_ltw\\controllers\\paymentcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{FB02C958-9BD5-4C29-BDC6-D230BAD49EC3}|Project_LTW\\Project_LTW.csproj|solutionrelative:project_ltw\\controllers\\paymentcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FB02C958-9BD5-4C29-BDC6-D230BAD49EC3}|Project_LTW\\Project_LTW.csproj|D:\\D\u1EF1 \u00E1n L\u1EADp Tr\u00ECnh Web\\Project_LTW\\Project_LTW\\project_ltw\\controllers\\usercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{FB02C958-9BD5-4C29-BDC6-D230BAD49EC3}|Project_LTW\\Project_LTW.csproj|solutionrelative:project_ltw\\controllers\\usercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{FB02C958-9BD5-4C29-BDC6-D230BAD49EC3}|Project_LTW\\Project_LTW.csproj|D:\\D\u1EF1 \u00E1n L\u1EADp Tr\u00ECnh Web\\Project_LTW\\Project_LTW\\project_ltw\\views\\home\\details.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{FB02C958-9BD5-4C29-BDC6-D230BAD49EC3}|Project_LTW\\Project_LTW.csproj|solutionrelative:project_ltw\\views\\home\\details.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{FB02C958-9BD5-4C29-BDC6-D230BAD49EC3}|Project_LTW\\Project_LTW.csproj|d:\\d\u1EF1 \u00E1n l\u1EADp tr\u00ECnh web\\project_ltw\\project_ltw\\project_ltw\\controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{FB02C958-9BD5-4C29-BDC6-D230BAD49EC3}|Project_LTW\\Project_LTW.csproj|D:\\D\u1EF1 \u00E1n L\u1EADp Tr\u00ECnh Web\\Project_LTW\\Project_LTW\\project_ltw\\controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{FB02C958-9BD5-4C29-BDC6-D230BAD49EC3}|Project_LTW\\Project_LTW.csproj|solutionrelative:project_ltw\\controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{FB02C958-9BD5-4C29-BDC6-D230BAD49EC3}|Project_LTW\\Project_LTW.csproj|D:\\D\u1EF1 \u00E1n L\u1EADp Tr\u00ECnh Web\\Project_LTW\\Project_LTW\\project_ltw\\controllers\\paymentcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{FB02C958-9BD5-4C29-BDC6-D230BAD49EC3}|Project_LTW\\Project_LTW.csproj|solutionrelative:project_ltw\\controllers\\paymentcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{FB02C958-9BD5-4C29-BDC6-D230BAD49EC3}|Project_LTW\\Project_LTW.csproj|D:\\D\u1EF1 \u00E1n L\u1EADp Tr\u00ECnh Web\\Project_LTW\\Project_LTW\\project_ltw\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
@@ -25,10 +29,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{FB02C958-9BD5-4C29-BDC6-D230BAD49EC3}|Project_LTW\\Project_LTW.csproj|D:\\D\u1EF1 \u00E1n L\u1EADp Tr\u00ECnh Web\\Project_LTW\\Project_LTW\\project_ltw\\web.config||{FA3CD31E-987B-443A-9B81-186104E8DAC1}",
       "RelativeMoniker": "D:0:0:{FB02C958-9BD5-4C29-BDC6-D230BAD49EC3}|Project_LTW\\Project_LTW.csproj|solutionrelative:project_ltw\\web.config||{FA3CD31E-987B-443A-9B81-186104E8DAC1}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{FB02C958-9BD5-4C29-BDC6-D230BAD49EC3}|Project_LTW\\Project_LTW.csproj|D:\\D\u1EF1 \u00E1n L\u1EADp Tr\u00ECnh Web\\Project_LTW\\Project_LTW\\project_ltw\\controllers\\usercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{FB02C958-9BD5-4C29-BDC6-D230BAD49EC3}|Project_LTW\\Project_LTW.csproj|solutionrelative:project_ltw\\controllers\\usercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{FB02C958-9BD5-4C29-BDC6-D230BAD49EC3}|Project_LTW\\Project_LTW.csproj|D:\\D\u1EF1 \u00E1n L\u1EADp Tr\u00ECnh Web\\Project_LTW\\Project_LTW\\project_ltw\\views\\cart\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
@@ -138,7 +138,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 6,
+          "SelectedChildIndex": 3,
           "Children": [
             {
               "$type": "Document",
@@ -155,7 +155,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 6,
               "Title": "Web.config",
               "DocumentMoniker": "D:\\D\u1EF1 \u00E1n L\u1EADp Tr\u00ECnh Web\\Project_LTW\\Project_LTW\\Project_LTW\\Web.config",
               "RelativeDocumentMoniker": "Project_LTW\\Web.config",
@@ -168,33 +168,32 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 4,
               "Title": "_Layout.cshtml",
               "DocumentMoniker": "D:\\D\u1EF1 \u00E1n L\u1EADp Tr\u00ECnh Web\\Project_LTW\\Project_LTW\\Project_LTW\\Views\\Shared\\_Layout.cshtml",
               "RelativeDocumentMoniker": "Project_LTW\\Views\\Shared\\_Layout.cshtml",
               "ToolTip": "D:\\D\u1EF1 \u00E1n L\u1EADp Tr\u00ECnh Web\\Project_LTW\\Project_LTW\\Project_LTW\\Views\\Shared\\_Layout.cshtml",
               "RelativeToolTip": "Project_LTW\\Views\\Shared\\_Layout.cshtml",
               "ViewState": "AgIAANoBAAAAAAAAAAAAAAYAAAAxAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-11-22T10:50:01.414Z",
-              "EditorCaption": ""
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.002242|",
+              "WhenOpened": "2025-11-22T10:50:01.414Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 0,
               "Title": "PaymentController.cs",
               "DocumentMoniker": "D:\\D\u1EF1 \u00E1n L\u1EADp Tr\u00ECnh Web\\Project_LTW\\Project_LTW\\Project_LTW\\Controllers\\PaymentController.cs",
               "RelativeDocumentMoniker": "Project_LTW\\Controllers\\PaymentController.cs",
               "ToolTip": "D:\\D\u1EF1 \u00E1n L\u1EADp Tr\u00ECnh Web\\Project_LTW\\Project_LTW\\Project_LTW\\Controllers\\PaymentController.cs",
               "RelativeToolTip": "Project_LTW\\Controllers\\PaymentController.cs",
-              "ViewState": "AgIAAOMBAAAAAAAAAAAQwEMCAAAJAAAAAAAAAA==",
+              "ViewState": "AgIAABMCAAAAAAAAAAAQwCcCAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-11-20T11:56:36.128Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 3,
               "Title": "HomeController.cs",
               "DocumentMoniker": "D:\\D\u1EF1 \u00E1n L\u1EADp Tr\u00ECnh Web\\Project_LTW\\Project_LTW\\Project_LTW\\Controllers\\HomeController.cs",
               "RelativeDocumentMoniker": "Project_LTW\\Controllers\\HomeController.cs",
@@ -202,12 +201,11 @@
               "RelativeToolTip": "Project_LTW\\Controllers\\HomeController.cs",
               "ViewState": "AgIAAGgAAAAAAAAAAAAswBEAAAAtAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-21T17:07:17.082Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-21T17:07:17.082Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 5,
               "Title": "CartController.cs",
               "DocumentMoniker": "D:\\D\u1EF1 \u00E1n L\u1EADp Tr\u00ECnh Web\\Project_LTW\\Project_LTW\\Project_LTW\\Controllers\\CartController.cs",
               "RelativeDocumentMoniker": "Project_LTW\\Controllers\\CartController.cs",
@@ -215,12 +213,11 @@
               "RelativeToolTip": "Project_LTW\\Controllers\\CartController.cs",
               "ViewState": "AgIAAF8AAAAAAAAAAAAYwHoAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-24T11:02:23.957Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-24T11:02:23.957Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 2,
               "Title": "Details.cshtml",
               "DocumentMoniker": "D:\\D\u1EF1 \u00E1n L\u1EADp Tr\u00ECnh Web\\Project_LTW\\Project_LTW\\Project_LTW\\Views\\Home\\Details.cshtml",
               "RelativeDocumentMoniker": "Project_LTW\\Views\\Home\\Details.cshtml",
@@ -228,12 +225,11 @@
               "RelativeToolTip": "Project_LTW\\Views\\Home\\Details.cshtml",
               "ViewState": "AgIAACEBAAAAAAAAAAAmwCgBAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-11-26T10:11:21.713Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-26T10:11:21.713Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 1,
               "Title": "UserController.cs",
               "DocumentMoniker": "D:\\D\u1EF1 \u00E1n L\u1EADp Tr\u00ECnh Web\\Project_LTW\\Project_LTW\\Project_LTW\\Controllers\\UserController.cs",
               "RelativeDocumentMoniker": "Project_LTW\\Controllers\\UserController.cs",
@@ -241,7 +237,8 @@
               "RelativeToolTip": "Project_LTW\\Controllers\\UserController.cs",
               "ViewState": "AgIAAKoAAAAAAAAAAADwv7gAAAANAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-20T11:56:23.997Z"
+              "WhenOpened": "2025-11-20T11:56:23.997Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
