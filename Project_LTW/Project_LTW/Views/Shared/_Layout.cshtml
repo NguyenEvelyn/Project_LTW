@@ -524,36 +524,40 @@
                         </a>
                     </li>
 
-                    <li class="nav-item">
-                        <a class="nav-link active d-flex flex-column justify-content-center align-content-center" href="https://www.paypal.com/signin?locale.x=vi_VN">
-                            <i class="bi bi-wallet2 fs-4 icon"></i>
-                            <p>WALLET</p>
-                        </a>
-                    </li>
+                    
 
                     @{
-                        var user = Session["User"] as CUSTOMER;
+                        // 🌟 ĐÃ SỬA ĐỔI TẠI ĐÂY 🌟
+                        var khachHang = Session["User"] as CUSTOMER;
+                        var nhanVien = Session["AdminUser"] as STAFF; // Giả định Model Nhân viên là STAFF
+                        bool isLoggedIn = (khachHang != null || nhanVien != null);
                     }
 
                     <li class="nav-item dropdown text-center" id="user">
                         <a class="nav-link" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             <i class="bi bi-person-circle icon fs-4" id="userIcon" style="color: #0d6efd;"></i>
 
-                            @if (user != null)
+                            @if (khachHang != null)
                             {
-                                <p id="usertext" style="font-weight: bold; color: #0d6efd;">@user.HOTEN</p>
+                                // Đã đăng nhập bằng tài khoản Khách hàng
+                                <p id="usertext" style="font-weight: bold; color: #0d6efd;">@khachHang.HOTEN</p>
+                            }
+                            else if (nhanVien != null)
+                            {
+                                // Đã đăng nhập bằng tài khoản Admin/Nhân viên
+                                <p id="usertext" style="font-weight: bold; color: #28a745;">ADMIN</p>
                             }
                             else
                             {
+                                // Chưa đăng nhập
                                 <p id="usertext">USER</p>
                             }
                         </a>
 
                         <ul class="dropdown-menu" style="margin-top: -11px" id="dropdown-menu">
-                            @if (user != null)
+                            @if (khachHang != null)
                             {
-
-                                /* --- ĐÃ ĐĂNG NHẬP --- */
+                                // --- ĐÃ ĐĂNG NHẬP KHÁCH HÀNG ---
                                 <li><a class="dropdown-item" href="@Url.Action("AccountProfile", "User")">Thông tin tài khoản</a></li>
                                 <li><a class="dropdown-item" href="@Url.Action("OrderHistory", "User")">Đơn hàng của tôi</a></li>
 
@@ -564,9 +568,26 @@
                                     </a>
                                 </li>
                             }
+                            else if (nhanVien != null)
+                            {
+                                // --- ĐÃ ĐĂNG NHẬP ADMIN/NHÂN VIÊN ---
+                                <li><span class="dropdown-item text-success fw-bold">Xin chào, @nhanVien.HOTEN</span></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li>
+                                    <a class="dropdown-item text-primary" href="@Url.Action("Index", "HomeAdmin", new { area = "Admin" })">
+                                        <i class="bi bi-gear-fill"></i> Truy cập Trang Admin
+                                    </a>
+                                </li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li>
+                                    <a class="dropdown-item text-danger" href="@Url.Action("Logout", "User")">
+                                        <i class="bi bi-box-arrow-right"></i> Đăng xuất (Admin)
+                                    </a>
+                                </li>
+                            }
                             else
                             {
-                                /* --- CHƯA ĐĂNG NHẬP --- */
+                                // --- CHƯA ĐĂNG NHẬP ---
                                 <li>
                                     <a class="dropdown-item" href="@Url.Action("Login", "User")">
                                         <i class="bi bi-box-arrow-in-right"></i> Đăng nhập
@@ -580,11 +601,7 @@
                             }
                         </ul>
                     </li>
-                    <li class="nav-item" title="Source Code" id="github">
-                        <a class="nav-link active d-flex flex-column justify-content-center align-content-center" href="#">
-                            <i class="bi bi-github fs-1 icon"></i>
-                        </a>
-                    </li>
+                   
                 </ul>
 
                 <div class="search-container d-flex align-items-center" id="search-container">

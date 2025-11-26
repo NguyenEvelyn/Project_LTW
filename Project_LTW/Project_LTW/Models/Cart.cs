@@ -18,21 +18,26 @@ namespace Project_LTW.Models
         public int TongSoLuong() { return list.Sum(x => x.SoLuong); }
         public decimal TongTien() { return list.Sum(x => x.ThanhTien); }
 
-        // Hàm Thêm
-        public void Them(string id)
+        // Hàm Thêm (Đã có sẵn 3 tham số, giữ nguyên)
+        public void Them(string id, string mau, string size)
         {
             if (string.IsNullOrEmpty(id)) return;
             string idChuan = id.Trim();
 
-            CartItem sp = list.FirstOrDefault(x => x.MASP == idChuan);
+            // QUAN TRỌNG: Tìm kiếm dựa trên cả MASP, MAUSAC và SIZE
+            CartItem sp = list.FirstOrDefault(x =>
+                x.MASP == idChuan &&
+                x.MAUSAC == mau &&
+                x.SIZE == size);
+
             if (sp != null)
             {
-                sp.SoLuong++;
+                sp.SoLuong++; // Nếu trùng cả 3 yếu tố thì tăng số lượng
             }
             else
             {
-                CartItem newItem = new CartItem(idChuan);
-               
+                // TẠO CartItem MỚI (truyền cả 3 tham số)
+                CartItem newItem = new CartItem(idChuan, mau, size);
                 if (!string.IsNullOrEmpty(newItem.TENSP))
                 {
                     list.Add(newItem);
@@ -40,23 +45,38 @@ namespace Project_LTW.Models
             }
         }
 
-   
-        public void Xoa(string id)
+
+        // 🌟 Đã SỬA: Hàm Xóa nhận đủ 3 tham số để xác định CartItem duy nhất
+        public void Xoa(string id, string mau, string size)
         {
+            if (string.IsNullOrEmpty(id) || string.IsNullOrEmpty(mau) || string.IsNullOrEmpty(size)) return;
             string idChuan = id.Trim();
-            CartItem sp = list.FirstOrDefault(x => x.MASP == idChuan);
+
+            // QUAN TRỌNG: Tìm kiếm dựa trên cả MASP, MAUSAC và SIZE
+            CartItem sp = list.FirstOrDefault(x =>
+                x.MASP == idChuan &&
+                x.MAUSAC == mau &&
+                x.SIZE == size);
+
             if (sp != null) list.Remove(sp);
         }
 
-        // Hàm Giảm
-        public void Giam(string id)
+        // 🌟 Đã SỬA: Hàm Giảm nhận đủ 3 tham số để xác định CartItem duy nhất
+        public void Giam(string id, string mau, string size)
         {
+            if (string.IsNullOrEmpty(id) || string.IsNullOrEmpty(mau) || string.IsNullOrEmpty(size)) return;
             string idChuan = id.Trim();
-            CartItem sp = list.FirstOrDefault(x => x.MASP == idChuan);
+
+            // QUAN TRỌNG: Tìm kiếm dựa trên cả MASP, MAUSAC và SIZE
+            CartItem sp = list.FirstOrDefault(x =>
+                x.MASP == idChuan &&
+                x.MAUSAC == mau &&
+                x.SIZE == size);
+
             if (sp != null)
             {
                 sp.SoLuong--;
-                if (sp.SoLuong <= 0) list.Remove(sp);
+                if (sp.SoLuong <= 0) list.Remove(sp); // Xóa nếu số lượng bằng 0
             }
         }
     }

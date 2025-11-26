@@ -1,7 +1,7 @@
 ﻿@using Project_LTW.Models
 @using System.Globalization
-@model Project_LTW.Models.Cart 
-    @{
+@model Project_LTW.Models.Cart
+@{
     ViewBag.Title = "Giỏ hàng của bạn";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
@@ -42,26 +42,31 @@
                                                     <div>
                                                         <h6 class="mb-1 fw-bold text-dark">@item.TENSP</h6>
                                                         <small class="text-muted">Mã SP: @item.MASP</small>
+
+                                                        <div class="small">
+                                                            <span class="badge bg-secondary">Màu: @item.MAUSAC</span>
+                                                            <span class="badge bg-secondary">Size: @item.SIZE</span>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </td>
 
                                             <td class="text-center">
-                                                @item.DonGia.ToString("N0", new CultureInfo("vi-VN")) 
+                                                @item.DonGia.ToString("N0", new CultureInfo("vi-VN"))
                                             </td>
 
                                             <td class="text-center">
                                                 <div class="btn-group btn-group-sm" role="group">
-                                                    <a href="@Url.Action("UpdateSLCart", "Cart", new { id = item.MASP, type = -1 })"
+
+                                                    <a href="@Url.Action("UpdateSLCart", "Cart", new { id = item.MASP, mau = item.MAUSAC, size = item.SIZE, type = -1 })"
                                                        class="btn btn-outline-secondary">
                                                         <i class="bi bi-dash"> </i>
                                                     </a>
-
                                                     <span class="btn btn-light border" style="width: 40px; cursor: default; display: inline-flex; align-items: center; justify-content: center;">
                                                         @item.SoLuong
                                                     </span>
 
-                                                    <a href="@Url.Action("UpdateSLCart", "Cart", new { id = item.MASP, type = 1 })"
+                                                    <a href="@Url.Action("UpdateSLCart", "Cart", new { id = item.MASP, mau = item.MAUSAC, size = item.SIZE, type = 1 })"
                                                        class="btn btn-outline-secondary">
                                                         <i class="bi bi-plus"> </i>
                                                     </a>
@@ -73,9 +78,9 @@
                                             </td>
 
                                             <td class="text-center pe-3">
-                                                <a href="@Url.Action("RemoveFromCart", "Cart", new { id = item.MASP })"
+                                                <a href="@Url.Action("RemoveFromCart", "Cart", new { id = item.MASP, mau = item.MAUSAC, size = item.SIZE })"
                                                    class="text-danger"
-                                                   onclick="return confirm('Bạn có chắc muốn xóa @item.TENSP khỏi giỏ hàng?')">
+                                                   onclick="return confirm('Bạn có chắc muốn xóa sản phẩm này khỏi giỏ hàng?')">
                                                     <i class="bi bi-trash fs-5"></i>
                                                 </a>
                                             </td>
