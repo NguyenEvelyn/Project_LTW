@@ -480,6 +480,7 @@
       <DependentUpon>QLQUANAO.edmx</DependentUpon>
     </Content>
     <Content Include="Areas\Admin\Views\Staff\Create.cshtml" />
+    <Content Include="Areas\Admin\Views\Staff\RegisterStaff.cshtml" />
     <None Include="Scripts\jquery-3.7.0.intellisense.js" />
     <Content Include="Scripts\jquery-3.7.0.js" />
     <Content Include="Scripts\jquery-3.7.0.min.js" />
