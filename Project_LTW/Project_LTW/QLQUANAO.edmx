@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="FashionWebModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="FashionWebModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="ADDRESS">
           <Key>
             <PropertyRef Name="DIACHIID" />
@@ -36,15 +36,13 @@
         </EntityType>
         <EntityType Name="ORDERDETAIL">
           <Key>
-            <PropertyRef Name="ORDERID" />
-            <PropertyRef Name="SANPHAMID" />
-            <PropertyRef Name="MAUSAC" />
-            <PropertyRef Name="SIZE" />
+            <PropertyRef Name="ORDERDETAILID" />
           </Key>
+          <Property Name="ORDERDETAILID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ORDERID" Type="nchar" MaxLength="10" Nullable="false" />
-          <Property Name="SANPHAMID" Type="nchar" MaxLength="10" Nullable="false" />
-          <Property Name="MAUSAC" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="SIZE" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="SANPHAMID" Type="nchar" MaxLength="10" />
+          <Property Name="MAUSAC" Type="nvarchar" MaxLength="50" />
+          <Property Name="SIZE" Type="nvarchar" MaxLength="10" />
           <Property Name="SOLUONG" Type="int" Nullable="false" />
           <Property Name="DONGIA" Type="decimal" Precision="18" Scale="2" Nullable="false" />
           <Property Name="THANHTIEN" Type="decimal" Precision="29" Scale="2" StoreGeneratedPattern="Computed" />
@@ -150,7 +148,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_ORDERDETAIL_PRODUCT">
-          <End Role="PRODUCT" Type="Self.PRODUCT" Multiplicity="1" />
+          <End Role="PRODUCT" Type="Self.PRODUCT" Multiplicity="0..1" />
           <End Role="ORDERDETAIL" Type="Self.ORDERDETAIL" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="PRODUCT">
@@ -302,6 +300,12 @@
           <Parameter Name="NAM" Type="int" Mode="In" />
         </Function>
         <Function Name="SP_THONGKEDONHANGTHEOKHACHHANG" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="SP_XACNHAN_THANHTOAN_TRANSACTION" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="ORDERID" Type="nchar" Mode="In" />
+          <Parameter Name="PAYMENTID" Type="nchar" Mode="In" />
+          <Parameter Name="PHUONGTHUCTT" Type="nvarchar" Mode="In" />
+          <Parameter Name="NGAYTT" Type="date" Mode="In" />
+        </Function>
         <EntityContainer Name="FashionWebModelStoreContainer">
           <EntitySet Name="ADDRESS" EntityType="Self.ADDRESS" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CATEGORY" EntityType="Self.CATEGORY" Schema="dbo" store:Type="Tables" />
@@ -355,7 +359,8 @@
             <End Role="PRODUCT_SIZE" EntitySet="PRODUCT_SIZE" />
           </AssociationSet>
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="FashionWebModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -402,15 +407,13 @@
         </EntityType>
         <EntityType Name="ORDERDETAIL">
           <Key>
-            <PropertyRef Name="ORDERID" />
-            <PropertyRef Name="SANPHAMID" />
-            <PropertyRef Name="MAUSAC" />
-            <PropertyRef Name="SIZE" />
+            <PropertyRef Name="ORDERDETAILID" />
           </Key>
+          <Property Name="ORDERDETAILID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ORDERID" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
-          <Property Name="SANPHAMID" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
-          <Property Name="MAUSAC" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="SIZE" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="SANPHAMID" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="MAUSAC" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="SIZE" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
           <Property Name="SOLUONG" Type="Int32" Nullable="false" />
           <Property Name="DONGIA" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
           <Property Name="THANHTIEN" Type="Decimal" Precision="29" Scale="2" annotation:StoreGeneratedPattern="Computed" />
@@ -567,7 +570,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_ORDERDETAIL_PRODUCT">
-          <End Role="PRODUCT" Type="Self.PRODUCT" Multiplicity="1" />
+          <End Role="PRODUCT" Type="Self.PRODUCT" Multiplicity="0..1" />
           <End Role="ORDERDETAIL" Type="Self.ORDERDETAIL" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="PRODUCT">
@@ -679,7 +682,7 @@
             <End Role="PRODUCT_SIZE" EntitySet="PRODUCT_SIZE" />
           </AssociationSet>
           <FunctionImport Name="FN_DANHSACHDONHANG_KH" IsComposable="true" ReturnType="Collection(FashionWebModel.FN_DANHSACHDONHANG_KH_Result)">
-          <Parameter Name="KHACHHANGID" Mode="In" Type="String" />
+            <Parameter Name="KHACHHANGID" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="SP_CAPNHATTHONGTIN_KHACHHANG">
             <Parameter Name="KHACHHANGID" Mode="In" Type="String" />
@@ -687,6 +690,9 @@
             <Parameter Name="NGAYSINH" Mode="In" Type="DateTime" />
             <Parameter Name="EMAIL" Mode="In" Type="String" />
             <Parameter Name="DIENTHOAI" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="SP_CAPNHATTONKHOSAUDATHANG">
+            <Parameter Name="ORDERID" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="SP_HUYDONHANG" ReturnType="Collection(FashionWebModel.SP_HUYDONHANG_Result)">
             <Parameter Name="ORDERID" Mode="In" Type="String" />
@@ -712,14 +718,14 @@
             <Parameter Name="SOLUONGTONKHO" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="SP_THONGKEDOANHTHUTHEOTHANG" ReturnType="Collection(FashionWebModel.SP_THONGKEDOANHTHUTHEOTHANG_Result)">
-          <Parameter Name="NAM" Mode="In" Type="Int32" />
+            <Parameter Name="NAM" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="SP_THONGKEDONHANGTHEOKHACHHANG" ReturnType="Collection(FashionWebModel.SP_THONGKEDONHANGTHEOKHACHHANG_Result)" />
-          <FunctionImport Name="SP_CAPNHATTONKHOSAUDATHANG">
-          <Parameter Name="ORDERID" Mode="In" Type="String" />
-          </FunctionImport>
-          <FunctionImport Name="SP_CAPNHATTONKHOSAUDATHANG1">
-          <Parameter Name="ORDERID" Mode="In" Type="String" />
+          <FunctionImport Name="SP_XACNHAN_THANHTOAN_TRANSACTION">
+            <Parameter Name="ORDERID" Mode="In" Type="String" />
+            <Parameter Name="PAYMENTID" Mode="In" Type="String" />
+            <Parameter Name="PHUONGTHUCTT" Mode="In" Type="String" />
+            <Parameter Name="NGAYTT" Mode="In" Type="DateTime" />
           </FunctionImport>
         </EntityContainer>
         <ComplexType Name="SP_HUYDONHANG_Result">
@@ -789,6 +795,7 @@
           <EntitySetMapping Name="ORDERDETAILs">
             <EntityTypeMapping TypeName="FashionWebModel.ORDERDETAIL">
               <MappingFragment StoreEntitySet="ORDERDETAIL">
+                <ScalarProperty Name="ORDERDETAILID" ColumnName="ORDERDETAILID" />
                 <ScalarProperty Name="ORDERID" ColumnName="ORDERID" />
                 <ScalarProperty Name="SANPHAMID" ColumnName="SANPHAMID" />
                 <ScalarProperty Name="MAUSAC" ColumnName="MAUSAC" />
@@ -892,6 +899,7 @@
             </ResultMapping>
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="SP_CAPNHATTHONGTIN_KHACHHANG" FunctionName="FashionWebModel.Store.SP_CAPNHATTHONGTIN_KHACHHANG" />
+          <FunctionImportMapping FunctionImportName="SP_CAPNHATTONKHOSAUDATHANG" FunctionName="FashionWebModel.Store.SP_CAPNHATTONKHOSAUDATHANG" />
           <FunctionImportMapping FunctionImportName="SP_HUYDONHANG" FunctionName="FashionWebModel.Store.SP_HUYDONHANG">
             <ResultMapping>
               <ComplexTypeMapping TypeName="FashionWebModel.SP_HUYDONHANG_Result">
@@ -940,8 +948,7 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="SP_CAPNHATTONKHOSAUDATHANG" FunctionName="FashionWebModel.Store.SP_CAPNHATTONKHOSAUDATHANG" />
-          <FunctionImportMapping FunctionImportName="SP_CAPNHATTONKHOSAUDATHANG1" FunctionName="FashionWebModel.Store.SP_CAPNHATTONKHOSAUDATHANG" />
+          <FunctionImportMapping FunctionImportName="SP_XACNHAN_THANHTOAN_TRANSACTION" FunctionName="FashionWebModel.Store.SP_XACNHAN_THANHTOAN_TRANSACTION" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

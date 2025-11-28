@@ -13,10 +13,10 @@ namespace Project_LTW.Models
         public decimal DonGia { get; set; }
         public int SoLuong { get; set; }
 
-        // ********** TRƯỜNG MỚI **********
+     
         public string MAUSAC { get; set; }
         public string SIZE { get; set; }
-        // ********************************
+      
 
         public decimal ThanhTien
         {
@@ -25,13 +25,13 @@ namespace Project_LTW.Models
 
         public CartItem() { }
 
-        // Constructor lấy dữ liệu từ DB
+       
         public CartItem(string id, string mau, string size)
         {
             using (var db = new FashionWebEntities())
             {
                 string idChuan = id.Trim();
-                // Giả sử tên bảng sản phẩm của bạn là PRODUCTs
+               
                 var sp = db.PRODUCTs.FirstOrDefault(n => n.SANPHAMID.Trim() == idChuan);
 
                 if (sp != null)
@@ -42,11 +42,11 @@ namespace Project_LTW.Models
                     DonGia = sp.GIA;
                     SoLuong = 1;
 
-                    // 🌟 SỬA LỖI TẠI ĐÂY: GÁN GIÁ TRỊ MÀU VÀ SIZE 🌟
-                    MAUSAC = mau;
-                    SIZE = size;
-                    // ************************************
+                
+                   
                 }
+                MAUSAC = string.IsNullOrEmpty(mau) ? "Mặc định" : mau;
+                SIZE = string.IsNullOrEmpty(size) ? "FreeSize" : size;
             }
         }
     }

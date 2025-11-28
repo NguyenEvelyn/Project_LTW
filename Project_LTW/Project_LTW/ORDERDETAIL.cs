@@ -14,6 +14,7 @@ namespace Project_LTW
     
     public partial class ORDERDETAIL
     {
+        public int ORDERDETAILID { get; set; }
         public string ORDERID { get; set; }
         public string SANPHAMID { get; set; }
         public string MAUSAC { get; set; }

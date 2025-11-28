@@ -26,17 +26,22 @@ namespace Project_LTW.Controllers
 
 
         // 2. Thêm sản phẩm vào giỏ hàng
-        // Đã SỬA: Thêm tham số mau và size, đặt giá trị mặc định để tránh lỗi khi không truyền
+
         [HttpPost]
-        public ActionResult AddtoCart(string sanPhamID, string mau = "Default", string size = "S")
+        public ActionResult AddtoCart(string sanPhamID, string mau, string size)
         {
             if (string.IsNullOrEmpty(sanPhamID))
             {
                 return RedirectToAction("Index", "Home");
             }
 
+           
+            if (string.IsNullOrEmpty(mau)) mau = "Mặc định";
+         
+            if (string.IsNullOrEmpty(size)) size = "FreeSize";
+           
+
             var cart = GetCart();
-            // 🌟 TRUYỀN ĐỦ 3 THAM SỐ VÀO HÀM Them() 🌟
             cart.Them(sanPhamID, mau, size);
             Session["Cart"] = cart;
 
@@ -45,7 +50,7 @@ namespace Project_LTW.Controllers
         }
 
         // 3. Cập nhật số lượng (Tăng/Giảm)
-        // Đã SỬA: Thêm tham số mau và size để xác định chính xác CartItem
+
         public ActionResult UpdateSLCart(string id, string mau, string size, int type)
         {
             var cart = GetCart();
@@ -57,29 +62,29 @@ namespace Project_LTW.Controllers
 
             if (type == 1) // Tăng số lượng
             {
-                // 🌟 TRUYỀN ĐỦ 3 THAM SỐ 🌟
+               
                 cart.Them(id, mau, size);
             }
             else // Giảm số lượng
             {
-                // 🌟 TRUYỀN ĐỦ 3 THAM SỐ 🌟
+                
                 cart.Giam(id, mau, size);
             }
-            Session["Cart"] = cart; // Cập nhật lại Session
+            Session["Cart"] = cart; 
             return RedirectToAction("Index");
         }
 
         // 4. Xóa sản phẩm
-        // Đã SỬA: Thêm tham số mau và size để xác định chính xác CartItem
+ 
         public ActionResult RemoveFromCart(string id, string mau, string size)
         {
             var cart = GetCart();
 
             if (!string.IsNullOrEmpty(id) && !string.IsNullOrEmpty(mau) && !string.IsNullOrEmpty(size))
             {
-                // 🌟 TRUYỀN ĐỦ 3 THAM SỐ 🌟
+               
                 cart.Xoa(id, mau, size);
-                Session["Cart"] = cart; // Cập nhật lại Session
+                Session["Cart"] = cart; 
                 TempData["Success"] = "Đã xóa sản phẩm khỏi giỏ hàng.";
             }
             return RedirectToAction("Index");
@@ -99,16 +104,19 @@ namespace Project_LTW.Controllers
         // 6. Thanh toán
         public ActionResult PaymentConfirm()
         {
-            // Logic chuyển hướng đến View "Index" của Controller "Payment"
+            
             return RedirectToAction("Index", "Payment");
         }
 
-        // 7. Thêm vào giỏ hàng (Hàm riêng cho Buynow)
-        // Đã SỬA: Thêm tham số mau và size
-        public ActionResult ThemGioHang(string id, string mau = "Default", string size = "S", string type = "normal")
+        // 7. Thêm vào giỏ hàng 
+
+        public ActionResult ThemGioHang(string id, string mau, string size, string type = "normal")
         {
+           
+            if (string.IsNullOrEmpty(mau)) mau = "Mặc định";
+            if (string.IsNullOrEmpty(size)) size = "FreeSize";
+           
             var cart = GetCart();
-            // 🌟 TRUYỀN ĐỦ 3 THAM SỐ VÀO HÀM Them() 🌟
             cart.Them(id, mau, size);
             Session["Cart"] = cart;
 

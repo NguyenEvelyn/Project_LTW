@@ -36,6 +36,7 @@
     <EntitySetMapping Name="ORDERDETAILs">
       <EntityTypeMapping TypeName="FashionWebModel.ORDERDETAIL">
         <MappingFragment StoreEntitySet="ORDERDETAIL">
+          <ScalarProperty Name="ORDERDETAILID" ColumnName="ORDERDETAILID" />
           <ScalarProperty Name="ORDERID" ColumnName="ORDERID" />
           <ScalarProperty Name="SANPHAMID" ColumnName="SANPHAMID" />
           <ScalarProperty Name="MAUSAC" ColumnName="MAUSAC" />
@@ -139,6 +140,7 @@
       </ResultMapping>
     </FunctionImportMapping>
     <FunctionImportMapping FunctionImportName="SP_CAPNHATTHONGTIN_KHACHHANG" FunctionName="FashionWebModel.Store.SP_CAPNHATTHONGTIN_KHACHHANG" />
+    <FunctionImportMapping FunctionImportName="SP_CAPNHATTONKHOSAUDATHANG" FunctionName="FashionWebModel.Store.SP_CAPNHATTONKHOSAUDATHANG" />
     <FunctionImportMapping FunctionImportName="SP_HUYDONHANG" FunctionName="FashionWebModel.Store.SP_HUYDONHANG">
       <ResultMapping>
         <ComplexTypeMapping TypeName="FashionWebModel.SP_HUYDONHANG_Result">
@@ -187,7 +189,6 @@
         </ComplexTypeMapping>
       </ResultMapping>
     </FunctionImportMapping>
-    <FunctionImportMapping FunctionImportName="SP_CAPNHATTONKHOSAUDATHANG" FunctionName="FashionWebModel.Store.SP_CAPNHATTONKHOSAUDATHANG" />
-    <FunctionImportMapping FunctionImportName="SP_CAPNHATTONKHOSAUDATHANG1" FunctionName="FashionWebModel.Store.SP_CAPNHATTONKHOSAUDATHANG" />
+    <FunctionImportMapping FunctionImportName="SP_XACNHAN_THANHTOAN_TRANSACTION" FunctionName="FashionWebModel.Store.SP_XACNHAN_THANHTOAN_TRANSACTION" />
   </EntityContainerMapping>
 </Mapping>

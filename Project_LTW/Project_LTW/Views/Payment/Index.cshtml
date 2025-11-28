@@ -4,18 +4,14 @@
     ViewBag.Title = "Thanh toán";
     Layout = "~/Views/Shared/_Layout.cshtml";
 
-    // Lấy dữ liệu từ ViewBag
+  
     var cart = ViewBag.Cart as List<CartItem>;
     var user = ViewBag.User as CUSTOMER;
     var savedAddresses = ViewBag.Addresses as List<ADDRESS>;
 
-    // Xử lý null an toàn hơn
+
     decimal total = ViewBag.Total != null ? (decimal)ViewBag.Total : 0;
-
-    // Kiểm tra xem user có địa chỉ đã lưu hay không
     bool hasSavedAddresses = savedAddresses != null && savedAddresses.Any();
-
-    // Nếu có địa chỉ lưu, mặc định chọn địa chỉ đầu tiên
     bool isFirstAddressSelected = hasSavedAddresses;
 }
 
@@ -60,7 +56,7 @@
 
                                         @foreach (var address in savedAddresses)
                                         {
-                                            // Format địa chỉ đầy đủ để hiển thị và lưu
+                                            
                                             string fullAddress = $"{address.DUONG}, {address.THANHPHO}, {address.TINH}";
                                             bool isFirst = savedAddresses.IndexOf(address) == 0;
 
@@ -191,7 +187,7 @@
 
                                         @section scripts {
                                         <script>
-                                            // Bootstrap form validation
+                                            
                                             (function () {
                                                 'use strict'
                                                 var forms = document.querySelectorAll('.needs-validation')
@@ -207,23 +203,21 @@
                                                     })
                                             })()
 
-                                            // Logic xử lý chọn địa chỉ đã lưu và nhập địa chỉ mới
+                                            
                                             document.addEventListener('DOMContentLoaded', function () {
                                                 const addressOptions = document.querySelectorAll('input[name="addressOption"]');
                                                 const manualInput = document.getElementById('ShipAddressManual');
                                                 const finalAddressInput = document.getElementById('ShipAddress');
 
-                                                // Chỉ chạy logic phức tạp khi có địa chỉ đã lưu
+                                                
                                                 if (!manualInput || !finalAddressInput) {
-                                                    // Đây là trường hợp không có địa chỉ đã lưu.
-                                                    // Textarea đã có sẵn name="ShipAddress" và required.
-                                                    // Không cần logic JS phức tạp.
+                                                    
                                                     return;
                                                 }
 
-                                                // === LOGIC CHO TRƯỜNG HỢP CÓ ĐỊA CHỈ ĐÃ LƯU (hasSavedAddresses = true) ===
+                                                
 
-                                                // 1. Hàm xử lý khi Radio Button thay đổi
+                                                
                                                 function handleAddressSelection() {
                                                     const selectedRadio = document.querySelector('input[name="addressOption"]:checked');
 
@@ -231,48 +225,40 @@
 
                                                     const selectedValue = selectedRadio.value;
 
-                                                    // Trường hợp 1: Chọn nhập địa chỉ mới
+                                                    
                                                     if (selectedValue === 'new_address') {
                                                         manualInput.style.display = 'block';
                                                         manualInput.setAttribute('required', 'required');
 
-                                                        // Chuyển tên ShipAddress từ Hidden Field sang Textarea để gửi giá trị nhập tay
                                                         manualInput.setAttribute('name', 'ShipAddress');
                                                         finalAddressInput.removeAttribute('name');
                                                         finalAddressInput.removeAttribute('required');
 
                                                     }
-                                                    // Trường hợp 2: Chọn địa chỉ đã lưu
+                                                    
                                                     else if (selectedValue.startsWith('saved_')) {
                                                         manualInput.style.display = 'none';
                                                         manualInput.removeAttribute('required');
-                                                        manualInput.removeAttribute('name'); // Đảm bảo Textarea không gửi dữ liệu
-
-                                                        // Lấy giá trị địa chỉ đầy đủ từ thuộc tính data-address-value
+                                                        manualInput.removeAttribute('name'); 
                                                         const addressValue = selectedRadio.getAttribute('data-address-value');
 
-                                                        // Chuyển tên ShipAddress từ Textarea về Hidden Field
                                                         finalAddressInput.setAttribute('name', 'ShipAddress');
                                                         finalAddressInput.setAttribute('required', 'required');
-                                                        finalAddressInput.value = addressValue; // Cập nhật hidden field
+                                                        finalAddressInput.value = addressValue; 
                                                     }
                                                 }
 
-                                                // 2. Đồng bộ hóa giá trị Textarea sang Hidden Field khi nhập
                                                 manualInput.addEventListener('input', function() {
                                                     const selectedRadio = document.querySelector('input[name="addressOption"]:checked');
                                                     if (selectedRadio && selectedRadio.value === 'new_address') {
-                                                         // Không cần đồng bộ nếu đã chuyển name="ShipAddress" cho Textarea
-                                                         // finalAddressInput.value = manualInput.value;
                                                     }
                                                 });
 
-                                                // 3. Lắng nghe sự kiện thay đổi trên các radio button
                                                 addressOptions.forEach(radio => {
                                                     radio.addEventListener('change', handleAddressSelection);
                                                 });
 
-                                                // 4. Thiết lập trạng thái ban đầu (RẤT QUAN TRỌNG)
+                                                
                                                 handleAddressSelection();
                                             });
                                         </script>

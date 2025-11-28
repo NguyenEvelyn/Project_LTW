@@ -4,35 +4,18 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-<<<<<<< HEAD
-      <Diagram DiagramId="8144325cf6494aaea79029bc0bc707f2" Name="Diagram1" ZoomLevel="55">
-        <EntityTypeShape EntityType="FashionWebModel.ADDRESS" Width="1.5" PointX="0.75" PointY="4.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="FashionWebModel.CART" Width="1.5" PointX="3" PointY="17.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="FashionWebModel.CARTDETAIL" Width="1.5" PointX="5.25" PointY="8.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="FashionWebModel.CATEGORY" Width="1.5" PointX="0.75" PointY="8.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="FashionWebModel.CUSTOMER" Width="1.5" PointX="1.5" PointY="12.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="FashionWebModel.ORDERDETAIL" Width="1.5" PointX="5.25" PointY="5.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="FashionWebModel.ORDER" Width="1.5" PointX="3" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="FashionWebModel.PAYMENT" Width="1.5" PointX="5.25" PointY="1.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="FashionWebModel.PRODUCT" Width="1.5" PointX="3" PointY="7.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="FashionWebModel.PRODUCT_COLOR" Width="1.5" PointX="5.25" PointY="12.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="FashionWebModel.PRODUCT_IMAGE" Width="1.5" PointX="5.25" PointY="14.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="FashionWebModel.PRODUCT_SIZE" Width="1.5" PointX="5.25" PointY="17.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="FashionWebModel.STAFF" Width="1.5" PointX="0.75" PointY="16.375" IsExpanded="true" />
-=======
-      <Diagram DiagramId="ea305aa28ee64c2286403810b69ddc9c" Name="Diagram1">
+      <Diagram DiagramId="11d9afb1452142f4be5f7508327d2321" Name="Diagram1">
         <EntityTypeShape EntityType="FashionWebModel.ADDRESS" Width="1.5" PointX="0.75" PointY="3.125" IsExpanded="true" />
         <EntityTypeShape EntityType="FashionWebModel.CATEGORY" Width="1.5" PointX="0.75" PointY="7" IsExpanded="true" />
         <EntityTypeShape EntityType="FashionWebModel.CUSTOMER" Width="1.5" PointX="1.5" PointY="11.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="FashionWebModel.ORDERDETAIL" Width="1.5" PointX="5.25" PointY="4.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="FashionWebModel.ORDERDETAIL" Width="1.5" PointX="5.25" PointY="4.375" IsExpanded="true" />
         <EntityTypeShape EntityType="FashionWebModel.ORDER" Width="1.5" PointX="3" PointY="1.25" IsExpanded="true" />
         <EntityTypeShape EntityType="FashionWebModel.PAYMENT" Width="1.5" PointX="5.25" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="FashionWebModel.PRODUCT" Width="1.5" PointX="3" PointY="6.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="FashionWebModel.PRODUCT_COLOR" Width="1.5" PointX="5.25" PointY="8" IsExpanded="true" />
-        <EntityTypeShape EntityType="FashionWebModel.PRODUCT_IMAGE" Width="1.5" PointX="5.25" PointY="10.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="FashionWebModel.PRODUCT_SIZE" Width="1.5" PointX="5.25" PointY="13.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="FashionWebModel.STAFF" Width="1.5" PointX="7.75" PointY="2.125" IsExpanded="true" />
->>>>>>> 66dd3f8147b96fbd7242f973b1deb8d07316723d
+        <EntityTypeShape EntityType="FashionWebModel.PRODUCT_COLOR" Width="1.5" PointX="5.25" PointY="8.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="FashionWebModel.PRODUCT_IMAGE" Width="1.5" PointX="5.25" PointY="10.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="FashionWebModel.PRODUCT_SIZE" Width="1.5" PointX="5.25" PointY="13.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="FashionWebModel.STAFF" Width="1.5" PointX="7.75" PointY="2" IsExpanded="true" />
         <AssociationConnector Association="FashionWebModel.FK_ADDRESS_CUSTOMER" ManuallyRouted="false" />
         <AssociationConnector Association="FashionWebModel.FK_ORDERS_ADDRESS" ManuallyRouted="false" />
         <AssociationConnector Association="FashionWebModel.FK_PRODUCT_CATEGORY" ManuallyRouted="false" />

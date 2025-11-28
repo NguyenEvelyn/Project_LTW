@@ -472,6 +472,8 @@
     <Content Include="Areas\Admin\Views\Customer\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Customer\Create.cshtml" />
     <Content Include="Areas\Admin\Views\Customer\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\Staff\Create.cshtml" />
+    <Content Include="Areas\Admin\Views\Staff\RegisterStaff.cshtml" />
     <EntityDeploy Include="QLQUANAO.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>QLQUANAO.Designer.cs</LastGenOutput>
@@ -479,8 +481,6 @@
     <Content Include="QLQUANAO.edmx.diagram">
       <DependentUpon>QLQUANAO.edmx</DependentUpon>
     </Content>
-    <Content Include="Areas\Admin\Views\Staff\Create.cshtml" />
-    <Content Include="Areas\Admin\Views\Staff\RegisterStaff.cshtml" />
     <None Include="Scripts\jquery-3.7.0.intellisense.js" />
     <Content Include="Scripts\jquery-3.7.0.js" />
     <Content Include="Scripts\jquery-3.7.0.min.js" />

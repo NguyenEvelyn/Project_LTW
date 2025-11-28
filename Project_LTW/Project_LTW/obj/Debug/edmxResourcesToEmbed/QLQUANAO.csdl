@@ -43,15 +43,13 @@
   </EntityType>
   <EntityType Name="ORDERDETAIL">
     <Key>
-      <PropertyRef Name="ORDERID" />
-      <PropertyRef Name="SANPHAMID" />
-      <PropertyRef Name="MAUSAC" />
-      <PropertyRef Name="SIZE" />
+      <PropertyRef Name="ORDERDETAILID" />
     </Key>
+    <Property Name="ORDERDETAILID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="ORDERID" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
-    <Property Name="SANPHAMID" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
-    <Property Name="MAUSAC" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-    <Property Name="SIZE" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="SANPHAMID" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+    <Property Name="MAUSAC" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="SIZE" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
     <Property Name="SOLUONG" Type="Int32" Nullable="false" />
     <Property Name="DONGIA" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
     <Property Name="THANHTIEN" Type="Decimal" Precision="29" Scale="2" annotation:StoreGeneratedPattern="Computed" />
@@ -208,7 +206,7 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="FK_ORDERDETAIL_PRODUCT">
-    <End Role="PRODUCT" Type="Self.PRODUCT" Multiplicity="1" />
+    <End Role="PRODUCT" Type="Self.PRODUCT" Multiplicity="0..1" />
     <End Role="ORDERDETAIL" Type="Self.ORDERDETAIL" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="PRODUCT">
@@ -329,6 +327,9 @@
       <Parameter Name="EMAIL" Mode="In" Type="String" />
       <Parameter Name="DIENTHOAI" Mode="In" Type="String" />
     </FunctionImport>
+    <FunctionImport Name="SP_CAPNHATTONKHOSAUDATHANG">
+      <Parameter Name="ORDERID" Mode="In" Type="String" />
+    </FunctionImport>
     <FunctionImport Name="SP_HUYDONHANG" ReturnType="Collection(FashionWebModel.SP_HUYDONHANG_Result)">
       <Parameter Name="ORDERID" Mode="In" Type="String" />
       <Parameter Name="LYDO" Mode="In" Type="String" />
@@ -356,11 +357,11 @@
       <Parameter Name="NAM" Mode="In" Type="Int32" />
     </FunctionImport>
     <FunctionImport Name="SP_THONGKEDONHANGTHEOKHACHHANG" ReturnType="Collection(FashionWebModel.SP_THONGKEDONHANGTHEOKHACHHANG_Result)" />
-    <FunctionImport Name="SP_CAPNHATTONKHOSAUDATHANG">
+    <FunctionImport Name="SP_XACNHAN_THANHTOAN_TRANSACTION">
       <Parameter Name="ORDERID" Mode="In" Type="String" />
-    </FunctionImport>
-    <FunctionImport Name="SP_CAPNHATTONKHOSAUDATHANG1">
-      <Parameter Name="ORDERID" Mode="In" Type="String" />
+      <Parameter Name="PAYMENTID" Mode="In" Type="String" />
+      <Parameter Name="PHUONGTHUCTT" Mode="In" Type="String" />
+      <Parameter Name="NGAYTT" Mode="In" Type="DateTime" />
     </FunctionImport>
   </EntityContainer>
   <ComplexType Name="SP_HUYDONHANG_Result">

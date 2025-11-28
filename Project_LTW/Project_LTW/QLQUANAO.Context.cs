@@ -74,6 +74,15 @@ namespace Project_LTW
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SP_CAPNHATTHONGTIN_KHACHHANG", kHACHHANGIDParameter, hOTENParameter, nGAYSINHParameter, eMAILParameter, dIENTHOAIParameter);
         }
     
+        public virtual int SP_CAPNHATTONKHOSAUDATHANG(string oRDERID)
+        {
+            var oRDERIDParameter = oRDERID != null ?
+                new ObjectParameter("ORDERID", oRDERID) :
+                new ObjectParameter("ORDERID", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SP_CAPNHATTONKHOSAUDATHANG", oRDERIDParameter);
+        }
+    
         public virtual ObjectResult<SP_HUYDONHANG_Result> SP_HUYDONHANG(string oRDERID, string lYDO)
         {
             var oRDERIDParameter = oRDERID != null ?
@@ -173,22 +182,25 @@ namespace Project_LTW
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_THONGKEDONHANGTHEOKHACHHANG_Result>("SP_THONGKEDONHANGTHEOKHACHHANG");
         }
     
-        public virtual int SP_CAPNHATTONKHOSAUDATHANG(string oRDERID)
+        public virtual int SP_XACNHAN_THANHTOAN_TRANSACTION(string oRDERID, string pAYMENTID, string pHUONGTHUCTT, Nullable<System.DateTime> nGAYTT)
         {
             var oRDERIDParameter = oRDERID != null ?
                 new ObjectParameter("ORDERID", oRDERID) :
                 new ObjectParameter("ORDERID", typeof(string));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SP_CAPNHATTONKHOSAUDATHANG", oRDERIDParameter);
-        }
+            var pAYMENTIDParameter = pAYMENTID != null ?
+                new ObjectParameter("PAYMENTID", pAYMENTID) :
+                new ObjectParameter("PAYMENTID", typeof(string));
     
-        public virtual int SP_CAPNHATTONKHOSAUDATHANG1(string oRDERID)
-        {
-            var oRDERIDParameter = oRDERID != null ?
-                new ObjectParameter("ORDERID", oRDERID) :
-                new ObjectParameter("ORDERID", typeof(string));
+            var pHUONGTHUCTTParameter = pHUONGTHUCTT != null ?
+                new ObjectParameter("PHUONGTHUCTT", pHUONGTHUCTT) :
+                new ObjectParameter("PHUONGTHUCTT", typeof(string));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SP_CAPNHATTONKHOSAUDATHANG1", oRDERIDParameter);
+            var nGAYTTParameter = nGAYTT.HasValue ?
+                new ObjectParameter("NGAYTT", nGAYTT) :
+                new ObjectParameter("NGAYTT", typeof(System.DateTime));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SP_XACNHAN_THANHTOAN_TRANSACTION", oRDERIDParameter, pAYMENTIDParameter, pHUONGTHUCTTParameter, nGAYTTParameter);
         }
     }
 }
