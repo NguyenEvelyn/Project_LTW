@@ -57,15 +57,11 @@ namespace Project_LTW.Controllers
             var email = collect["Email"];
             var password = collect["Password"];
 
-            // 1. Tìm trong bảng Khách hàng (CUSTOMER)
             var khachHang = db.CUSTOMERs.FirstOrDefault(k => k.EMAIL == email && k.PASSWORD == password);
 
             if (khachHang != null)
             {
-                // Đăng nhập thành công quyền KHÁCH
                 Session["User"] = khachHang;
-
-                // Đảm bảo xóa session admin cũ nếu có, để tránh nhầm lẫn
                 Session["AdminUser"] = null;
                 Session["MANV"] = null;
 
@@ -73,29 +69,18 @@ namespace Project_LTW.Controllers
             }
 
 
-            // 2. Nếu không phải khách hàng, thử tìm trong bảng Staff
             var nhanVien = db.STAFFs.FirstOrDefault(s => s.EMAIL == email && s.PASSWORD == password);
 
             if (nhanVien != null)
             {
-                // Đăng nhập thành công quyền ADMIN/NHÂN VIÊN
-
-                // **QUAN TRỌNG:** // Admin chỉ được lưu vào Session riêng.
-                // TRANG BÁN HÀNG (Front-end) phải kiểm tra cả Session["User"] VÀ Session["AdminUser"] 
-                // để duy trì trạng thái đăng nhập. (Xem hướng dẫn sửa _Layout ở câu trả lời trước).
-
-                // 🌟 Admin/Staff KHÔNG được lưu vào Session["User"] 🌟
-                // Lý do: Staff không phải là CUSTOMER, tránh lỗi khi các View Front-end đòi hỏi KHACHHANGID
-                Session["AdminUser"] = nhanVien; // Session dành riêng cho Admin
+                Session["AdminUser"] = nhanVien;
                 Session["MANV"] = nhanVien.MANV;
-
-                // Đảm bảo session khách hàng bị xóa
                 Session["User"] = null;
 
                 return RedirectToAction("Index", "HomeAdmin", new { area = "Admin" });
             }
 
-            // Nếu không tìm thấy
+
             ViewBag.Error = "Email hoặc mật khẩu không đúng!";
             return View("Login");
         }
@@ -153,13 +138,12 @@ namespace Project_LTW.Controllers
          
             return View();
         }
-        // Trong UserController.cs
-        public ActionResult Logout()
-        {
-            // Xóa session của Khách hàng
-            Session["User"] = null;
 
-            // 🌟 THÊM: Xóa session của Admin/Nhân viên 🌟
+        public ActionResult Logout()
+
+        {
+
+            Session["User"] = null;
             Session["AdminUser"] = null;
             Session["MANV"] = null;
 
@@ -170,11 +154,10 @@ namespace Project_LTW.Controllers
         public ActionResult OrderHistory()
         {
 
-            // Nếu không có session Khách hàng
+
             if (Session["User"] == null)
             {
-                // 🌟 Nếu Admin đang đăng nhập, chuyển họ về trang chủ thay vì Login 🌟
-                // Vì Admin không có KHACHHANGID để xem Order History.
+
                 if (Session["AdminUser"] != null)
                 {
                     TempData["Error"] = "Admin/Nhân viên không thể truy cập Lịch sử đơn hàng của Khách hàng.";
@@ -187,10 +170,7 @@ namespace Project_LTW.Controllers
             var user = Session["User"] as CUSTOMER;
 
 
-            var orders = db.ORDERS
-                           .Where(o => o.KHACHHANGID == user.KHACHHANGID)
-                           .OrderByDescending(o => o.NGAYDAT)
-                           .ToList();
+            var orders = db.FN_DANHSACHDONHANG_KH(user.KHACHHANGID).ToList();
 
             return View(orders);
         }
@@ -233,10 +213,10 @@ namespace Project_LTW.Controllers
                 return RedirectToAction("OrderHistory");
             }
 
-     
-            if (order.TRANGTHAI != "Chờ xử lý")
+
+            if (order.TRANGTHAI == null || !order.TRANGTHAI.Contains("Chờ"))
             {
-                TempData["Error"] = "Chỉ có thể hủy đơn hàng khi đang Chờ xử lý.";
+                TempData["Error"] = "Bạn chỉ có thể hủy đơn hàng khi đang ở trạng thái Chờ xử lý/xác nhận.";
                 return RedirectToAction("OrderHistory");
             }
 
@@ -246,7 +226,7 @@ namespace Project_LTW.Controllers
                
                 db.Database.ExecuteSqlCommand("EXEC SP_HUYDONHANG @p0", id);
 
-                TempData["Success"] = "Đã hủy đơn hàng và hoàn lại tồn kho thành công!";
+                TempData["Success"] = "Đã hủy đơn hàng thành công!";
             }
             catch (Exception ex)
             {
@@ -581,46 +561,46 @@ namespace Project_LTW.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult UpdateNgaySinh(DateTime? NGAYSINH)
         {
-            // 1. Kiểm tra đăng nhập
+
             if (Session["User"] == null)
             {
                 return Json(new { success = false, message = "Bạn cần đăng nhập để thực hiện chức năng này." });
             }
 
-            // 2. Lấy thông tin khách hàng hiện tại
+
             var userInSession = Session["User"] as CUSTOMER;
             var customerToUpdate = db.CUSTOMERs.Find(userInSession.KHACHHANGID);
 
             if (customerToUpdate == null)
             {
-                // Thực tế không xảy ra nếu đã kiểm tra Session
+
                 return Json(new { success = false, message = "Không tìm thấy tài khoản." });
             }
 
-            // 3. Kiểm tra Ngày sinh hợp lệ
+
             if (NGAYSINH.HasValue)
             {
-                // Kiểm tra ngày sinh không được quá ngày hiện tại và hợp lý
+
                 if (NGAYSINH.Value > DateTime.Now.Date)
                 {
                     return Json(new { success = false, message = "Ngày sinh không được lớn hơn ngày hiện tại." });
                 }
 
-                // Cập nhật NGAYSINH
+
                 customerToUpdate.NGAYSINH = NGAYSINH.Value.Date;
             }
             else
             {
-                // Nếu người dùng gửi lên giá trị NULL (nếu có thể), thì xóa ngày sinh cũ
+
                 customerToUpdate.NGAYSINH = null;
             }
 
             try
             {
-                // 4. Lưu vào Database
+
                 db.SaveChanges();
 
-                // 5. Cập nhật lại Session để hiển thị thông tin mới ngay lập tức
+
                 userInSession.NGAYSINH = customerToUpdate.NGAYSINH;
                 Session["User"] = userInSession;
 
@@ -628,7 +608,7 @@ namespace Project_LTW.Controllers
             }
             catch (Exception ex)
             {
-                // Ghi log lỗi nếu cần
+
                 return Json(new { success = false, message = "Lỗi hệ thống khi lưu dữ liệu. Vui lòng thử lại. Lỗi: " + ex.Message });
             }
         }

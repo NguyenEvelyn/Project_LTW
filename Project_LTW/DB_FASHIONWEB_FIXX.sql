@@ -123,7 +123,6 @@ CREATE TABLE STAFF (
 GO
 
 
-GO
 
 -- ============================
 -- 9. ORDERS 
@@ -149,16 +148,17 @@ GO
 -- ============================
 
 CREATE TABLE ORDERDETAIL (
+    ORDERDETAILID INT IDENTITY(1,1) NOT NULL,
     ORDERID NCHAR(10) NOT NULL,
-    SANPHAMID NCHAR(10) NOT NULL,
-    MAUSAC NVARCHAR(50) NOT NULL, 
-    SIZE NVARCHAR(10) NOT NULL,   
+    SANPHAMID NCHAR(10) NOT NULL ,
+    MAUSAC NVARCHAR(50) , 
+    SIZE NVARCHAR(10) ,   
     SOLUONG INT NOT NULL,
     DONGIA DECIMAL(18,2) NOT NULL,
     THANHTIEN AS (SOLUONG * DONGIA) PERSISTED,
     
     
-    CONSTRAINT PK_ORDERDETAIL PRIMARY KEY (ORDERID, SANPHAMID, MAUSAC, SIZE),
+    CONSTRAINT PK_ORDERDETAIL PRIMARY KEY (ORDERDETAILID),
     CONSTRAINT FK_ORDERDETAIL_ORDERS FOREIGN KEY (ORDERID) REFERENCES ORDERS(ORDERID),
     CONSTRAINT FK_ORDERDETAIL_PRODUCT FOREIGN KEY (SANPHAMID) REFERENCES PRODUCT(SANPHAMID),
     CONSTRAINT CK_ORDERDETAIL_QTY CHECK (SOLUONG > 0),
@@ -705,12 +705,11 @@ SELECT * FROM PAYMENT;
 -- ============================
 -- CHƯƠNG 2 CÀI ĐẶT YÊU CẦU XỬ LÝ 
 
+--Hòa 1-5
+--Khánh 6 -11
+--Uyên 12 - 16
 
--- ============================
--- QUẢN LÝ KHÁCH HÀNG VÀ GIỎ HÀNG
--- ============================
-
---1.Procedure Thêm khách hàng mới và tự tạo địa chỉ mặc định, có kiểm tra trùng Email và SDT
+--1.Transaction Thêm khách hàng mới và tự tạo địa chỉ mặc định, có kiểm tra trùng Email và SDT
 
 CREATE PROCEDURE SP_THEMKHACHHANGDIACHI
     @KHACHHANGID NCHAR(10),
@@ -724,7 +723,6 @@ BEGIN
     BEGIN TRY
         BEGIN TRANSACTION;
 
-        -- Kiểm tra email hoặc số điện thoại trùng
         IF EXISTS (SELECT 1 FROM CUSTOMER WHERE EMAIL = @EMAIL OR DIENTHOAI = @DIENTHOAI)
         BEGIN
             RAISERROR (N'Email hoặc số điện thoại đã tồn tại!', 16, 1);
@@ -732,11 +730,9 @@ BEGIN
             RETURN;
         END;
 
-        -- Thêm khách hàng mới
         INSERT INTO CUSTOMER (KHACHHANGID, HOTEN, NGAYSINH, EMAIL, PASSWORD, DIENTHOAI)
         VALUES (@KHACHHANGID, @HOTEN, @NGAYSINH, @EMAIL, @PASSWORD, @DIENTHOAI);
 
-        -- Thêm địa chỉ mặc định
         DECLARE @DIACHIID NCHAR(10) = LEFT(CONVERT(NVARCHAR(36), NEWID()), 10);
         INSERT INTO ADDRESS (DIACHIID, KHACHHANGID, DUONG, THANHPHO, TINH, ZIPCODE)
         VALUES (@DIACHIID, @KHACHHANGID, N'Chưa cập nhật', N'Chưa cập nhật', N'Chưa cập nhật', '000000');
@@ -765,7 +761,6 @@ BEGIN
     BEGIN TRY
         BEGIN TRANSACTION;
 
-        -- Kiểm tra trùng Email
         IF EXISTS (SELECT 1 FROM CUSTOMER WHERE EMAIL = @EMAIL AND KHACHHANGID <> @KHACHHANGID)
         BEGIN
             RAISERROR (N'Email đã được sử dụng bởi khách hàng khác!', 16, 1);
@@ -845,7 +840,7 @@ BEGIN
     FETCH NEXT FROM cur INTO @KHID, @TEN;
     WHILE @@FETCH_STATUS = 0
     BEGIN
-        -- Tính toán số liệu cho từng khách
+
         SELECT @SoDH = COUNT(*), @TongTien = SUM(TONGTIEN) 
         FROM ORDERS 
         WHERE KHACHHANGID = @KHID;
@@ -862,12 +857,71 @@ BEGIN
     SELECT * FROM @KetQua ORDER BY SoDonHang DESC;
 END;
 GO
+--5. Kiểm tra đơn hàng bị xóa
+CREATE TRIGGER TR_CHAN_XOA_DONHANG_QUANTRONG
+ON ORDERS
+FOR DELETE
+AS
+BEGIN
+    IF EXISTS (
+        SELECT 1 
+        FROM DELETED 
+        WHERE TRANGTHAI IN (N'Đã thanh toán', N'Đang xử lý', N'Đang giao hàng', N'Hoàn tất')
+    )
+    BEGIN
+       
+        ROLLBACK TRANSACTION;
+        RAISERROR(N'BẢO MẬT: Không thể xóa đơn hàng đã thanh toán hoặc đang xử lý! Hãy dùng chức năng Hủy đơn.', 16, 1);
+        RETURN;
+    END
+END;
+GO
+
 
 -- ============================
 -- QUẢN LÝ SẢN PHẨM VÀ GIỎ HÀNG
 -- ============================
 
---5.Procedure Thêm sản phẩm kèm size, màu, kiểm tra tồn tại CATEGORY.
+--6. Cập nhật xác nhận thanh toán transaction
+CREATE PROCEDURE SP_XACNHAN_THANHTOAN_TRANSACTION
+    @ORDERID NCHAR(10),
+    @PAYMENTID NCHAR(10),
+    @PHUONGTHUCTT NVARCHAR(50),
+    @NGAYTT DATE
+AS
+BEGIN
+    SET NOCOUNT ON;
+    BEGIN TRANSACTION;
+    BEGIN TRY
+        
+        IF NOT EXISTS (SELECT 1 FROM ORDERS WHERE ORDERID = @ORDERID)
+        BEGIN
+            ROLLBACK TRANSACTION;
+            RAISERROR(N'Lỗi: Đơn hàng không tồn tại.', 16, 1);
+            RETURN;
+        END
+
+        INSERT INTO PAYMENT (PAYMENTID, ORDERID, PHUONGTHUCTT, TRANGTHAITT, NGAYTT)
+        VALUES (@PAYMENTID, @ORDERID, @PHUONGTHUCTT, N'Đã thanh toán', @NGAYTT);
+
+        UPDATE ORDERS 
+        SET TRANGTHAI = N'Đã thanh toán'
+        WHERE ORDERID = @ORDERID;
+
+        COMMIT TRANSACTION;
+        PRINT N'Giao dịch thành công: Đã xác nhận thanh toán.';
+    END TRY
+    BEGIN CATCH
+        IF @@TRANCOUNT > 0
+            ROLLBACK TRANSACTION;
+        
+        DECLARE @ErrorMessage NVARCHAR(4000) = ERROR_MESSAGE();
+        RAISERROR(@ErrorMessage, 16, 1);
+    END CATCH
+END;
+GO
+
+--7.Procedure Thêm sản phẩm kèm size, màu, kiểm tra tồn tại CATEGORY.
 CREATE PROCEDURE SP_THEMSANPHAMMOI
     @SANPHAMID NCHAR(10),
     @TENSANPHAM NVARCHAR(100),
@@ -917,7 +971,7 @@ END;
 GO
 
 
---6.Trigger Khi thêm ORDERDETAIL, kiểm tra tồn kho đủ không. 
+--8.Trigger Khi thêm ORDERDETAIL, kiểm tra tồn kho đủ không. 
 
 CREATE TRIGGER TR_KIEMTRATONKHO
 ON ORDERDETAIL
@@ -943,7 +997,7 @@ END;
 GO
 
 
---7.Function Tính giá trung bình của các sản phẩm trong danh mục
+--9.Function Tính giá trung bình của các sản phẩm trong danh mục
 CREATE FUNCTION FN_GIATRUNGBINHSANPHAMDANHMUC(@DANHMUCID NCHAR(10))
 RETURNS DECIMAL(18,2)
 AS
@@ -954,79 +1008,10 @@ BEGIN
 END;
 GO
 
---8.Procedure Sau khi đơn hàng được tạo, trừ số lượng tồn trong kho.
-
-IF OBJECT_ID('SP_CAPNHATTONKHOSAUDATHANG', 'P') IS NOT NULL
-    DROP PROCEDURE SP_CAPNHATTONKHOSAUDATHANG;
-GO
-
----------
-CREATE TRIGGER TR_CAPNHAT_TONKHO_KHI_DAT_HANG
-ON ORDERDETAIL
-AFTER INSERT
-AS
-BEGIN
-    SET NOCOUNT ON;
-
-    BEGIN TRY
-        UPDATE P
-        SET P.SOLUONGTONKHO = P.SOLUONGTONKHO - I.SOLUONG
-        FROM PRODUCT P
-        INNER JOIN INSERTED I ON P.SANPHAMID = I.SANPHAMID;
-
-   
-        IF EXISTS (SELECT 1 FROM PRODUCT WHERE SOLUONGTONKHO < 0)
-        BEGIN
-            ROLLBACK TRANSACTION;
-            RAISERROR (N'Rất tiếc, sản phẩm này vừa hết hàng trong khi bạn đang thao tác!', 16, 1);
-            RETURN;
-        END
-
-    END TRY
-    BEGIN CATCH
-        IF @@TRANCOUNT > 0
-            ROLLBACK TRANSACTION;
-            
-        DECLARE @LoiNhan NVARCHAR(4000) = ERROR_MESSAGE();
-        RAISERROR(@LoiNhan, 16, 1);
-    END CATCH;
-END;
-GO
 
 
---9.Trigger Cập nhật tổng tiền đơn hàng
-IF OBJECT_ID('TR_CAPNHAT_TONGTIEN_ORDERS', 'TR') IS NOT NULL
-    DROP TRIGGER TR_CAPNHAT_TONGTIEN_ORDERS;
-GO
--------
-CREATE TRIGGER TR_CAPNHAT_TONGTIEN_ORDERS
-ON ORDERDETAIL
-AFTER INSERT, DELETE, UPDATE
-AS
-BEGIN
-    SET NOCOUNT ON;
-    DECLARE @DanhSachDonHang TABLE (ORDERID NCHAR(10));
-    INSERT INTO @DanhSachDonHang (ORDERID)
-    SELECT ORDERID FROM INSERTED
-    UNION
-    SELECT ORDERID FROM DELETED;
-    --cập nhâth
-    UPDATE O
-    SET O.TONGTIEN = (
-        SELECT ISNULL(SUM(OD.SOLUONG * OD.DONGIA), 0)
-        FROM ORDERDETAIL OD
-        WHERE OD.ORDERID = O.ORDERID
-    )
-    FROM ORDERS O
-    INNER JOIN @DanhSachDonHang DS ON O.ORDERID = DS.ORDERID;
-END;
-GO
 
 --10. Cursor Cập nhật trạng thái sản phẩm theo tồn kho
-IF OBJECT_ID('SP_KIEMTRATONKHO_CURSOR', 'P') IS NOT NULL
-    DROP PROCEDURE SP_KIEMTRATONKHO_CURSOR
-GO
-
 CREATE PROCEDURE SP_KIEMTRATONKHO_CURSOR
 AS
 BEGIN
@@ -1074,25 +1059,19 @@ GO
 -- ============================
 -- QUẢN LÝ ĐƠN HÀNG VÀ THANH TOÁN
 -- ============================
+--11. trigger cập nhật tổng tiền đơn hàng 
 
-
---11.Trigger Khi bảng PAYMENT thêm mới và trạng thái là "Đã thanh toán", thì ORDERS đổi sang “Đã giao”
-CREATE TRIGGER TR_CAPNHATTRANGTHAISAUTHANHTOAN
-ON PAYMENT
-AFTER INSERT
+CREATE TRIGGER TR_CAPNHAT_TONGTIEN_DONHANG
+ON ORDERDETAIL
+AFTER INSERT, UPDATE, DELETE
 AS
 BEGIN
+    SET NOCOUNT ON;
     UPDATE O
-    SET TRANGTHAI = N'ĐANG XỬ LÝ' 
+    SET O.TONGTIEN = (SELECT ISNULL(SUM(OD.THANHTIEN), 0) FROM ORDERDETAIL OD WHERE OD.ORDERID = O.ORDERID)
     FROM ORDERS O
-    JOIN INSERTED I ON O.ORDERID = I.ORDERID
-    WHERE I.TRANGTHAITT = N'ĐÃ THANH TOÁN';
+    WHERE O.ORDERID IN (SELECT DISTINCT ORDERID FROM INSERTED UNION SELECT DISTINCT ORDERID FROM DELETED);
 END;
-GO
-
---- xóa Trigger
-IF OBJECT_ID('TR_CAPNHATTRANGTHAISAUTHANHTOAN', 'TR') IS NOT NULL
-    DROP TRIGGER TR_CAPNHATTRANGTHAISAUTHANHTOAN;
 GO
 
 
@@ -1126,118 +1105,54 @@ GO
 
 
 --14.Transaction Khi khách hủy đơn, rollback tiền + cập nhật tồn kho.
--- Xóa thủ tục 
-IF OBJECT_ID('SP_HUYDONHANG', 'P') IS NOT NULL
-    DROP PROCEDURE SP_HUYDONHANG;
-GO
+
 --------------------------------------------
 CREATE PROCEDURE SP_HUYDONHANG
-    @ORDERID NCHAR(10),                
-    @LYDO NVARCHAR(200) = N'Khách yêu cầu hủy' 
-AS
-BEGIN
-    SET NOCOUNT ON; 
-    DECLARE @TrangThaiHienTai NVARCHAR(50);
-    DECLARE @TrangThaiThanhToan NVARCHAR(50);
-    DECLARE @ThongBaoTraVe NVARCHAR(500);
-    DECLARE @CoCanHoanTien BIT = 0; 
-    SET @ORDERID = RTRIM(@ORDERID);
-
-    BEGIN TRY
-        BEGIN TRANSACTION; 
-
-    
-        SELECT @TrangThaiHienTai = TRANGTHAI 
-        FROM ORDERS WITH (UPDLOCK) 
-        WHERE ORDERID = @ORDERID;
-
-        IF @TrangThaiHienTai IS NULL
-        BEGIN
-            ROLLBACK TRANSACTION;
-            RAISERROR (N'Lỗi: Không tìm thấy đơn hàng mã "%s".', 16, 1, @ORDERID);
-            RETURN;
-        END
-        IF @TrangThaiHienTai IN (N'Hoàn tất', N'ĐÃ GIAO HÀNG', N'ĐÃ HỦY')
-        BEGIN
-            ROLLBACK TRANSACTION;
-            RAISERROR (N'Lỗi: Đơn này đang ở trạng thái "%s" nên không hủy được.', 16, 1, @TrangThaiHienTai);
-            RETURN;
-        END
-
-      
-        UPDATE P
-        SET P.SOLUONGTONKHO = P.SOLUONGTONKHO + OD.SOLUONG
-        FROM PRODUCT P
-        INNER JOIN ORDERDETAIL OD ON P.SANPHAMID = OD.SANPHAMID
-        WHERE OD.ORDERID = @ORDERID;
-
-    
-        SELECT @TrangThaiThanhToan = TRANGTHAITT 
-        FROM PAYMENT WITH (UPDLOCK) 
-        WHERE ORDERID = @ORDERID;
-
-        IF @TrangThaiThanhToan = N'ĐÃ THANH TOÁN'
-        BEGIN
-            UPDATE PAYMENT
-            SET TRANGTHAITT = N'CHỜ HOÀN TIỀN',
-                NGAYTT = GETDATE()
-            WHERE ORDERID = @ORDERID;
-            SET @CoCanHoanTien = 1; 
-            SET @ThongBaoTraVe = N'Đã hủy đơn thành công (Chờ hoàn tiền).';
-        END
-        ELSE
-        BEGIN
-            UPDATE PAYMENT
-            SET TRANGTHAITT = N'ĐÃ HỦY'
-            WHERE ORDERID = @ORDERID;
-            SET @ThongBaoTraVe = N'Đã hủy đơn hàng thành công.';
-        END
-
-     
-        UPDATE ORDERS 
-        SET TRANGTHAI = N'ĐÃ HỦY',
-            GHICHU = ISNULL(GHICHU, '') + N' | [Hủy ' + CONVERT(NVARCHAR, GETDATE(), 103) + N']: ' + @LYDO
-        WHERE ORDERID = @ORDERID;
-
-        COMMIT TRANSACTION; 
-
-        SELECT 
-            @ORDERID AS MaDonHang, 
-            @ThongBaoTraVe AS KetQuaXuLy,
-            @CoCanHoanTien AS CanLienHeKhachHoanTien;
-
-    END TRY
-    BEGIN CATCH
-        IF @@TRANCOUNT > 0
-            ROLLBACK TRANSACTION;
-        DECLARE @LoiNhan NVARCHAR(4000) = ERROR_MESSAGE();
-        RAISERROR(@LoiNhan, 16, 1);
-    END CATCH;
-END;
-GO
-       
--- 15.Trigger: Đảm bảo Giá Bán (GIA) không được lớn hơn Giá Gốc (GIAGOC)
-CREATE TRIGGER TR_KIEMTRA_GIABAN_HOPLE
-ON PRODUCT
-AFTER INSERT, UPDATE
+    @ORDERID NCHAR(10), 
+    @LYDO NVARCHAR(200) = N'Khách hủy'
 AS
 BEGIN
     SET NOCOUNT ON;
-    IF EXISTS (
-        SELECT 1 
-        FROM INSERTED 
-        WHERE GIA > GIAGOC
-    )
-    BEGIN
-       
-        RAISERROR (N'Lỗi dữ liệu: Giá bán (GIA) không được phép lớn hơn Giá gốc (GIAGOC). Vui lòng kiểm tra lại.', 16, 1);
-        ROLLBACK TRANSACTION;
-        RETURN;
-    END
+    DECLARE @Status NVARCHAR(50);
+    DECLARE @TrangThaiTien NVARCHAR(50); 
+    BEGIN TRY
+        BEGIN TRANSACTION;
+        SELECT @Status = TRANGTHAI FROM ORDERS WITH (UPDLOCK) WHERE ORDERID = @ORDERID;
+        IF @Status IN (N'Hoàn tất', N'ĐÃ GIAO HÀNG', N'ĐÃ HỦY')
+        BEGIN
+            ROLLBACK TRANSACTION; 
+            RAISERROR(N'Không thể hủy đơn này vì hàng đã đi hoặc đã xong.', 16, 1);
+            RETURN;
+        END
+        UPDATE P
+        SET P.SOLUONGTONKHO = P.SOLUONGTONKHO + OD.SOLUONG
+        FROM PRODUCT P JOIN ORDERDETAIL OD ON P.SANPHAMID = OD.SANPHAMID
+        WHERE OD.ORDERID = @ORDERID;
+        UPDATE ORDERS 
+        SET TRANGTHAI = N'ĐÃ HỦY', 
+            GHICHU = ISNULL(GHICHU,'') + N' | Hủy: ' + @LYDO 
+        WHERE ORDERID = @ORDERID;
+        SELECT @TrangThaiTien = TRANGTHAITT FROM PAYMENT WHERE ORDERID = @ORDERID;
+        IF @TrangThaiTien = N'Đã thanh toán'
+        BEGIN
+            UPDATE PAYMENT SET TRANGTHAITT = N'CHỜ HOÀN TIỀN' WHERE ORDERID = @ORDERID;
+        END
+        ELSE
+        BEGIN
+            UPDATE PAYMENT SET TRANGTHAITT = N'ĐÃ HỦY' WHERE ORDERID = @ORDERID;
+        END
+        COMMIT TRANSACTION; 
+        PRINT N'Hủy đơn thành công. Kho đã được cộng lại.';
+    END TRY
+    BEGIN CATCH
+        IF @@TRANCOUNT > 0 ROLLBACK TRANSACTION;
+        THROW;
+    END CATCH;
 END;
-GO
 
---16. Cursor Phân loại sản phẩm bán chạy
+       
+
+--15. Cursor Phân loại sản phẩm bán chạy
 CREATE PROCEDURE SP_PHANLOAI_SANPHAM_BANCHAY
 AS
 BEGIN
@@ -1288,6 +1203,7 @@ BEGIN
     SELECT * FROM @BaoCaoHieuQua ORDER BY TongDaBan DESC;
 END;
 GO
+
 -- ============================
 -- CHƯƠNG 3 QUẢN TRỊ HỆ THỐNG
 
@@ -1363,7 +1279,7 @@ GRANT SELECT ON PRODUCT_IMAGE TO CustomerRole;
 GRANT SELECT ON CATEGORY TO CustomerRole;
 
 
--- Quyền ĐẶT HÀNG và HỦY ĐƠN
+-- Quyền ĐẶT HÀNG và HỦY ĐƠNs
 GRANT EXECUTE ON SP_HUYDONHANG TO CustomerRole;          
 
 -- Quyền quản lý thông tin cá nhân
@@ -1397,232 +1313,69 @@ RECONFIGURE;
 ALTER DATABASE FashionWeb SET RECOVERY FULL;
 GO
 
-PRINT '------------------------------------------------------------';
-PRINT N' BẮT ĐẦU SAO LƯU CƠ SỞ DỮ LIỆU FashionWeb';
-PRINT '------------------------------------------------------------';
-PRINT N'Ngày giờ thực thi: ' + CONVERT(VARCHAR, GETDATE(), 120);
-PRINT '';
 
-------------------------------------------------------------
--- 1️ Thực hiện Full Backup vào Chủ nhật
-------------------------------------------------------------
-DECLARE @BackupFile NVARCHAR(400);
-
-SET @BackupFile = 'D:\SQL Server Management Studio\SQL\HQTCSDL_DOAN\NHOM10_CSDL\Backup\FashionWeb_FULL_' 
-                  + CONVERT(VARCHAR(8), GETDATE(), 112) + '_' 
-                  + REPLACE(CONVERT(VARCHAR(8), GETDATE(), 108), ':', '') + '.bak';
-
-BACKUP DATABASE FashionWeb
-TO DISK = @BackupFile
-WITH INIT,
-     NAME = 'Full Backup FashionWeb',
-     SKIP,
-     STATS = 10;
-
-------------------------------------------------------------
--- 12 Thực hiện  DIFFERENTIAL
-------------------------------------------------------------
-DECLARE @BackupFile NVARCHAR(400);
-
-SET @BackupFile = 'D:\SQL Server Management Studio\SQL\HQTCSDL_DOAN\NHOM10_CSDL\Backup\FashionWeb_DIFF_' 
-                  + CONVERT(VARCHAR(8), GETDATE(), 112) + '_' 
-                  + REPLACE(CONVERT(VARCHAR(8), GETDATE(), 108), ':', '') + '.bak';
-
-BACKUP DATABASE FashionWeb
-TO DISK = @BackupFile
-WITH DIFFERENTIAL,
-     INIT,
-     NAME = 'Differential Backup FashionWeb',
-     SKIP,
-     STATS = 10;
-
-
-------------------------------------------------------------
--- 3️ Sao lưu Transaction Log (mọi ngày)
-------------------------------------------------------------
-DECLARE @BackupFile NVARCHAR(400);
-
-PRINT N'--- Thực hiện Transaction Log Backup ---';
-
-SET @BackupFile = 'D:\SQL Server Management Studio\SQL\HQTCSDL_DOAN\NHOM10_CSDL\Backup\FashionWeb_LOG_' 
-                  + CONVERT(VARCHAR(8), GETDATE(), 112) + '_' 
-                  + REPLACE(CONVERT(VARCHAR(8), GETDATE(), 108), ':', '') + '.trn';
-
-BACKUP LOG FashionWeb
-TO DISK = @BackupFile
-WITH INIT,
-     NAME = 'Transaction Log Backup FashionWeb',
-     SKIP,
-     STATS = 5;
-GO
-
-------------------------------------------------------------
--- 4️ Tự động xóa các file cũ hơn 7 ngày
-------------------------------------------------------------
-EXEC master.dbo.xp_cmdshell 
-'forfiles /p "D:\SQL Server Management Studio\SQL\HQTCSDL_DOAN\NHOM10_CSDL\Backup\" /m *.bak /d -7 /c "cmd /c del @path"';
-
-EXEC master.dbo.xp_cmdshell 
-'forfiles /p "D:\SQL Server Management Studio\SQL\HQTCSDL_DOAN\NHOM10_CSDL\Backup\" /m *.trn /d -7 /c "cmd /c del @path"';
-
-PRINT '';
-PRINT N'--- Hoàn tất sao lưu cơ sở dữ liệu FashionWeb ---';
-PRINT N'Thời gian kết thúc: ' + CONVERT(VARCHAR, GETDATE(), 120);
-
-GO
-
-
-
------------------------Bài sao lưu tự động của Khánh tham khảo (tham khảo thôi đừng chạy, này là không dùng agent mà dùng lệnh)-----------------------
-EXEC sp_configure 'show advanced options', 1;
-RECONFIGURE;
-EXEC sp_configure 'xp_cmdshell', 1;
-RECONFIGURE;
-GO
-
---Job 1: FULL + DIFFERENTIAL + CLEANUP (chạy mỗi ngày 00:00)
---Nếu chủ nhật thì Full
---Các ngày còn lại Differential
---Dọn file cũ hơn 7 ngày
-USE master;
-GO
-EXEC sp_add_job @job_name = N'FashionWeb_Backup_Daily';
-
-EXEC sp_add_jobstep 
-    @job_name = N'FashionWeb_Backup_Daily',
-    @step_name = N'Full or Differential Backup + Cleanup',
-    @subsystem = N'TSQL',
-    @command = N'
-------------------------------------------------------------
--- Đặt Recovery Model sang FULL
-------------------------------------------------------------
+------------------FILE BACKUP UP ----------------------------
 ALTER DATABASE FashionWeb SET RECOVERY FULL;
-
-PRINT N''------------------------------------------------------------'';
-PRINT N'' BẮT ĐẦU SAO LƯU CƠ SỞ DỮ LIỆU FashionWeb'';
-PRINT N''------------------------------------------------------------'';
-PRINT N''Ngày giờ thực thi: '' + CONVERT(VARCHAR, GETDATE(), 120);
-PRINT '''';
-
-------------------------------------------------------------
--- 1️ Kiểm tra nếu là Chủ nhật thì sao lưu FULL
-------------------------------------------------------------
-IF DATENAME(WEEKDAY, GETDATE()) = ''Sunday''
-BEGIN
-    PRINT N''--- Thực hiện FULL BACKUP ---'';
-    DECLARE @BackupFile NVARCHAR(400);
-    SET @BackupFile = ''D:\SQL Server Management Studio\SQL\HQTCSDL_DOAN\NHOM10_CSDL\Backup\FashionWeb_FULL_'' 
-                      + CONVERT(VARCHAR(8), GETDATE(), 112) + ''_'' 
-                      + REPLACE(CONVERT(VARCHAR(8), GETDATE(), 108), '':'', '''') + ''.bak'';
-    BACKUP DATABASE FashionWeb
-    TO DISK = @BackupFile
-    WITH INIT, NAME = ''Full Backup FashionWeb'', SKIP, STATS = 10;
-END
-ELSE
-BEGIN
-------------------------------------------------------------
--- 2️ Nếu không phải Chủ nhật thì sao lưu DIFFERENTIAL
-------------------------------------------------------------
-    PRINT N''--- Thực hiện DIFFERENTIAL BACKUP ---'';
-    DECLARE @BackupFile NVARCHAR(400);
-    SET @BackupFile = ''D:\SQL Server Management Studio\SQL\HQTCSDL_DOAN\NHOM10_CSDL\Backup\FashionWeb_DIFF_'' 
-                      + CONVERT(VARCHAR(8), GETDATE(), 112) + ''_'' 
-                      + REPLACE(CONVERT(VARCHAR(8), GETDATE(), 108), '':'', '''') + ''.bak'';
-    BACKUP DATABASE FashionWeb
-    TO DISK = @BackupFile
-    WITH DIFFERENTIAL, INIT, NAME = ''Differential Backup FashionWeb'', SKIP, STATS = 10;
-END
-
-------------------------------------------------------------
--- 3️ Xóa file backup cũ hơn 7 ngày
-------------------------------------------------------------
-EXEC master.dbo.xp_cmdshell 
-''forfiles /p "D:\SQL Server Management Studio\SQL\HQTCSDL_DOAN\NHOM10_CSDL\Backup\" /m *.bak /d -7 /c "cmd /c del @path"'';
-
-EXEC master.dbo.xp_cmdshell 
-''forfiles /p "D:\SQL Server Management Studio\SQL\HQTCSDL_DOAN\NHOM10_CSDL\Backup\" /m *.trn /d -7 /c "cmd /c del @path"'';
-
-PRINT N''''--- Hoàn tất sao lưu cơ sở dữ liệu FashionWeb ---'''';
-PRINT N''Thời gian kết thúc: '' + CONVERT(VARCHAR, GETDATE(), 120);
-';
-
-EXEC sp_add_schedule 
-    @schedule_name = N'FashionWeb_Backup_Daily_Schedule',
-    @freq_type = 4,                -- Hàng ngày
-    @freq_interval = 1,            -- Mỗi ngày
-    @active_start_time = 000000;   -- 00:00:00 (nửa đêm)
-
-EXEC sp_attach_schedule 
-    @job_name = N'FashionWeb_Backup_Daily',
-    @schedule_name = N'FashionWeb_Backup_Daily_Schedule';
-
-EXEC sp_add_jobserver @job_name = N'FashionWeb_Backup_Daily';
 GO
 
---Job 2: Log backup (chạy mỗi 2 tiếng)
+BACKUP DATABASE FashionWeb
+TO DISK = N'D:\SQL Server Management Studio\SQL\HQTCSDL_DOAN\NHOM10_CSDL\Backup\FashionWeb_Full.bak'
+WITH FORMAT,
+     NAME = N'Full Backup - FashionWeb';
+
+BACKUP DATABASE FashionWeb
+TO DISK = N'D:\SQL Server Management Studio\SQL\HQTCSDL_DOAN\NHOM10_CSDL\Backup\FashionWeb_Diff.bak'
+WITH DIFFERENTIAL, INIT , NAME = N'Differential Backup - FashionWeb';
+
+BACKUP LOG FashionWeb
+TO DISK = N'D:\SQL Server Management Studio\SQL\HQTCSDL_DOAN\NHOM10_CSDL\Backup\FashionWeb_Log.trn'
+WITH FORMAT, NAME = N'Transaction Log Backup - FashionWeb';
+
+
+-- Cho phép chạy lệnh hệ thống xóa file 7 ngày 
+EXEC master.dbo.xp_cmdshell 'forfiles /p "D:\SQL Server Management Studio\SQL\HQTCSDL_DOAN\NHOM10_CSDL\Backup\" /m *.bak /d -7 /c "cmd /c del @path"';
+EXEC master.dbo.xp_cmdshell 'forfiles /p "D:\SQL Server Management Studio\SQL\HQTCSDL_DOAN\NHOM10_CSDL\Backup\" /m *.trn /d -7 /c "cmd /c del @path"';
+
+
+Drop database FashionWeb
+
+--------------------------------------
 USE master;
 GO
-EXEC sp_add_job @job_name = N'FashionWeb_LogBackup_TwoHourly';
 
-EXEC sp_add_jobstep 
-    @job_name = N'FashionWeb_LogBackup_TwoHourly',
-    @step_name = N'Log Backup Step',
-    @subsystem = N'TSQL',
-    @command = N'
-PRINT N''--- Thực hiện Transaction Log Backup ---'';
-DECLARE @BackupFile NVARCHAR(400);
-SET @BackupFile = ''D:\SQL Server Management Studio\SQL\HQTCSDL_DOAN\NHOM10_CSDL\Backup\FashionWeb_LOG_'' 
-                  + CONVERT(VARCHAR(8), GETDATE(), 112) + ''_'' 
-                  + REPLACE(CONVERT(VARCHAR(8), GETDATE(), 108), '':'', '''') + ''.trn'';
-BACKUP LOG FashionWeb
-TO DISK = @BackupFile
-WITH INIT, NAME = ''Transaction Log Backup FashionWeb'', SKIP, STATS = 5;
-';
+RESTORE DATABASE FashionWeb
+FROM DISK = N'D:\SQL Server Management Studio\SQL\HQTCSDL_DOAN\NHOM10_CSDL\Backup\FashionWeb_Full.bak'
+WITH NORECOVERY, REPLACE; 
 
-EXEC sp_add_schedule 
-    @schedule_name = N'FashionWeb_LogBackup_Every2Hours',
-    @freq_type = 4,               -- Hàng ngày
-    @freq_interval = 1,           -- Mỗi ngày
-    @freq_subday_type = 8,        -- Theo giờ
-    @freq_subday_interval = 2,    -- Mỗi 2 giờ
-    @active_start_time = 000000;  -- Bắt đầu từ 00:00
 
-EXEC sp_attach_schedule 
-    @job_name = N'FashionWeb_LogBackup_TwoHourly',
-    @schedule_name = N'FashionWeb_LogBackup_Every2Hours';
+RESTORE DATABASE FashionWeb
+FROM DISK = N'D:\SQL Server Management Studio\SQL\HQTCSDL_DOAN\NHOM10_CSDL\Backup\FashionWeb_Diff.bak'
+WITH NORECOVERY;
 
-EXEC sp_add_jobserver @job_name = N'FashionWeb_LogBackup_TwoHourly';
+
+RESTORE LOG FashionWeb
+FROM DISK = N'D:\SQL Server Management Studio\SQL\HQTCSDL_DOAN\NHOM10_CSDL\Backup\FashionWeb_Log.trn'
+WITH RECOVERY;
+GO
+------------------------------QUẢN LÍ GIAO TÁC 
+
+
+USE FashionWeb;
+GO
+UPDATE PRODUCT SET GIAGOC = 70000.00 WHERE SANPHAMID = 'SP001';
+GO
+-- CỬA SỔ 1: ADMIN
+USE FashionWeb;
 GO
 
---Job 3: tự động xóa các file cũ hơn 7 ngày
-USE msdb;
-GO
 
-EXEC sp_add_job
-    @job_name = N'FashionWeb - Cleanup Backup Files',
-    @description = N'Tự động xóa các file backup cũ hơn 7 ngày.';
+BEGIN TRANSACTION;
 
-EXEC sp_add_jobstep
-    @job_name = N'FashionWeb - Cleanup Backup Files',
-    @step_name = N'Delete old backup files',
-    @subsystem = N'TSQL',
-    @database_name = N'master',
-    @command = N'
-    EXEC master.dbo.xp_cmdshell ''forfiles /p "D:\SQL Server Management Studio\SQL\HQTCSDL_DOAN\NHOM10_CSDL\Backup\" /m *.bak /d -7 /c "cmd /c del @path"'';
-    EXEC master.dbo.xp_cmdshell ''forfiles /p "D:\SQL Server Management Studio\SQL\HQTCSDL_DOAN\NHOM10_CSDL\Backup\" /m *.trn /d -7 /c "cmd /c del @path"'';
-    ';
+UPDATE PRODUCT
+SET GIAGOC = 700000
+WHERE SANPHAMID = 'SP001';
+WAITFOR DELAY '00:00:15';
+COMMIT TRANSACTION; 
 
-EXEC sp_add_schedule
-    @schedule_name = N'Cleanup_Daily',
-    @freq_type = 4,          -- Daily
-    @freq_interval = 1,
-    @active_start_time = 010000;  -- 01:00 sáng
 
-EXEC sp_attach_schedule
-    @job_name = N'FashionWeb - Cleanup Backup Files',
-    @schedule_name = N'Cleanup_Daily';
-
-EXEC sp_add_jobserver
-    @job_name = N'FashionWeb - Cleanup Backup Files';
-GO
-------------------------------------------------------------------------------------------------------------------------------------------------------
+SELECT * FROM PRODUCT

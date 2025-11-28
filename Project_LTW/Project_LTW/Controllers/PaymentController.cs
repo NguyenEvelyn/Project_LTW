@@ -126,6 +126,8 @@ namespace Project_LTW.Controllers
                     // 4. Tạo Detail
                     foreach (var item in groupedCart)
                     {
+                       
+                      
                         var product = db.PRODUCTs.Find(item.MASP);
                         if (product == null)
                         {

@@ -3,31 +3,55 @@
   "WorkspaceRootPath": "C:\\Users\\Phuong Uyen\\OneDrive\\Documents\\GitHub\\Project_LTW\\Project_LTW\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{FB02C958-9BD5-4C29-BDC6-D230BAD49EC3}|Project_LTW\\Project_LTW.csproj|c:\\users\\phuong uyen\\onedrive\\documents\\github\\project_ltw\\project_ltw\\project_ltw\\order.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{FB02C958-9BD5-4C29-BDC6-D230BAD49EC3}|Project_LTW\\Project_LTW.csproj|solutionrelative:project_ltw\\order.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{FB02C958-9BD5-4C29-BDC6-D230BAD49EC3}|Project_LTW\\Project_LTW.csproj|c:\\users\\phuong uyen\\onedrive\\documents\\github\\project_ltw\\project_ltw\\project_ltw\\areas\\admin\\controllers\\productcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{FB02C958-9BD5-4C29-BDC6-D230BAD49EC3}|Project_LTW\\Project_LTW.csproj|solutionrelative:project_ltw\\areas\\admin\\controllers\\productcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{FB02C958-9BD5-4C29-BDC6-D230BAD49EC3}|Project_LTW\\Project_LTW.csproj|c:\\users\\phuong uyen\\onedrive\\documents\\github\\project_ltw\\project_ltw\\project_ltw\\qlquanao.edmx||{C99AEA30-8E36-4515-B76F-496F5A48A6AA}|",
-      "RelativeMoniker": "D:0:0:{FB02C958-9BD5-4C29-BDC6-D230BAD49EC3}|Project_LTW\\Project_LTW.csproj|solutionrelative:project_ltw\\qlquanao.edmx||{C99AEA30-8E36-4515-B76F-496F5A48A6AA}|"
+      "AbsoluteMoniker": "D:0:0:{FB02C958-9BD5-4C29-BDC6-D230BAD49EC3}|Project_LTW\\Project_LTW.csproj|c:\\users\\phuong uyen\\onedrive\\documents\\github\\project_ltw\\project_ltw\\project_ltw\\controllers\\usercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{FB02C958-9BD5-4C29-BDC6-D230BAD49EC3}|Project_LTW\\Project_LTW.csproj|solutionrelative:project_ltw\\controllers\\usercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{FB02C958-9BD5-4C29-BDC6-D230BAD49EC3}|Project_LTW\\Project_LTW.csproj|c:\\users\\phuong uyen\\onedrive\\documents\\github\\project_ltw\\project_ltw\\project_ltw\\areas\\admin\\controllers\\ordercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{FB02C958-9BD5-4C29-BDC6-D230BAD49EC3}|Project_LTW\\Project_LTW.csproj|solutionrelative:project_ltw\\areas\\admin\\controllers\\ordercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{FB02C958-9BD5-4C29-BDC6-D230BAD49EC3}|Project_LTW\\Project_LTW.csproj|C:\\Users\\Phuong Uyen\\OneDrive\\Documents\\GitHub\\Project_LTW\\Project_LTW\\project_ltw\\controllers\\paymentcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{FB02C958-9BD5-4C29-BDC6-D230BAD49EC3}|Project_LTW\\Project_LTW.csproj|solutionrelative:project_ltw\\controllers\\paymentcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{FB02C958-9BD5-4C29-BDC6-D230BAD49EC3}|Project_LTW\\Project_LTW.csproj|c:\\users\\phuong uyen\\onedrive\\documents\\github\\project_ltw\\project_ltw\\project_ltw\\views\\user\\orderhistory.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{FB02C958-9BD5-4C29-BDC6-D230BAD49EC3}|Project_LTW\\Project_LTW.csproj|solutionrelative:project_ltw\\views\\user\\orderhistory.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{FB02C958-9BD5-4C29-BDC6-D230BAD49EC3}|Project_LTW\\Project_LTW.csproj|C:\\Users\\Phuong Uyen\\OneDrive\\Documents\\GitHub\\Project_LTW\\Project_LTW\\project_ltw\\controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{FB02C958-9BD5-4C29-BDC6-D230BAD49EC3}|Project_LTW\\Project_LTW.csproj|solutionrelative:project_ltw\\controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{FB02C958-9BD5-4C29-BDC6-D230BAD49EC3}|Project_LTW\\Project_LTW.csproj|c:\\users\\phuong uyen\\onedrive\\documents\\github\\project_ltw\\project_ltw\\project_ltw\\areas\\admin\\controllers\\customercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{FB02C958-9BD5-4C29-BDC6-D230BAD49EC3}|Project_LTW\\Project_LTW.csproj|c:\\users\\phuong uyen\\onedrive\\documents\\github\\project_ltw\\project_ltw\\project_ltw\\qlquanao.context.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{FB02C958-9BD5-4C29-BDC6-D230BAD49EC3}|Project_LTW\\Project_LTW.csproj|solutionrelative:project_ltw\\qlquanao.context.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FB02C958-9BD5-4C29-BDC6-D230BAD49EC3}|Project_LTW\\Project_LTW.csproj|c:\\users\\phuong uyen\\onedrive\\documents\\github\\project_ltw\\project_ltw\\project_ltw\\views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{FB02C958-9BD5-4C29-BDC6-D230BAD49EC3}|Project_LTW\\Project_LTW.csproj|solutionrelative:project_ltw\\views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FB02C958-9BD5-4C29-BDC6-D230BAD49EC3}|Project_LTW\\Project_LTW.csproj|C:\\Users\\Phuong Uyen\\OneDrive\\Documents\\GitHub\\Project_LTW\\Project_LTW\\project_ltw\\qlquanao.edmx||{C99AEA30-8E36-4515-B76F-496F5A48A6AA}|",
+      "RelativeMoniker": "D:0:0:{FB02C958-9BD5-4C29-BDC6-D230BAD49EC3}|Project_LTW\\Project_LTW.csproj|solutionrelative:project_ltw\\qlquanao.edmx||{C99AEA30-8E36-4515-B76F-496F5A48A6AA}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FB02C958-9BD5-4C29-BDC6-D230BAD49EC3}|Project_LTW\\Project_LTW.csproj|C:\\Users\\Phuong Uyen\\OneDrive\\Documents\\GitHub\\Project_LTW\\Project_LTW\\project_ltw\\controllers\\paymentcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{FB02C958-9BD5-4C29-BDC6-D230BAD49EC3}|Project_LTW\\Project_LTW.csproj|solutionrelative:project_ltw\\controllers\\paymentcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FB02C958-9BD5-4C29-BDC6-D230BAD49EC3}|Project_LTW\\Project_LTW.csproj|C:\\Users\\Phuong Uyen\\OneDrive\\Documents\\GitHub\\Project_LTW\\Project_LTW\\project_ltw\\controllers\\cartcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{FB02C958-9BD5-4C29-BDC6-D230BAD49EC3}|Project_LTW\\Project_LTW.csproj|solutionrelative:project_ltw\\controllers\\cartcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FB02C958-9BD5-4C29-BDC6-D230BAD49EC3}|Project_LTW\\Project_LTW.csproj|c:\\users\\phuong uyen\\onedrive\\documents\\github\\project_ltw\\project_ltw\\project_ltw\\order.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{FB02C958-9BD5-4C29-BDC6-D230BAD49EC3}|Project_LTW\\Project_LTW.csproj|solutionrelative:project_ltw\\order.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FB02C958-9BD5-4C29-BDC6-D230BAD49EC3}|Project_LTW\\Project_LTW.csproj|C:\\Users\\Phuong Uyen\\OneDrive\\Documents\\GitHub\\Project_LTW\\Project_LTW\\project_ltw\\areas\\admin\\controllers\\ordercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{FB02C958-9BD5-4C29-BDC6-D230BAD49EC3}|Project_LTW\\Project_LTW.csproj|solutionrelative:project_ltw\\areas\\admin\\controllers\\ordercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FB02C958-9BD5-4C29-BDC6-D230BAD49EC3}|Project_LTW\\Project_LTW.csproj|C:\\Users\\Phuong Uyen\\OneDrive\\Documents\\GitHub\\Project_LTW\\Project_LTW\\project_ltw\\areas\\admin\\controllers\\customercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{FB02C958-9BD5-4C29-BDC6-D230BAD49EC3}|Project_LTW\\Project_LTW.csproj|solutionrelative:project_ltw\\areas\\admin\\controllers\\customercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{FB02C958-9BD5-4C29-BDC6-D230BAD49EC3}|Project_LTW\\Project_LTW.csproj|c:\\users\\phuong uyen\\onedrive\\documents\\github\\project_ltw\\project_ltw\\project_ltw\\views\\payment\\success.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "AbsoluteMoniker": "D:0:0:{FB02C958-9BD5-4C29-BDC6-D230BAD49EC3}|Project_LTW\\Project_LTW.csproj|C:\\Users\\Phuong Uyen\\OneDrive\\Documents\\GitHub\\Project_LTW\\Project_LTW\\project_ltw\\views\\payment\\success.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{FB02C958-9BD5-4C29-BDC6-D230BAD49EC3}|Project_LTW\\Project_LTW.csproj|solutionrelative:project_ltw\\views\\payment\\success.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
@@ -35,12 +59,8 @@
       "RelativeMoniker": "D:0:0:{FB02C958-9BD5-4C29-BDC6-D230BAD49EC3}|Project_LTW\\Project_LTW.csproj|solutionrelative:project_ltw\\views\\payment\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{FB02C958-9BD5-4C29-BDC6-D230BAD49EC3}|Project_LTW\\Project_LTW.csproj|c:\\users\\phuong uyen\\onedrive\\documents\\github\\project_ltw\\project_ltw\\project_ltw\\views\\user\\login.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "AbsoluteMoniker": "D:0:0:{FB02C958-9BD5-4C29-BDC6-D230BAD49EC3}|Project_LTW\\Project_LTW.csproj|C:\\Users\\Phuong Uyen\\OneDrive\\Documents\\GitHub\\Project_LTW\\Project_LTW\\project_ltw\\views\\user\\login.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{FB02C958-9BD5-4C29-BDC6-D230BAD49EC3}|Project_LTW\\Project_LTW.csproj|solutionrelative:project_ltw\\views\\user\\login.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{FB02C958-9BD5-4C29-BDC6-D230BAD49EC3}|Project_LTW\\Project_LTW.csproj|C:\\Users\\Phuong Uyen\\OneDrive\\Documents\\GitHub\\Project_LTW\\Project_LTW\\project_ltw\\controllers\\cartcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{FB02C958-9BD5-4C29-BDC6-D230BAD49EC3}|Project_LTW\\Project_LTW.csproj|solutionrelative:project_ltw\\controllers\\cartcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{FB02C958-9BD5-4C29-BDC6-D230BAD49EC3}|Project_LTW\\Project_LTW.csproj|C:\\Users\\Phuong Uyen\\OneDrive\\Documents\\GitHub\\Project_LTW\\Project_LTW\\project_ltw\\models\\cartitem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -66,7 +86,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 2,
+          "SelectedChildIndex": 6,
           "Children": [
             {
               "$type": "Bookmark",
@@ -78,7 +98,85 @@
             },
             {
               "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\Users\\Phuong Uyen\\OneDrive\\Documents\\GitHub\\Project_LTW\\Project_LTW\\Project_LTW\\Views\\Home\\Index.cshtml",
+              "RelativeDocumentMoniker": "Project_LTW\\Views\\Home\\Index.cshtml",
+              "ToolTip": "C:\\Users\\Phuong Uyen\\OneDrive\\Documents\\GitHub\\Project_LTW\\Project_LTW\\Project_LTW\\Views\\Home\\Index.cshtml",
+              "RelativeToolTip": "Project_LTW\\Views\\Home\\Index.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-28T15:26:11.758Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "QLQUANAO.Context.cs",
+              "DocumentMoniker": "C:\\Users\\Phuong Uyen\\OneDrive\\Documents\\GitHub\\Project_LTW\\Project_LTW\\Project_LTW\\QLQUANAO.Context.cs",
+              "RelativeDocumentMoniker": "Project_LTW\\QLQUANAO.Context.cs",
+              "ToolTip": "C:\\Users\\Phuong Uyen\\OneDrive\\Documents\\GitHub\\Project_LTW\\Project_LTW\\Project_LTW\\QLQUANAO.Context.cs",
+              "RelativeToolTip": "Project_LTW\\QLQUANAO.Context.cs",
+              "ViewState": "AgIAAAkAAAAAAAAAAAAAADwAAAAEAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-28T15:21:50.803Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "UserController.cs",
+              "DocumentMoniker": "C:\\Users\\Phuong Uyen\\OneDrive\\Documents\\GitHub\\Project_LTW\\Project_LTW\\Project_LTW\\Controllers\\UserController.cs",
+              "RelativeDocumentMoniker": "Project_LTW\\Controllers\\UserController.cs",
+              "ToolTip": "C:\\Users\\Phuong Uyen\\OneDrive\\Documents\\GitHub\\Project_LTW\\Project_LTW\\Project_LTW\\Controllers\\UserController.cs",
+              "RelativeToolTip": "Project_LTW\\Controllers\\UserController.cs",
+              "ViewState": "AgIAAL4AAAAAAAAAAAAAAOQAAAA3AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-28T14:53:45.528Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "OrderHistory.cshtml",
+              "DocumentMoniker": "C:\\Users\\Phuong Uyen\\OneDrive\\Documents\\GitHub\\Project_LTW\\Project_LTW\\Project_LTW\\Views\\User\\OrderHistory.cshtml",
+              "RelativeDocumentMoniker": "Project_LTW\\Views\\User\\OrderHistory.cshtml",
+              "ToolTip": "C:\\Users\\Phuong Uyen\\OneDrive\\Documents\\GitHub\\Project_LTW\\Project_LTW\\Project_LTW\\Views\\User\\OrderHistory.cshtml",
+              "RelativeToolTip": "Project_LTW\\Views\\User\\OrderHistory.cshtml",
+              "ViewState": "AgIAABgAAAAAAAAAAAAAwCEAAAAsAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-28T15:18:27.27Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 0,
+              "Title": "ProductController.cs",
+              "DocumentMoniker": "C:\\Users\\Phuong Uyen\\OneDrive\\Documents\\GitHub\\Project_LTW\\Project_LTW\\Project_LTW\\Areas\\Admin\\Controllers\\ProductController.cs",
+              "RelativeDocumentMoniker": "Project_LTW\\Areas\\Admin\\Controllers\\ProductController.cs",
+              "ToolTip": "C:\\Users\\Phuong Uyen\\OneDrive\\Documents\\GitHub\\Project_LTW\\Project_LTW\\Project_LTW\\Areas\\Admin\\Controllers\\ProductController.cs",
+              "RelativeToolTip": "Project_LTW\\Areas\\Admin\\Controllers\\ProductController.cs",
+              "ViewState": "AgIAAHIBAAAAAAAAAAAuwIoBAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-28T15:07:50.755Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "PaymentController.cs",
+              "DocumentMoniker": "C:\\Users\\Phuong Uyen\\OneDrive\\Documents\\GitHub\\Project_LTW\\Project_LTW\\Project_LTW\\Controllers\\PaymentController.cs",
+              "RelativeDocumentMoniker": "Project_LTW\\Controllers\\PaymentController.cs",
+              "ToolTip": "C:\\Users\\Phuong Uyen\\OneDrive\\Documents\\GitHub\\Project_LTW\\Project_LTW\\Project_LTW\\Controllers\\PaymentController.cs",
+              "RelativeToolTip": "Project_LTW\\Controllers\\PaymentController.cs",
+              "ViewState": "AgIAAHIAAAAAAAAAAAAowH8AAAAVAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-20T11:56:36.128Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
               "Title": "ORDER.cs",
               "DocumentMoniker": "C:\\Users\\Phuong Uyen\\OneDrive\\Documents\\GitHub\\Project_LTW\\Project_LTW\\Project_LTW\\ORDER.cs",
               "RelativeDocumentMoniker": "Project_LTW\\ORDER.cs",
@@ -91,7 +189,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 6,
               "Title": "QLQUANAO.edmx [Diagram1]",
               "DocumentMoniker": "C:\\Users\\Phuong Uyen\\OneDrive\\Documents\\GitHub\\Project_LTW\\Project_LTW\\Project_LTW\\QLQUANAO.edmx",
               "RelativeDocumentMoniker": "Project_LTW\\QLQUANAO.edmx",
@@ -103,26 +201,13 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "OrderController.cs",
-              "DocumentMoniker": "C:\\Users\\Phuong Uyen\\OneDrive\\Documents\\GitHub\\Project_LTW\\Project_LTW\\Project_LTW\\Areas\\Admin\\Controllers\\OrderController.cs",
-              "RelativeDocumentMoniker": "Project_LTW\\Areas\\Admin\\Controllers\\OrderController.cs",
-              "ToolTip": "C:\\Users\\Phuong Uyen\\OneDrive\\Documents\\GitHub\\Project_LTW\\Project_LTW\\Project_LTW\\Areas\\Admin\\Controllers\\OrderController.cs",
-              "RelativeToolTip": "Project_LTW\\Areas\\Admin\\Controllers\\OrderController.cs",
-              "ViewState": "AgIAAA8AAAAAAAAAAAAAwCAAAAAtAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-28T11:18:30.923Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 3,
               "Title": "HomeController.cs",
               "DocumentMoniker": "C:\\Users\\Phuong Uyen\\OneDrive\\Documents\\GitHub\\Project_LTW\\Project_LTW\\Project_LTW\\Controllers\\HomeController.cs",
               "RelativeDocumentMoniker": "Project_LTW\\Controllers\\HomeController.cs",
               "ToolTip": "C:\\Users\\Phuong Uyen\\OneDrive\\Documents\\GitHub\\Project_LTW\\Project_LTW\\Project_LTW\\Controllers\\HomeController.cs",
               "RelativeToolTip": "Project_LTW\\Controllers\\HomeController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAHAAAAAAAAAA==",
+              "ViewState": "AgIAADIAAAAAAAAAAAA1wA0AAAAHAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-11-21T17:07:17.082Z",
               "EditorCaption": ""
@@ -130,6 +215,31 @@
             {
               "$type": "Document",
               "DocumentIndex": 8,
+              "Title": "CartController.cs",
+              "DocumentMoniker": "C:\\Users\\Phuong Uyen\\OneDrive\\Documents\\GitHub\\Project_LTW\\Project_LTW\\Project_LTW\\Controllers\\CartController.cs",
+              "RelativeDocumentMoniker": "Project_LTW\\Controllers\\CartController.cs",
+              "ToolTip": "C:\\Users\\Phuong Uyen\\OneDrive\\Documents\\GitHub\\Project_LTW\\Project_LTW\\Project_LTW\\Controllers\\CartController.cs",
+              "RelativeToolTip": "Project_LTW\\Controllers\\CartController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAdAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-27T04:30:59.125Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "OrderController.cs",
+              "DocumentMoniker": "C:\\Users\\Phuong Uyen\\OneDrive\\Documents\\GitHub\\Project_LTW\\Project_LTW\\Project_LTW\\Areas\\Admin\\Controllers\\OrderController.cs",
+              "RelativeDocumentMoniker": "Project_LTW\\Areas\\Admin\\Controllers\\OrderController.cs",
+              "ToolTip": "C:\\Users\\Phuong Uyen\\OneDrive\\Documents\\GitHub\\Project_LTW\\Project_LTW\\Project_LTW\\Areas\\Admin\\Controllers\\OrderController.cs",
+              "RelativeToolTip": "Project_LTW\\Areas\\Admin\\Controllers\\OrderController.cs",
+              "ViewState": "AgIAAA8AAAAAAAAAAAAAwCAAAAAtAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-28T11:18:30.923Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
               "Title": "Login.cshtml",
               "DocumentMoniker": "C:\\Users\\Phuong Uyen\\OneDrive\\Documents\\GitHub\\Project_LTW\\Project_LTW\\Project_LTW\\Views\\User\\Login.cshtml",
               "RelativeDocumentMoniker": "Project_LTW\\Views\\User\\Login.cshtml",
@@ -137,25 +247,11 @@
               "RelativeToolTip": "Project_LTW\\Views\\User\\Login.cshtml",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABUAAABbAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-11-28T08:45:53.12Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-28T08:45:53.12Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "PaymentController.cs",
-              "DocumentMoniker": "C:\\Users\\Phuong Uyen\\OneDrive\\Documents\\GitHub\\Project_LTW\\Project_LTW\\Project_LTW\\Controllers\\PaymentController.cs",
-              "RelativeDocumentMoniker": "Project_LTW\\Controllers\\PaymentController.cs",
-              "ToolTip": "C:\\Users\\Phuong Uyen\\OneDrive\\Documents\\GitHub\\Project_LTW\\Project_LTW\\Project_LTW\\Controllers\\PaymentController.cs",
-              "RelativeToolTip": "Project_LTW\\Controllers\\PaymentController.cs",
-              "ViewState": "AgIAAHgAAAAAAAAAAAAowH8AAAAVAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-20T11:56:36.128Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 12,
               "Title": "Success.cshtml",
               "DocumentMoniker": "C:\\Users\\Phuong Uyen\\OneDrive\\Documents\\GitHub\\Project_LTW\\Project_LTW\\Project_LTW\\Views\\Payment\\Success.cshtml",
               "RelativeDocumentMoniker": "Project_LTW\\Views\\Payment\\Success.cshtml",
@@ -163,12 +259,11 @@
               "RelativeToolTip": "Project_LTW\\Views\\Payment\\Success.cshtml",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-11-28T09:07:00.228Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-28T09:07:00.228Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 11,
               "Title": "CustomerController.cs",
               "DocumentMoniker": "C:\\Users\\Phuong Uyen\\OneDrive\\Documents\\GitHub\\Project_LTW\\Project_LTW\\Project_LTW\\Areas\\Admin\\Controllers\\CustomerController.cs",
               "RelativeDocumentMoniker": "Project_LTW\\Areas\\Admin\\Controllers\\CustomerController.cs",
@@ -176,12 +271,11 @@
               "RelativeToolTip": "Project_LTW\\Areas\\Admin\\Controllers\\CustomerController.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAIAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-28T09:40:16.703Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-28T09:40:16.703Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 15,
               "Title": "CartItem.cs",
               "DocumentMoniker": "C:\\Users\\Phuong Uyen\\OneDrive\\Documents\\GitHub\\Project_LTW\\Project_LTW\\Project_LTW\\Models\\CartItem.cs",
               "RelativeDocumentMoniker": "Project_LTW\\Models\\CartItem.cs",
@@ -189,25 +283,11 @@
               "RelativeToolTip": "Project_LTW\\Models\\CartItem.cs",
               "ViewState": "AgIAABkAAAAAAAAAAAAywDAAAABGAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-28T07:19:36.444Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-28T07:19:36.444Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
-              "Title": "CartController.cs",
-              "DocumentMoniker": "C:\\Users\\Phuong Uyen\\OneDrive\\Documents\\GitHub\\Project_LTW\\Project_LTW\\Project_LTW\\Controllers\\CartController.cs",
-              "RelativeDocumentMoniker": "Project_LTW\\Controllers\\CartController.cs",
-              "ToolTip": "C:\\Users\\Phuong Uyen\\OneDrive\\Documents\\GitHub\\Project_LTW\\Project_LTW\\Project_LTW\\Controllers\\CartController.cs",
-              "RelativeToolTip": "Project_LTW\\Controllers\\CartController.cs",
-              "ViewState": "AgIAADQAAAAAAAAAAAAIwA8AAAAdAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-27T04:30:59.125Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 13,
               "Title": "Index.cshtml",
               "DocumentMoniker": "C:\\Users\\Phuong Uyen\\OneDrive\\Documents\\GitHub\\Project_LTW\\Project_LTW\\Project_LTW\\Views\\Payment\\Index.cshtml",
               "RelativeDocumentMoniker": "Project_LTW\\Views\\Payment\\Index.cshtml",
@@ -215,12 +295,11 @@
               "RelativeToolTip": "Project_LTW\\Views\\Payment\\Index.cshtml",
               "ViewState": "AgIAAHgAAAAAAAAAAAAAAM0AAAAsAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-11-27T04:32:17.222Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-27T04:32:17.222Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 11,
+              "DocumentIndex": 16,
               "Title": "Cart.cs",
               "DocumentMoniker": "C:\\Users\\Phuong Uyen\\OneDrive\\Documents\\GitHub\\Project_LTW\\Project_LTW\\Project_LTW\\Models\\Cart.cs",
               "RelativeDocumentMoniker": "Project_LTW\\Models\\Cart.cs",
@@ -228,12 +307,11 @@
               "RelativeToolTip": "Project_LTW\\Models\\Cart.cs",
               "ViewState": "AgIAADUAAAAAAAAAAAAIwFAAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-28T07:22:12.365Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-28T07:22:12.365Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 12,
+              "DocumentIndex": 17,
               "Title": "Web.config",
               "DocumentMoniker": "C:\\Users\\Phuong Uyen\\OneDrive\\Documents\\GitHub\\Project_LTW\\Project_LTW\\Project_LTW\\Web.config",
               "RelativeDocumentMoniker": "Project_LTW\\Web.config",
@@ -246,7 +324,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 13,
+              "DocumentIndex": 18,
               "Title": "Index.cshtml",
               "DocumentMoniker": "C:\\Users\\Phuong Uyen\\OneDrive\\Documents\\GitHub\\Project_LTW\\Project_LTW\\Project_LTW\\Views\\Cart\\Index.cshtml",
               "RelativeDocumentMoniker": "Project_LTW\\Views\\Cart\\Index.cshtml",
@@ -254,8 +332,7 @@
               "RelativeToolTip": "Project_LTW\\Views\\Cart\\Index.cshtml",
               "ViewState": "AgIAAGYAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-11-27T04:31:08.589Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-27T04:31:08.589Z"
             }
           ]
         }

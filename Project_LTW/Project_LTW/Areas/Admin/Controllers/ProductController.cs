@@ -60,18 +60,13 @@ namespace Project_LTW.Areas.Admin.Controllers
                     db.PRODUCTs.Add(model);
 
                     
-                    // 4. XỬ LÝ VÀ LƯU TẤT CẢ MÀU SẮC TỪ  ẢNH 
-                   
                     HashSet<string> allUniqueColors = new HashSet<string>();
 
-                    // 4a. Thu thập màu từ Ảnh Đại diện
                     if (!string.IsNullOrWhiteSpace(MainImageColor))
                     {
                         string color = MainImageColor.Trim();
                         allUniqueColors.Add(color);
                     }
-
-                    // 4b. Thu thập màu từ Ảnh Phụ
                     if (SubImageColors != null)
                     {
                         foreach (var colorInput in SubImageColors)
@@ -79,20 +74,16 @@ namespace Project_LTW.Areas.Admin.Controllers
                             if (!string.IsNullOrWhiteSpace(colorInput))
                             {
                                 string color = colorInput.Trim();
-                                // Thêm vào HashSet để đảm bảo màu là duy nhất
                                 allUniqueColors.Add(color);
                             }
                         }
                     }
 
-                    // 4c. Lưu tất cả các màu duy nhất vào bảng PRODUCT_COLOR
                     foreach (var color in allUniqueColors)
                     {
                         db.PRODUCT_COLOR.Add(new PRODUCT_COLOR { SANPHAMID = model.SANPHAMID, MAUSAC = color });
                     }
                    
-
-                    // 5. Xử lý Size
                     if (!string.IsNullOrEmpty(strSIZE))
                     {
                         var arrSizes = strSIZE.Split(',');
@@ -104,9 +95,6 @@ namespace Project_LTW.Areas.Admin.Controllers
                             }
                         }
                     }
-
-                    
-                    // 6. GHI ẢNH ĐẠI DIỆN VÀO BẢNG PRODUCT_IMAGE 
                   
                     if (mainImageFilename != "default.png")
                     {
@@ -114,7 +102,6 @@ namespace Project_LTW.Areas.Admin.Controllers
                         mainImageEntry.SANPHAMID = model.SANPHAMID;
                         mainImageEntry.TENHINH = mainImageFilename;
 
-                        // Gán màu đã được nhập (đã được xác nhận là không rỗng ở bước 4a)
                         if (!string.IsNullOrWhiteSpace(MainImageColor))
                         {
                             mainImageEntry.MAUSAC = MainImageColor.Trim();
@@ -136,7 +123,6 @@ namespace Project_LTW.Areas.Admin.Controllers
 
                             if (file != null && file.ContentLength > 0)
                             {
-                                // Lưu file
                                 string filename = System.IO.Path.GetFileName(file.FileName);
                                 string path = Server.MapPath("~/assets/" + filename);
                                 file.SaveAs(path);
@@ -145,7 +131,6 @@ namespace Project_LTW.Areas.Admin.Controllers
                                 pImage.SANPHAMID = model.SANPHAMID;
                                 pImage.TENHINH = filename;
 
-                                // GÁN MÀU TỪ MẢNG 
                                 if (i < colorCount && !string.IsNullOrWhiteSpace(SubImageColors[i]))
                                 {
                                     pImage.MAUSAC = SubImageColors[i].Trim();
@@ -175,10 +160,6 @@ namespace Project_LTW.Areas.Admin.Controllers
             return View(model);
         }
 
-
-
-        
-        // 1. XỬ LÝ TRUY XUẤT DỮ LIỆU (EDIT - GET)
         
         [HttpGet]
         public ActionResult Edit(string id)
@@ -213,7 +194,7 @@ namespace Project_LTW.Areas.Admin.Controllers
     string strSIZE,
     string[] ExistingSubImageColors,
     int[] ImagesToDelete,
-    int? SoLuongNhapThem // <--- 1. THÊM THAM SỐ NÀY
+    int? SoLuongNhapThem 
 )
         {
             if (ModelState.IsValid)
@@ -235,7 +216,6 @@ namespace Project_LTW.Areas.Admin.Controllers
                     }
                     
 
-                    // 2. Xử lý Ảnh Đại diện (Giữ nguyên code của bạn)
                     string newMainImageFilename = productInDb.HINHANHDAIDIEN;
                     bool hasNewMainImage = false;
 
@@ -265,15 +245,12 @@ namespace Project_LTW.Areas.Admin.Controllers
                     }
 
                   
-
-                    // 4a. Xóa Ảnh Phụ
                     if (ImagesToDelete != null && ImagesToDelete.Length > 0)
                     {
                         var imagesToRemove = db.PRODUCT_IMAGE.Where(i => ImagesToDelete.Contains(i.IMAGEID)).ToList();
                         db.PRODUCT_IMAGE.RemoveRange(imagesToRemove);
                     }
 
-                    // 4b. Cập nhật Màu Ảnh Phụ HIỆN CÓ
                     if (ExistingSubImageColors != null)
                     {
                         var existingSubImages = db.PRODUCT_IMAGE.Where(i => i.SANPHAMID == model.SANPHAMID && i.TENHINH != productInDb.HINHANHDAIDIEN)
@@ -283,8 +260,6 @@ namespace Project_LTW.Areas.Admin.Controllers
                             existingSubImages[i].MAUSAC = ExistingSubImageColors[i]?.Trim();
                         }
                     }
-
-                    // 4c. Thêm Ảnh Phụ MỚI
                     if (SubImageFiles != null && SubImageFiles.Count > 0)
                     {
                         int colorCount = SubImageColors?.Length ?? 0;
@@ -310,7 +285,7 @@ namespace Project_LTW.Areas.Admin.Controllers
                     var mainImageEntry = db.PRODUCT_IMAGE.FirstOrDefault(img => img.SANPHAMID == model.SANPHAMID && img.TENHINH == productInDb.HINHANHDAIDIEN);
                     if (mainImageEntry == null)
                     {
-                        if (newMainImageFilename != "default.png") // Giả sử bạn có check này
+                        if (newMainImageFilename != "default.png") 
                         {
                             db.PRODUCT_IMAGE.Add(new PRODUCT_IMAGE
                             {
@@ -326,7 +301,7 @@ namespace Project_LTW.Areas.Admin.Controllers
                         if (hasNewMainImage) mainImageEntry.TENHINH = newMainImageFilename;
                     }
 
-                    // 5. XỬ LÝ PRODUCT_COLOR 
+
                     var oldColors = db.PRODUCT_COLOR.Where(x => x.SANPHAMID == model.SANPHAMID).ToList();
                     db.PRODUCT_COLOR.RemoveRange(oldColors);
 
