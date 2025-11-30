@@ -34,13 +34,25 @@
                         <td class="text-danger fw-bold">@decimal.Parse(item.TONGTIEN.ToString()).ToString("N0") đ</td>
                         <td>
                             @if (item.TRANGTHAI == "Chờ xử lý")
-                            {<span class="badge bg-warning text-dark">Chờ xử lý</span> }
+                            {
+                                <span class="badge bg-warning text-dark">Chờ xử lý</span>
+                            }
+                            else if (item.TRANGTHAI == "Đã xác nhận")
+                            {
+                                <span class="badge bg-info text-dark">Đã xác nhận</span>
+                            }
                             else if (item.TRANGTHAI == "Đang giao")
-                            { <span class="badge bg-info text-dark">Đang giao</span> }
-                            else if (item.TRANGTHAI == "Đã giao")
-                            { <span class="badge bg-success">Đã giao</span> }
+                            {
+                                <span class="badge bg-primary">Đang giao</span>
+                            }
+                            else if (item.TRANGTHAI == "Hoàn tất")
+                            {
+                                <span class="badge bg-success">Hoàn tất</span>
+                            }
                             else
-                            { <span class="badge bg-danger">@item.TRANGTHAI</span>}
+                            {
+                                <span class="badge bg-danger">@item.TRANGTHAI</span>
+                            }
                         </td>
                         <td>
                             <a href="@Url.Action("Details", new { id = item.ORDERID.Trim() })" class="btn btn-sm btn-primary">

@@ -1,5 +1,6 @@
-﻿@model List<Project_LTW.FN_DANHSACHDONHANG_KH_Result>
+﻿
 
+@model List<Project_LTW.ORDER>
 @{
     ViewBag.Title = "Lịch sử đơn hàng";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -7,7 +8,6 @@
 
 <div class="container py-5">
     <h3 class="mb-4">Lịch sử đơn hàng của tôi</h3>
-
     @if (TempData["Success"] != null)
     {
         <div class="alert alert-success alert-dismissible fade show">
@@ -22,8 +22,7 @@
             <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
         </div>
     }
-
-    @if (Model != null && Model.Count > 0)
+    @if (Model.Count > 0)
     {
         <div class="table-responsive">
             <table class="table table-bordered table-hover">
@@ -31,7 +30,7 @@
                     <tr>
                         <th>Mã đơn</th>
                         <th>Ngày đặt</th>
-                        <th>Số lượng SP</th>
+                        <th>Người nhận</th>
                         <th>Tổng tiền</th>
                         <th>Trạng thái</th>
                         <th>Hành động</th>
@@ -41,18 +40,14 @@
                     @foreach (var item in Model)
                     {
                         <tr>
+
                             <td><strong>#@item.ORDERID</strong></td>
-
-                            <td>@item.NGAYDAT.ToString("dd/MM/yyyy HH:mm")</td>
-
-                            <td class="text-center">
-                                <span class="badge bg-info text-dark">@item.SOSP sản phẩm</span>
+                            <td>@string.Format("{0:dd/MM/yyyy HH:mm}", item.NGAYDAT)</td>
+                            <td>
+                                @* Lấy tên từ bảng Address nếu có, hoặc hiển thị tên user *@
+                                @(item.ADDRESS != null ? item.ADDRESS.DUONG: "---")
                             </td>
-
-                            <td class="text-danger fw-bold">
-                                @item.TONGTIEN.ToString("N0")đ
-                            </td>
-
+                            <td class="text-danger fw-bold">@decimal.Parse(item.TONGTIEN.ToString()).ToString("N0")đ</td>
                             <td>
                                 @if (item.TRANGTHAI == "Chờ xử lý")
                                 {<span class="badge bg-warning text-dark">Chờ xử lý</span> }
@@ -63,13 +58,11 @@
                                 else
                                 { <span class="badge bg-secondary">@item.TRANGTHAI</span>}
                             </td>
-
                             <td>
                                 <a href="@Url.Action("OrderDetail", "User", new { id = item.ORDERID })" class="btn btn-sm btn-primary">
                                     <i class="bi bi-eye"></i> Xem chi tiết
                                 </a>
-
-                                @if (item.TRANGTHAI != null && item.TRANGTHAI.Contains("Chờ"))
+                                @if (item.TRANGTHAI == "Chờ xử lý")
                                 {
                                     <a href="@Url.Action("CancelOrder", "User", new { id = item.ORDERID.Trim() })"
                                        class="btn btn-sm btn-danger ms-1"

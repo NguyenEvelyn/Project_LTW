@@ -15,42 +15,6 @@ namespace Project_LTW.Controllers
         {
             return View();
         }
-        //[HttpPost]
-        //public ActionResult LoginOnSubmit(FormCollection collect)
-        //{
-        //    var email = collect["Email"];
-        //    var password = collect["Password"];
-
-        //    var khachHang = db.CUSTOMERs.FirstOrDefault(k => k.EMAIL == email && k.PASSWORD == password);
-
-        //    if (khachHang != null)
-        //    {
-        //        // Đăng nhập thành công quyền KHÁCH
-        //        Session["User"] = khachHang;
-
-        //        return RedirectToAction("Index", "Home", new { area = "" });
-        //    }
-
-
-        //    // Nếu không phải khách hàng, thử tìm trong bảng Staff
-        //    var nhanVien = db.STAFFs.FirstOrDefault(s => s.EMAIL == email && s.PASSWORD == password);
-
-        //    if (nhanVien != null)
-        //    {
-        //        // Đăng nhập thành công quyền ADMIN
-        //        Session["AdminUser"] = nhanVien; // Lưu session riêng cho Admin
-
-
-
-        //        Session["MANV"] = nhanVien.MANV;
-
-        //        return RedirectToAction("Index", "HomeAdmin", new { area = "Admin" });
-        //    }
-
-        //    ViewBag.Error = "Email hoặc mật khẩu không đúng!";
-        //    return View("Login");
-        //}
-
         [HttpPost]
         public ActionResult LoginOnSubmit(FormCollection collect)
         {
@@ -61,26 +25,28 @@ namespace Project_LTW.Controllers
 
             if (khachHang != null)
             {
+                // Đăng nhập thành công quyền KHÁCH
                 Session["User"] = khachHang;
-                Session["AdminUser"] = null;
-                Session["MANV"] = null;
 
                 return RedirectToAction("Index", "Home", new { area = "" });
             }
 
 
+            // Nếu không phải khách hàng, thử tìm trong bảng Staff
             var nhanVien = db.STAFFs.FirstOrDefault(s => s.EMAIL == email && s.PASSWORD == password);
 
             if (nhanVien != null)
             {
-                Session["AdminUser"] = nhanVien;
-                Session["MANV"] = nhanVien.MANV;
-                Session["User"] = null;
+                // Đăng nhập thành công quyền ADMIN
+                Session["AdminUser"] = nhanVien; // Lưu session riêng cho Admin
 
+             
+
+                Session["MANV"] = nhanVien.MANV;
+               
                 return RedirectToAction("Index", "HomeAdmin", new { area = "Admin" });
             }
-
-
+           
             ViewBag.Error = "Email hoặc mật khẩu không đúng!";
             return View("Login");
         }
@@ -138,39 +104,26 @@ namespace Project_LTW.Controllers
          
             return View();
         }
-
         public ActionResult Logout()
-
         {
-
-            Session["User"] = null;
-            Session["AdminUser"] = null;
-            Session["MANV"] = null;
-
-            return RedirectToAction("Index", "Home");
+            Session["User"] = null; 
+            return RedirectToAction("Index", "Home"); 
         }
 
-
+     
         public ActionResult OrderHistory()
         {
-
-
+            
             if (Session["User"] == null)
-            {
-
-                if (Session["AdminUser"] != null)
-                {
-                    TempData["Error"] = "Admin/Nhân viên không thể truy cập Lịch sử đơn hàng của Khách hàng.";
-                    return RedirectToAction("Index", "Home", new { area = "" });
-                }
-
                 return RedirectToAction("Login");
-            }
 
             var user = Session["User"] as CUSTOMER;
 
-
-            var orders = db.FN_DANHSACHDONHANG_KH(user.KHACHHANGID).ToList();
+          
+            var orders = db.ORDERS
+                           .Where(o => o.KHACHHANGID == user.KHACHHANGID)
+                           .OrderByDescending(o => o.NGAYDAT)
+                           .ToList();
 
             return View(orders);
         }
@@ -213,10 +166,10 @@ namespace Project_LTW.Controllers
                 return RedirectToAction("OrderHistory");
             }
 
-
-            if (order.TRANGTHAI == null || !order.TRANGTHAI.Contains("Chờ"))
+     
+            if (order.TRANGTHAI != "Chờ xử lý")
             {
-                TempData["Error"] = "Bạn chỉ có thể hủy đơn hàng khi đang ở trạng thái Chờ xử lý/xác nhận.";
+                TempData["Error"] = "Chỉ có thể hủy đơn hàng khi đang Chờ xử lý.";
                 return RedirectToAction("OrderHistory");
             }
 
@@ -226,7 +179,7 @@ namespace Project_LTW.Controllers
                
                 db.Database.ExecuteSqlCommand("EXEC SP_HUYDONHANG @p0", id);
 
-                TempData["Success"] = "Đã hủy đơn hàng thành công!";
+                TempData["Success"] = "Đã hủy đơn hàng và hoàn lại tồn kho thành công!";
             }
             catch (Exception ex)
             {
@@ -555,62 +508,6 @@ namespace Project_LTW.Controllers
            
             ViewBag.Error = "Không tìm thấy thông tin tài khoản.";
             return View();
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult UpdateNgaySinh(DateTime? NGAYSINH)
-        {
-
-            if (Session["User"] == null)
-            {
-                return Json(new { success = false, message = "Bạn cần đăng nhập để thực hiện chức năng này." });
-            }
-
-
-            var userInSession = Session["User"] as CUSTOMER;
-            var customerToUpdate = db.CUSTOMERs.Find(userInSession.KHACHHANGID);
-
-            if (customerToUpdate == null)
-            {
-
-                return Json(new { success = false, message = "Không tìm thấy tài khoản." });
-            }
-
-
-            if (NGAYSINH.HasValue)
-            {
-
-                if (NGAYSINH.Value > DateTime.Now.Date)
-                {
-                    return Json(new { success = false, message = "Ngày sinh không được lớn hơn ngày hiện tại." });
-                }
-
-
-                customerToUpdate.NGAYSINH = NGAYSINH.Value.Date;
-            }
-            else
-            {
-
-                customerToUpdate.NGAYSINH = null;
-            }
-
-            try
-            {
-
-                db.SaveChanges();
-
-
-                userInSession.NGAYSINH = customerToUpdate.NGAYSINH;
-                Session["User"] = userInSession;
-
-                return Json(new { success = true, message = "Cập nhật Ngày sinh thành công!" });
-            }
-            catch (Exception ex)
-            {
-
-                return Json(new { success = false, message = "Lỗi hệ thống khi lưu dữ liệu. Vui lòng thử lại. Lỗi: " + ex.Message });
-            }
         }
     }
 }

@@ -4,7 +4,6 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Project_LTW.Models;
-
 namespace Project_LTW.Controllers
 {
     public class CartController : Controller
@@ -12,7 +11,7 @@ namespace Project_LTW.Controllers
         // GET: Cart
         // 1. Hàm lấy giỏ hàng từ Session
         FashionWebEntities db = new FashionWebEntities();
-
+       
         public Cart GetCart()
         {
             Cart cart = Session["Cart"] as Cart;
@@ -24,69 +23,36 @@ namespace Project_LTW.Controllers
             return cart;
         }
 
-
-        // 2. Thêm sản phẩm vào giỏ hàng
-
+   
         [HttpPost]
-        public ActionResult AddtoCart(string sanPhamID, string mau, string size)
-        {
-            if (string.IsNullOrEmpty(sanPhamID))
-            {
-                return RedirectToAction("Index", "Home");
-            }
-
-           
-            if (string.IsNullOrEmpty(mau)) mau = "Mặc định";
-         
-            if (string.IsNullOrEmpty(size)) size = "FreeSize";
-           
-
-            var cart = GetCart();
-            cart.Them(sanPhamID, mau, size);
-            Session["Cart"] = cart;
-
-            TempData["Success"] = "Đã thêm sản phẩm vào giỏ hàng thành công!";
-            return RedirectToAction("Index");
-        }
-
-        // 3. Cập nhật số lượng (Tăng/Giảm)
-
-        public ActionResult UpdateSLCart(string id, string mau, string size, int type)
+        public ActionResult AddtoCart(string sanPhamID)
         {
             var cart = GetCart();
-
-            if (string.IsNullOrEmpty(id) || string.IsNullOrEmpty(mau) || string.IsNullOrEmpty(size))
-            {
-                return RedirectToAction("Index");
-            }
-
-            if (type == 1) // Tăng số lượng
-            {
-               
-                cart.Them(id, mau, size);
-            }
-            else // Giảm số lượng
-            {
-                
-                cart.Giam(id, mau, size);
-            }
+            cart.Them(sanPhamID);
             Session["Cart"] = cart; 
             return RedirectToAction("Index");
         }
 
-        // 4. Xóa sản phẩm
- 
-        public ActionResult RemoveFromCart(string id, string mau, string size)
+        // 3. Cập nhật số lượng 
+        public ActionResult UpdateSLCart(string id, int type)
         {
             var cart = GetCart();
-
-            if (!string.IsNullOrEmpty(id) && !string.IsNullOrEmpty(mau) && !string.IsNullOrEmpty(size))
+            if (type == 1)
             {
-               
-                cart.Xoa(id, mau, size);
-                Session["Cart"] = cart; 
-                TempData["Success"] = "Đã xóa sản phẩm khỏi giỏ hàng.";
+                cart.Them(id);
             }
+            else
+            {
+                cart.Giam(id);
+            }
+            return RedirectToAction("Index");
+        }
+
+        // 4. Xóa sản phẩm
+        public ActionResult RemoveFromCart(string id)
+        {
+            var cart = GetCart();
+            cart.Xoa(id);
             return RedirectToAction("Index");
         }
 
@@ -104,28 +70,26 @@ namespace Project_LTW.Controllers
         // 6. Thanh toán
         public ActionResult PaymentConfirm()
         {
-            
-            return RedirectToAction("Index", "Payment");
+            return View("Index", "Payment");
         }
 
-        // 7. Thêm vào giỏ hàng 
-
-        public ActionResult ThemGioHang(string id, string mau, string size, string type = "normal")
+        // Trong CartController.cs
+        public ActionResult ThemGioHang(string id, string type = "normal")
         {
-           
-            if (string.IsNullOrEmpty(mau)) mau = "Mặc định";
-            if (string.IsNullOrEmpty(size)) size = "FreeSize";
-           
-            var cart = GetCart();
-            cart.Them(id, mau, size);
+            
+            var cart = GetCart(); 
+            cart.Them(id);
             Session["Cart"] = cart;
-
             if (type == "buynow")
             {
+               
                 return RedirectToAction("Index", "Payment");
             }
 
+           
             return RedirectToAction("Index", "Cart");
         }
     }
-}
+
+    
+    }

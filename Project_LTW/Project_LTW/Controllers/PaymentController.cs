@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Web;
 using System.Web.Mvc;
 using Project_LTW.Models;
 using System.Data.Entity;
-using System.Data.Entity.Validation;
-using System.Data.Entity.Infrastructure;
 
 namespace Project_LTW.Controllers
 {
@@ -13,189 +12,193 @@ namespace Project_LTW.Controllers
     {
         FashionWebEntities db = new FashionWebEntities();
 
-        private string GetIdSuffix()
-        {
-            var ticks = DateTime.Now.Ticks.ToString();
-            return ticks.Substring(ticks.Length - 8);
-        }
-
+        // ==========================================
+        // 1. GET: Hiển thị trang thanh toán
+        // ==========================================
         [HttpGet]
         public ActionResult Index()
         {
-            if (Session["User"] == null) return RedirectToAction("Login", "User");
+            if (Session["User"] == null)
+                return RedirectToAction("Login", "User");
 
             var cart = Session["Cart"] as Cart;
-            if (cart == null || cart.list == null || !cart.list.Any())
+            if (cart == null || cart.list == null || cart.list.Count == 0)
                 return RedirectToAction("Index", "Cart");
 
-            var userSession = Session["User"] as CUSTOMER;
-            var currentUser = db.CUSTOMERs.Include(c => c.ADDRESSes)
-                                          .FirstOrDefault(c => c.KHACHHANGID == userSession.KHACHHANGID);
+            var userInSession = Session["User"] as CUSTOMER;
+            // PHẢI INCLUDE ADDRESSES NGAY TỪ ĐÂY ĐỂ TRUYỀN XUỐNG VIEW
+            var fullUser = db.CUSTOMERs.Include(c => c.ADDRESSes).FirstOrDefault(c => c.KHACHHANGID == userInSession.KHACHHANGID);
 
             ViewBag.Cart = cart.list;
-            ViewBag.User = currentUser;
-            ViewBag.Addresses = currentUser?.ADDRESSes.ToList();
+            ViewBag.User = fullUser; // Truyền fullUser xuống để lấy thông tin
+            ViewBag.Addresses = fullUser?.ADDRESSes.ToList(); // TRUYỀN DANH SÁCH ĐỊA CHỈ
             ViewBag.Total = cart.TongTien();
 
             return View();
         }
 
+
+        // 2. POST: Xử lý khi bấm nút "Xác nhận đặt hàng"
+        // ==========================================
         [HttpPost]
         [ValidateAntiForgeryToken]
+        // Bổ sung tham số PaymentMethod
         public ActionResult Index(string ShipName, string ShipPhone, string ShipAddress, string Note, string addressOption, string PaymentMethod)
         {
-            var cart = Session["Cart"] as Cart;
-            var userSession = Session["User"] as CUSTOMER;
+            // 1. Chuẩn bị dữ liệu hiển thị lại nếu lỗi
+            var cartInfo = Session["Cart"] as Cart;
+            var userInSession = Session["User"] as CUSTOMER;
 
-            if (userSession == null) return RedirectToAction("Login", "User");
-            if (cart == null || cart.list == null || !cart.list.Any()) return RedirectToAction("Index", "Cart");
+            // Tải lại fullUser và Addresses nếu cần hiển thị lại trang
+            var fullUser = db.CUSTOMERs.Include(c => c.ADDRESSes).FirstOrDefault(c => c.KHACHHANGID == userInSession.KHACHHANGID);
 
-            var currentUser = db.CUSTOMERs.Include(c => c.ADDRESSes)
-                                          .FirstOrDefault(c => c.KHACHHANGID == userSession.KHACHHANGID);
-            ViewBag.Cart = cart.list;
-            ViewBag.Total = cart.TongTien();
-            ViewBag.User = currentUser;
-            ViewBag.Addresses = currentUser?.ADDRESSes.ToList();
+            ViewBag.Cart = cartInfo?.list;
+            if (cartInfo != null) ViewBag.Total = cartInfo.TongTien();
+            ViewBag.User = fullUser;
+            ViewBag.Addresses = fullUser?.ADDRESSes.ToList();
 
+            // 2. Validate
             if (string.IsNullOrEmpty(ShipName) || string.IsNullOrEmpty(ShipPhone))
             {
-                ViewBag.Error = "Vui lòng nhập đầy đủ Họ tên và Số điện thoại.";
+                ViewBag.Error = "Vui lòng nhập đầy đủ Họ tên và Điện thoại.";
                 return View();
             }
 
+            // --- Validate Phương thức Thanh toán ---
+            if (string.IsNullOrEmpty(PaymentMethod))
+            {
+                ViewBag.Error = "Vui lòng chọn phương thức thanh toán.";
+                return View();
+            }
+
+            string finalShipAddressContent = ShipAddress;
+            string finalAddressID = null;
+
+            // --- LOGIC XÁC ĐỊNH ĐỊA CHỈ TỪ CODE TRƯỚC (Giữ nguyên) ---
+            if (!string.IsNullOrEmpty(addressOption) && addressOption.StartsWith("saved_"))
+            {
+                finalAddressID = addressOption.Replace("saved_", "");
+                var savedAddr = fullUser?.ADDRESSes.FirstOrDefault(a => a.DIACHIID == finalAddressID);
+
+                if (savedAddr == null)
+                {
+                    ViewBag.Error = "Địa chỉ đã chọn không hợp lệ. Vui lòng chọn lại.";
+                    return View();
+                }
+            }
+
+            if (string.IsNullOrEmpty(finalShipAddressContent))
+            {
+                ViewBag.Error = "Vui lòng nhập hoặc chọn địa chỉ giao hàng.";
+                return View(); }
             using (var scope = db.Database.BeginTransaction())
             {
                 try
                 {
-                    string suffix = GetIdSuffix();
-                    string finalAddressID = null;
-
-                    // 1. Xử lý địa chỉ
-                    if (!string.IsNullOrEmpty(addressOption) && addressOption.StartsWith("saved_"))
-                    {
-                        finalAddressID = addressOption.Replace("saved_", "").Trim();
-                    }
-                    else
-                    {
-                        finalAddressID = "DC" + suffix;
-                        var newAddr = new ADDRESS
-                        {
-                            DIACHIID = finalAddressID,
-                            KHACHHANGID = userSession.KHACHHANGID,
-                            DUONG = ShipAddress,
-                            THANHPHO = "Toàn Quốc",
-                            TINH = "Việt Nam",
-                            ZIPCODE = "70000"
-                        };
-                        db.ADDRESSes.Add(newAddr);
-                    }
-
                    
-                    string orderID = "DH" + suffix;
-                    var newOrder = new ORDER
+                    if (finalAddressID == null)
                     {
-                        ORDERID = orderID,
-                        KHACHHANGID = userSession.KHACHHANGID,
-                        NGAYDAT = DateTime.Now,
-                        TONGTIEN = cart.TongTien(),
-                        TRANGTHAI = (PaymentMethod == "COD") ? "Chờ xác nhận (COD)" : "Chờ thanh toán (CK)",
-                        DIACHIID = finalAddressID,
-                        GHICHU = Note
-                    };
-                    db.ORDERS.Add(newOrder);
+                        string newAddressID = "DC" + DateTime.Now.Ticks.ToString().Substring(10);
+                        ADDRESS newAddr = new ADDRESS();
+                        newAddr.DIACHIID = newAddressID;
+                        newAddr.KHACHHANGID = userInSession.KHACHHANGID;
+                        newAddr.DUONG = finalShipAddressContent;
+                        newAddr.THANHPHO = "Toàn Quốc";
+                        newAddr.TINH = "Việt Nam";
+                        newAddr.ZIPCODE = "70000";
 
-
-                    var groupedCart = cart.list
-                        .Select(x => new
-                        {
-                            ItemOriginal = x,
-                            RealColor = string.IsNullOrEmpty(x.MAUSAC) ? "Mặc định" : x.MAUSAC,
-                            RealSize = string.IsNullOrEmpty(x.SIZE) ? "FreeSize" : x.SIZE
-                        })
-                        .GroupBy(x => new { x.ItemOriginal.MASP, x.RealColor, x.RealSize })
-                        .Select(g => new
-                        {
-                            MASP = g.Key.MASP,
-                            MAUSAC = g.Key.RealColor,
-                            SIZE = g.Key.RealSize,
-                            SoLuong = g.Sum(x => x.ItemOriginal.SoLuong),
-                            DonGia = g.First().ItemOriginal.DonGia
-                        })
-                        .ToList();
-
-                    // 4. Tạo Detail
-                    foreach (var item in groupedCart)
-                    {
-                       
-                      
-                        var product = db.PRODUCTs.Find(item.MASP);
-                        if (product == null)
-                        {
-                            ViewBag.Error = $"Sản phẩm {item.MASP} không tồn tại.";
-                            return View();
-                        }
-                        if (product.SOLUONGTONKHO < item.SoLuong)
-                        {
-                            ViewBag.Error = $"Sản phẩm '{product.TENSANPHAM}' (Màu: {item.MAUSAC}, Size: {item.SIZE}) không đủ hàng.";
-                            return View();
-                        }
-
-                        product.SOLUONGTONKHO -= item.SoLuong;
-
-                        var detail = new ORDERDETAIL
-                        {
-                            ORDERID = orderID,
-                            SANPHAMID = item.MASP,
-                            SOLUONG = item.SoLuong,
-                            DONGIA = item.DonGia,
-                            MAUSAC = item.MAUSAC,
-                            SIZE = item.SIZE
-                        };
-                        db.ORDERDETAILs.Add(detail);
+                        db.ADDRESSes.Add(newAddr);
+                        db.SaveChanges();
+                        finalAddressID = newAddressID;
                     }
 
+                    //  TẠO ORDER 
+                    ORDER newOrder = new ORDER();
+                    string orderId = "DH" + DateTime.Now.Ticks.ToString().Substring(10);
+                    newOrder.ORDERID = orderId;
+                    newOrder.KHACHHANGID = userInSession.KHACHHANGID;
+                    newOrder.NGAYDAT = DateTime.Now;
+                    newOrder.TONGTIEN = cartInfo.TongTien();
+                    newOrder.TRANGTHAI = "Chờ xử lý";
+                    newOrder.DIACHIID = finalAddressID;
+                   
+
+                    string fullNote = $"{ShipName} - {ShipPhone}";
+                    if (!string.IsNullOrEmpty(Note)) fullNote += $" | Note: {Note}";
+                    newOrder.GHICHU = fullNote.Length > 490 ? fullNote.Substring(0, 490) : fullNote;
+
+                    db.ORDERS.Add(newOrder);
                     db.SaveChanges();
 
-                    // 5. Tạo Payment
-                    var pay = new PAYMENT
+                    
+                    foreach (var item in cartInfo.list)
                     {
-                        PAYMENTID = "PM" + suffix,
-                        ORDERID = orderID,
-                        PHUONGTHUCTT = PaymentMethod,
-                        TRANGTHAITT = "Chờ xác nhận",
-                        NGAYTT = (PaymentMethod == "COD") ? null : (DateTime?)DateTime.Now
-                    };
+                        ORDERDETAIL detail = new ORDERDETAIL();
+                        detail.ORDERID = newOrder.ORDERID;
+                        detail.SANPHAMID = item.MASP;
+                        detail.SOLUONG = item.SoLuong;
+                        detail.DONGIA = item.DonGia;
+                        detail.THANHTIEN = item.ThanhTien;
+                        db.ORDERDETAILs.Add(detail);
+                    }
+                    db.SaveChanges();
+                    db.SP_CAPNHATTONKHOSAUDATHANG(newOrder.ORDERID);
+
+                  
+                    PAYMENT pay = new PAYMENT();
+                    pay.PAYMENTID = "PM" + DateTime.Now.Ticks.ToString().Substring(10);
+                    pay.ORDERID = newOrder.ORDERID;
+
+                   
+                    pay.PHUONGTHUCTT = PaymentMethod;
+
+                  
+                    if (PaymentMethod == "COD")
+                    {
+                        pay.TRANGTHAITT = "Chưa thanh toán";
+                        pay.NGAYTT = null; 
+                    }
+                    else 
+                    {
+                        pay.TRANGTHAITT = "Chờ xác nhận";
+                        pay.NGAYTT = DateTime.Now;
+                    }
+
                     db.PAYMENTs.Add(pay);
                     db.SaveChanges();
 
+                   
                     scope.Commit();
-
                     Session["Cart"] = null;
-                    return RedirectToAction("Success");
+                    TempData["SuccessMessage"] = "Đặt hàng thành công! Mã đơn: " + newOrder.ORDERID;
+                    return RedirectToAction("Success", "Payment");
+                }
+               
+                catch (System.Data.Entity.Validation.DbEntityValidationException dbEx)
+                {
+                    scope.Rollback();
+                    string msg = "";
+                    foreach (var item in dbEx.EntityValidationErrors)
+                        foreach (var err in item.ValidationErrors) msg += $"Lỗi {err.PropertyName}: {err.ErrorMessage}<br/>";
+                    ViewBag.Error = "Lỗi dữ liệu: " + msg;
+                    return View();
                 }
                 catch (Exception ex)
                 {
-                    // In lỗi ra màn hình
-                    ViewBag.Error = "Lỗi xảy ra: " + ex.Message;
-                    if (ex is DbEntityValidationException dbEx)
-                    {
-                        var msg = dbEx.EntityValidationErrors.SelectMany(x => x.ValidationErrors).Select(x => x.ErrorMessage);
-                        ViewBag.Error = "Lỗi dữ liệu: " + string.Join("; ", msg);
-                    }
-                    if (ex is DbUpdateException dbUpEx)
-                    {
-                        var real = dbUpEx.InnerException;
-                        while (real != null && real.InnerException != null) real = real.InnerException;
-                        ViewBag.Error = "Lỗi Database: " + (real != null ? real.Message : dbUpEx.Message);
-                    }
-
+                    scope.Rollback();
+                    Exception real = ex;
+                    while (real.InnerException != null) real = real.InnerException;
+                    ViewBag.Error = "Lỗi hệ thống: " + real.Message;
                     return View();
                 }
             }
         }
 
+  
         public ActionResult Success()
         {
+            if (TempData["SuccessMessage"] == null) return RedirectToAction("Index", "Home");
+            ViewBag.SuccessMessage = TempData["SuccessMessage"];
             return View();
         }
     }

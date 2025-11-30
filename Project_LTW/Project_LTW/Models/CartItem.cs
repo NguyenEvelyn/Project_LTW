@@ -13,10 +13,9 @@ namespace Project_LTW.Models
         public decimal DonGia { get; set; }
         public int SoLuong { get; set; }
 
-     
+        // ✅ ĐẢM BẢO CÓ 2 PROPERTY NÀY
         public string MAUSAC { get; set; }
         public string SIZE { get; set; }
-      
 
         public decimal ThanhTien
         {
@@ -25,13 +24,11 @@ namespace Project_LTW.Models
 
         public CartItem() { }
 
-       
         public CartItem(string id, string mau, string size)
         {
             using (var db = new FashionWebEntities())
             {
                 string idChuan = id.Trim();
-               
                 var sp = db.PRODUCTs.FirstOrDefault(n => n.SANPHAMID.Trim() == idChuan);
 
                 if (sp != null)
@@ -41,10 +38,8 @@ namespace Project_LTW.Models
                     AnhDaiDien = sp.HINHANHDAIDIEN;
                     DonGia = sp.GIA;
                     SoLuong = 1;
-
-                
-                   
                 }
+
                 MAUSAC = string.IsNullOrEmpty(mau) ? "Mặc định" : mau;
                 SIZE = string.IsNullOrEmpty(size) ? "FreeSize" : size;
             }

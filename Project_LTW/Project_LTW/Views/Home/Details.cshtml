@@ -116,9 +116,8 @@
 @using (Html.BeginForm("AddtoCart", "Cart", FormMethod.Post))
 {
 
-    @* Hidden Fields để truyền Màu và Size: name="mau" và name="size" *@
-    @Html.Hidden("mau", "", new { id = "selectedColor" })
-    @Html.Hidden("size", "", new { id = "selectedSize" })
+    @Html.Hidden("selectedColor", "", new { id = "selectedColor" })
+    @Html.Hidden("selectedSize", "", new { id = "selectedSize" })
     <input type="hidden" name="sanPhamID" value="@Model.SANPHAMID.Trim()" />
 
     <div class="row mt-4">
@@ -205,14 +204,13 @@
                 $(this).addClass("active-thumb");
             });
 
-            // 2. Xử lý chọn màu
+            // 2. Xử lý chọn màu (Sửa lại sự kiện click cho chắc chắn)
             $(document).on('click', '.color-btn', function () {
                 var selectedColor = $(this).data('color');
                 console.log("Đã chọn màu:", selectedColor);
 
                 $('.color-btn').removeClass('active');
                 $(this).addClass('active');
-                // Gán giá trị vào Hidden Field
                 $('#selectedColor').val(selectedColor);
                 $('#colorError').addClass('d-none');
 
@@ -229,7 +227,6 @@
 
                 $('.size-btn').removeClass('active');
                 $(this).addClass('active');
-                // Gán giá trị vào Hidden Field
                 $('#selectedSize').val(selectedSize);
                 $('#sizeError').addClass('d-none');
             });
@@ -253,44 +250,34 @@
                 }
             });
 
-            // 5. Tự động chọn option đầu tiên (Đảm bảo gán giá trị và hiệu ứng)
+            // 5. Tự động chọn option đầu tiên
+            setTimeout(function () {
+                // 5. Tự động chọn option đầu tiên
+                if ($('.color-btn').length > 0) {
+                    var firstColorBtn = $('.color-btn').first();
+                    var firstColorValue = firstColorBtn.data('color');
 
-            // Xử lý Màu sắc
-            if ($('.color-btn').length > 0) {
-                var firstColorBtn = $('.color-btn').first();
-                var firstColorValue = firstColorBtn.data('color');
+                    // Gán giá trị vào hidden field
+                    $('#selectedColor').val(firstColorValue);
+                    firstColorBtn.addClass('active');
+                    $('.img-thumbnail[data-color="' + firstColorValue + '"]').first().click();
+                } else {
+                    // Không có màu nào → Gán "Mặc định"
+                    $('#selectedColor').val('Mặc định');
+                }
 
-                // Gán giá trị vào Hidden Field
-                $('#selectedColor').val(firstColorValue);
+                if ($('.size-btn').length > 0) {
+                    var firstSizeBtn = $('.size-btn').first();
+                    var firstSizeValue = firstSizeBtn.data('size');
 
-                // Kích hoạt hiệu ứng Active cho nút đầu tiên
-                firstColorBtn.addClass('active');
-
-                // Tự động chọn ảnh thumbnail đại diện theo màu đầu tiên (nếu có)
-                $('.img-thumbnail[data-color="' + firstColorValue + '"]').first().click();
-            } else {
-                // Nếu không có màu nào, gán giá trị rỗng để validate hoặc xử lý mặc định
-                $('#selectedColor').val('');
-            }
-
-            // Xử lý Size
-            if ($('.size-btn').length > 0) {
-                var firstSizeBtn = $('.size-btn').first();
-                var firstSizeValue = firstSizeBtn.data('size');
-
-                // Gán giá trị vào Hidden Field
-                $('#selectedSize').val(firstSizeValue);
-
-                // Kích hoạt hiệu ứng Active cho nút đầu tiên
-                firstSizeBtn.addClass('active');
-            } else {
-                // Nếu không có size nào, gán giá trị rỗng để validate hoặc xử lý mặc định
-                $('#selectedSize').val('');
-            }
-
+                    // Gán giá trị vào hidden field
+                    $('#selectedSize').val(firstSizeValue);
+                    firstSizeBtn.addClass('active');
+                } else {
+                    // Không có size nào → Gán "Free Size"
+                    $('#selectedSize').val('Free Size');
+                }
+            }, 100);
         });
     </script>
 }
-
-
-

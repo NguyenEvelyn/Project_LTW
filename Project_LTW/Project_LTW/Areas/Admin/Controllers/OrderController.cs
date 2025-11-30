@@ -40,27 +40,20 @@ namespace Project_LTW.Areas.Admin.Controllers
             return View(order);
         }
 
-       
+
         // 3. POST: CẬP NHẬT TRẠNG THÁI ĐƠN HÀNG (TRANGTHAI)
-   
+
         [HttpPost]
         public ActionResult UpdateStatus(string id, string trangThai)
         {
             var order = db.ORDERS.Find(id);
-            string currentManv = Session["MANV"] as string; // Lấy MANV từ Session
+            string currentManv = Session["MANV"] as string;
 
             if (order != null)
             {
-              
-                //if (order.MANV_XULY == null && !string.IsNullOrEmpty(currentManv))
-                //{
-                //    order.MANV_XULY = currentManv;
-                //}
-
                 order.TRANGTHAI = trangThai;
 
-    
-                if (trangThai == "Đã giao" && order.PAYMENTs.Any())
+                if (trangThai == "Hoàn tất" && order.PAYMENTs.Any())
                 {
                     foreach (var pay in order.PAYMENTs)
                     {
